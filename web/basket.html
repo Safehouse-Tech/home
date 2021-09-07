@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Shopping Basket | Safehouse Technology</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="assets/img/favicon_1.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+    <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/basket.css" rel="stylesheet">
+    
+    <link href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet">
+    
+    
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/purecounter/purecounter.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+    <!--<script src="assets/js/main.js"></script>-->
+    <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/footer.js"></script>
+    
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    
+    <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.25/api/sum().js"></script> 
+    
+    
+    <script src="assets/js/basket.js"></script>
+    
+</head>
+<style>
+    
+    
+    #example td, #example tr 
+    {
+        text-align: center; 
+        font-size: 15px;
+        cursor:pointer;
+    }
+    
+     #example  td {
+        padding: 40px 10px; /* e.g. change 8x to 4px here */
+    }
+    
+/*    #example td:last-child, table tr th:last-child{
+        text-align: right;
+    }*/
+    
+/*    .dataTables_wrapper table thead{
+    display:none;
+}*/
+
+/*border-spacing: 20px*/
+    
+</style>
+
+
+<body class="">
+
+    <div id="headerdiv"></div>
+    
+    <main id="main">
+    
+        <section class="features no-margin-bottom">
+            <div class="container" data-aos="zoom-in">
+
+                <div class="section-title">
+                    <h2 style="color: #68A4C4;">Shopping Basket</h2>
+                    <p></p>
+                </div>
+                
+            </div>
+        </section>
+        
+        
+        <section class="">
+            <div class="container">
+                
+               
+                <div class="card mb-5">
+                    <div class="row">
+                        <div class="col-md-8 cart">
+                            
+                            <div class="title ">
+                                <div class="row ">
+                                    <div class="col">
+                                        <h4><b>Shopping Cart</b></h4>
+                                    </div>
+                                    <div class="col align-self-center text-end text-muted">3 items</div>
+                                </div>
+                                
+                            </div>
+                            
+                            
+                            <table id="example" class="row-border m-0 p-0 hover" style="width:100%; ">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width:60px;"></th>
+                                        <th style="min-width:100px;"></th>
+                                        <th style="min-width:60px;"></th>
+                                         
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        
+<!--                                        <th style="min-width:60px;">number</th>
+                                        <th style="min-width:60px;">per price</th>-->
+                                    </tr>
+                                </thead>
+                            </table>
+                            
+                            
+                            
+                            <div class="card-footer border-0 p-0 bg-transparent" >
+                                <div class="back-to-shop">
+                                    <a href="shop.html">&leftarrow; 
+                                    <span class="text-muted">
+                                        Back to shop
+                                    </span>
+
+                                    </a>
+                                </div>
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        <div class="col-md-4 summary">
+                            <div>
+                                <h5><b>Summary</b></h5>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col" style="padding-left:0;">
+                                    ITEMS <label id="totalItems"></label>
+                                </div>
+                                <div  class="col text-end">
+                                    &pound; <label id="priceamt"></label>
+                                </div>
+                            </div>
+                            <form>
+                                <p>SHIPPING</p> 
+                                <select class="form-select">
+                                    <option class="text-muted">Standard-Delivery- &pound;5.00</option>
+                                </select>
+                                <p>GIVE CODE</p> 
+                                <input type="text" class="form-control" id="code" placeholder="Enter your code">
+                               
+                            </form>
+                            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                                <div class="col">TOTAL PRICE</div>
+                                <div class="col text-end">&pound; 137.00</div>
+                            </div> 
+                            <!--<button class="btn">CHECKOUT</button>-->
+                            <div class="d-grid gap-2 mt-4">
+                                <a class="btn mt-auto checkout" href="basket-checkout.html"> <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
+                                    Proceed to checkout
+                                </a>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                
+               
+                
+            </div>
+        </section>
+        
+
+    </main>
+   
+    <div id="footerdiv"></div>
+
+    
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+ 
+    
+
+</body>
+
+</html>
+
+<!--    data-aos="fade-up" -->
+
+<!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
+
+<!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
+
+<!-- 
+
+
+ <br><br>
+                <div class="row justify-content-between">  
+                    
+                    <div class="col-md-3">
+                        
+                        <a class="btn add_to_cart mt-auto" href="shop.html"> 
+                            Continue shopping
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-3 text-end">
+                        
+                        <a class="btn add_to_cart mt-auto" href="basket-checkout.html"> 
+                            Proceed to checkout
+                        </a>
+                    </div>
+                    
+                </div>
+
+<div class=" d-flex justify-content-between">
+                    <h5>Your items</h5>
+                    
+                    <span>Price</span>
+                </div>
+                
+                <hr>
+                <div class="row d-flex justify-content-between" data-aos="fade-up">
+                    
+                    <div class="col-md-11">
+                        
+                        <div class="row">
+                            <div class="col-md-2 my-auto">
+                                <img src="assets/img/website-images/safehousehub.png" class="img-fluid" alt="">
+                            </div>
+                            <div class="col-md-10 pt-4 my-auto">
+                                <h5 style="color:#68A4C4;" class="mb-3">
+                                    Safehouse hub
+                                </h5>
+                                <div class="small mb-1" id=""> Product-Id:  sh-1</div>
+
+                                <select id="" class="form-select" style="max-width: 5rem">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                                <button type="button" class="btn btn-link">Delete</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-md-1" >
+                        <p class="text-end text-dark">
+                            £412.80
+                        </p>
+                    </div>
+                    
+                </div>
+
+                <hr>
+                
+                <div class="row d-flex justify-content-between" data-aos="fade-up">
+                    
+                    <div class="col-md-11">
+
+                        <div class="row" data-aos="fade-up">
+                            <div class="col-md-2 my-auto">
+                                <img src="assets/img/website-images/safehouse-compact.png" class="img-fluid" alt="">
+                            </div>
+                            <div class="col-md-10 pt-4 my-auto">
+                                <h5 style="color:#68A4C4;" class="mb-3">
+                                    Safehouse compact
+                                </h5>
+
+                                <div class="small mb-1" id=""> Product-Id:  sh-1</div>
+
+                                <select id="" class="form-select" style="max-width: 5rem">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                                <button type="button" class="btn btn-link">Delete</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-1" >
+                        <p class="text-end text-dark">
+                            £412.80
+                        </p>
+                    </div>
+                    
+                </div>
+
+                <hr>
+                
+                <div class="row d-flex justify-content-between" data-aos="fade-up">
+                    
+                    <div class="col-md-11">
+
+                        <div class="row" data-aos="fade-up">
+                            <div class="col-md-2 my-auto">
+                                <img src="assets/img/website-images/safehouse-usb.png" class="img-fluid" alt="">
+                            </div>
+                            <div class="col-md-10 pt-4 my-auto">
+                                <h5 style="color:#68A4C4;" class="mb-3">
+                                    Safehouse USB
+                                </h5>
+
+                                <div class="small mb-1" id=""> Product-Id:  sh-1</div>
+
+                                <select id="" class="form-select" style="max-width: 5rem">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                                <button type="button" class="btn btn-link">Delete</button>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-md-1" >
+                        <p class="text-end text-dark">
+                            £45.60
+                        </p>
+                    </div>
+                    
+                </div>
+              
+                <hr>
+                
+                <div class="row text-end text-success" data-aos="fade-up">
+                    
+                    <h5 class="">
+                        Subtotal : £919.20
+                    </h5>
+                </div>
+
+-->
+
+
+<!--
+
+<div id="shopContent">
+                                <div class="row border-top border-bottom">
+                                    <div class="row main align-items-center">
+                                        <div class="col-2">
+                                            <img class="img-fluid" src="https://i.imgur.com/1GrakTl.jpg">
+                                        </div>
+                                        <div class="col">
+                                            <div class="row text-muted">Shirt</div>
+                                            <div class="row">Cotton T-shirt</div>
+                                        </div>
+                                        <div class="col"> 
+                                            <a href="#">
+                                                -
+                                            </a>
+                                            <a href="#" class="border">
+                                                1
+                                            </a>
+                                            <a href="#">
+                                                +
+                                            </a> 
+                                        </div>
+                                        <div class="col d-flex justify-content-between">
+                                            &pound; 44.00 
+                                            <span class="close text-end" onclick="$('#shopContent').empty();">&#10005;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="row main align-items-center">
+                                        <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/ba3tvGm.jpg"></div>
+                                        <div class="col">
+                                            <div class="row text-muted">Shirt</div>
+                                            <div class="row">Cotton T-shirt</div>
+                                        </div>
+                                         <div class="col"> 
+                                            <a href="#">
+                                                -
+                                            </a>
+                                            <a href="#" class="border">
+                                                1
+                                            </a>
+                                            <a href="#">
+                                                +
+                                            </a> 
+                                        </div>
+                                        <div class="col d-flex justify-content-between">
+                                            &pound; 44.00 
+                                            <span class="close text-end">&#10005;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row border-top border-bottom">
+                                    <div class="row main align-items-center">
+                                        <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/pHQ3xT3.jpg"></div>
+                                        <div class="col">
+                                            <div class="row text-muted">Shirt</div>
+                                            <div class="row">Cotton T-shirt</div>
+                                        </div>
+                                         <div class="col"> 
+                                            <a href="#">
+                                                -
+                                            </a>
+                                            <a href="#" class="border">
+                                                1
+                                            </a>
+                                            <a href="#">
+                                                +
+                                            </a> 
+                                        </div>
+                                        <div class="col d-flex justify-content-between">
+                                            &pound; 44.00 
+                                            <span class="close text-end">&#10005;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            
+                            </div>
+
+-->

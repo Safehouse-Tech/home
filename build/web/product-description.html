@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Product Description | Safehouse Technology</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="assets/img/favicon_1.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+    <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    
+    <link href="assets/css/style.css" rel="stylesheet">
+    
+     <!-- Vendor JS Files -->
+    
+    <!--<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>-->
+    <!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
+    
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/purecounter/purecounter.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+
+    <!--<script src="assets/js/main.js"></script>-->
+    <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/footer.js"></script>
+    <!--<script src="assets/js/product-description.js"></script>-->
+    <script type="text/javascript" src="assets/js/all.js"></script>
+    
+</head>
+<script>
+    $(document).ready(function(){
+        productDescription();
+    });
+
+    
+</script>
+<body>
+
+    <div id="headerdiv"></div>
+
+    <main id="main">
+        
+        <section class="breadcrumbs">
+            <div class="container">
+
+                <div class="d-flex justify-content-between align-items-center">
+                  <!--<h2>Portfolio Details</h2>-->
+                  <ol>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li>Product Details</li>
+                  </ol>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="portfolio-details" class="portfolio-details">
+            <div class="container">
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-7">
+                        <div class="card cardindexpage portfolio-details-slider swiper-container h-100">
+                            <div class="swiper-wrapper align-items-center" id="image-slider">
+                            </div>
+                            <div class="swiper-pagination mb-2"></div>
+                        </div>
+                            
+                    </div>
+
+                    <div class="col-lg-5 ">
+                        <div class="card cardindexpage h-100">
+                            
+                        
+                            <div class="portfolio-info">
+                                <h3 class="text-black-50 h2" id="product_name"></h3>
+                                <ul>
+                                    <li><strong>Product Id: </strong><span id='product_id'></span></li>
+                                    <li><strong>Price: </strong><span id='product_price'></span></li>
+                                    <li><strong>Technology: </strong><span id='product_technology'></span></li>
+                                    <li><strong>Extra: </strong><span id='product_extra'></span></li>
+                                </ul>
+                                
+                                <div class="row ">
+                                    
+                                    <div class="col-sm-12 mb-4 ">
+                                        <select id="select_quantity" class="form-select" style="max-width: 5rem"></select>
+                                    </div>
+                                    <br>
+                                    <div class="col-sm-12">
+                                        <button class="btn add_to_cart flex-shrink-0 " type="button" onclick="addtobasket()">
+                                            <i class="bi-cart-fill me-1"></i>
+                                            Add to cart
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                            
+                            <div class="portfolio-description mx-4 text-black-50">
+                                <p>
+                                    The Safehouse home hub monitors for Power failure, 
+                                    Humidity, Temperature and has the ability to listen for Fire alarms, 
+                                    Carbon Dioxide alarms and Smoke & Heat detectors.
+                                </p>
+
+                                <p>
+                                    This is ideal to use in :
+                                </p>
+                                <ul>
+                                    <li><i class="bi bi-check"></i> .....</li>
+                                    <li><i class="bi bi-check"></i> ......</li>
+                                </ul>
+                                
+                            </div>
+                           
+                        </div>
+                    </div>
+                        
+
+                </div>
+                
+                <div class="row ">
+                    <div class="col-md-12 mt-5">
+                        
+                        <button class="btn service_readmore collapsed mb-5" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Product Description
+                        </button>
+                        <div class="accordion " id="accordionFlushExample">
+                            <div class="">
+                                <div id="flush-collapseOne" class="accordion-collapse collapse " aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body p-0 m-0">
+
+                                        <div id="product_description_div" class="text-black-50"></div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+        
+        
+        <section class="mt-0 pt-0">
+            <div class="container ">
+                <h2 class="">Related products</h2>
+                <hr>
+                <div class="row"> 
+                    
+                    <div class="col-md-3 mb-5 ">
+                        <div class="card h-100 viewoption  ">
+                            
+                            <img class="card-img-top img-fluid mainshopitems " src="assets/img/website-images/safehouse-panic-button2.jpg" alt="..." />
+                            
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h6 class="fw-bolder">Panic Buttons</h6>
+                                    £45.60 inc VAT
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <a class="btn service_readmore mt-auto" href="javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png'); ">
+                                        View product
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-5 ">
+                        <div class="card h-100 viewoption">
+                            
+                            <img class="card-img-top img-fluid mainshopitems" src="assets/img/website-images/safehouse-usb.png" alt="..." />
+                            
+                            <div class="card-body p-4 ">
+                                <div class="text-center">
+                                    <h6 class="fw-bolder">Safehouse USB</h6>
+                                    £45.60 inc VAT
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <a class="btn service_readmore mt-auto" href="shop-product-description.html">
+                                        View product
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+<!--                    <div class="col mb-5">
+                        <div class="card h-100">
+                             Product image
+                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                             Product details
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                     Product name
+                                    <h5 class="fw-bolder">Popular Item</h5>
+                                     Product reviews
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                     Product price
+                                    $40.00
+                                </div>
+                            </div>
+                             Product actions
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    
+    <div id="footerdiv"></div>
+
+    
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+   
+    
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-xl"> <!-- modal-dialog-centered -->
+          <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+              <!--<h5 class="modal-title" id="staticBackdropLabel">Sign In</h5>-->
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="staticBackdrop_body" class="modal-body mb-2">
+<!--                <p style="font-size:14px;">
+                    If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to sign up as a new customer.
+                </p>
+
+                <form class="row g-3" id="signInform">
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label fw-bold">Email</label>
+                        <input type="email" class="form-control" id="signinEmail" placeholder="enter email address" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label fw-bold">Password</label>
+                        <input type="password" class="form-control" id="signinPassword" placeholder="enter password" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-warning">Sign In</button>
+                        <button type="button" class="btn btn-link">Forgot password</button>
+                    </div>
+                </form>-->
+            </div>
+<!--            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
+                    Sign Up
+                </button>
+            </div>-->
+          </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="exampleModalToggle2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalToggleLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- modal-dialog-centered -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalToggleLabel2">Create A Safehouse Account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Hide this modal and show the first with the button below.
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button class="btn btn-primary" data-bs-target="#staticBackdrop" data-bs-toggle="modal" data-bs-dismiss="modal">
+                  Back to Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+
+<!--<section class="py-5 no-margin-top">
+            <div class="container px-4 px-lg-5 ">
+                <div class="row gx-4 gx-lg-5 align-items-center mb-4">
+                    <div class="col-sm-8">
+                        <img id="product_image" class="card-img-top mb-5 mb-md-0" src="" alt="..." />
+                        
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="small mb-1" id="product_id"></div>
+                        <h1 class="display-5 fw-bolder" id="product_name"></h1>
+                        <div class="fs-5 mb-5">
+                            <span class="text-decoration-line-through">$45.00</span>
+                            <span id="product_price" class="text-black-50"></span>
+                        </div>
+                        
+                        <p >
+                            The Safehouse home hub monitors for Power failure, 
+                            Humidity, Temperature and has the ability to listen for Fire alarms, 
+                            Carbon Dioxide alarms and Smoke & Heat detectors.
+                        </p>
+                        
+                        <p>
+                            This is ideal to use in :
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check"></i> .....</li>
+                            <li><i class="bi bi-check"></i> ......</li>
+                        </ul>
+                        
+                        <div class="">
+                            <select id="select_quantity" class="form-select" style="max-width: 5rem"></select>
+                        </div>
+                        <br>
+                        <div>
+                            <button class="btn add_to_cart flex-shrink-0" type="button" onclick="addtobasket()">
+                                <i class="bi-cart-fill me-1"></i>
+                                Add to cart
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                
+                
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 p-0 m-0">
+                        
+                        <button class="btn service_readmore collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Product Description
+                        </button>
+                        <div class="accordion" id="accordionFlushExample">
+                            <div class="">
+                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+
+                                        <div id="product_description_div" class="text-black-50"></div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>-->

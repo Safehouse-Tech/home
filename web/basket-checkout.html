@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Shopping Basket | Safehouse Technology</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="assets/img/favicon_1.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+    <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    
+    <link href="assets/css/style.css" rel="stylesheet">
+    
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/purecounter/purecounter.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+
+    <!--<script src="assets/js/main.js"></script>-->
+    <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/footer.js"></script>
+    <!--<script src="assets/js/product-description.js"></script>-->
+    <script src="assets/js/basket-checkout.js"></script>
+    
+    <script type="text/javascript" src="assets/vendor/sweetalert2.all.js"></script> 
+    
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     
+
+</head>
+
+<script type="text/javascript">
+
+    
+    
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+</script>
+
+<style>
+/*    td {
+        border: none;
+    }*/
+    
+    
+    
+    table tr td:second-child, table tr th:second-child{
+        text-align: center;
+    }
+    
+    table tr td:last-child, table tr th:last-child{
+        text-align: right;
+    }
+    
+</style>
+
+
+<body>
+
+    <div id="headerdiv"></div>
+
+    <main id="main">
+    
+        <section class="features no-margin-bottom">
+            <div class="container" data-aos="zoom-in">
+
+                <div class="section-title">
+                    <h2 style="color: #68A4C4;">Basket Checkout</h2>
+                    <p></p>
+                </div>
+                
+            </div>
+        </section>
+        
+        
+        <section class="">
+            <div class="container-fluid px-5">
+                
+                <div class="row">
+                    
+                    <div class="col-md-8">
+                        
+                        <div class="row mb-4">
+                            
+                            <div class="col-md-12">
+                                <div class="card" data-aos="fade-up">
+                                    <div class="card-body" id="askCustomerlogin">
+                                        <div>
+                                            Returning customer
+                                            <a href="#" class="card-link" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Click here to login
+                                            </a>
+                                        </div>    
+                                        
+                                        <div id="collapseOne" class="accordion-collapse collapse " >
+                                            <hr>
+                                            <p class="mt-3" style="font-size:14px;">
+                                                If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the billing details section and sign up as a new customer.
+                                            </p>
+                                            
+                                            <div class="accordion-body p-0">
+                                               <form class="row g-3" id="signInform">
+                                                    <div class="col-md-6">
+                                                        <label for="inputEmail4" class="form-label fw-bold">Email</label>
+                                                        <input type="email" class="form-control" id="signinEmail" placeholder="enter email address" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="inputPassword4" class="form-label fw-bold">Password</label>
+                                                        <input type="password" class="form-control" id="signinPassword" placeholder="enter password" required>
+                                                    </div>
+                                                   
+                                                    <div class="col-md-6">
+                                                        <button type="submit" class="btn btn-warning">Sign In</button>
+                                                        <button type="button" class="btn btn-link">Forgot password</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-4">
+                                <div class="card  " data-aos="fade-up"> <!-- h-100 basket_column --> 
+
+                                    <div class="card-header fw-bold">
+                                        Billing details
+                                    </div>
+                                    
+                                    <div class="card-body" >
+
+<!--                                        Billing details
+                                        <hr>-->
+
+                                        <form class="row g-3" id="signupForm">
+                                            <div class="col-md-12">
+                                                <label for="inputEmail4" class="form-label fw-bold">Full Name</label>
+                                                <input type="text" class="form-control" id="billingName" required>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="inputEmail4" class="form-label fw-bold">Email Address</label>
+                                                <input type="email" class="form-control" id="billingEmail" required>
+                                            </div>
+                                            
+                                            <div class="col-md-12">
+                                                <label for="inputPassword4" class="form-label fw-bold">Phone Number</label>
+                                                <a href="#" data-toggle="tooltip" data-placement="right" title="May be used to assist delivery">
+                                                    (Why?)
+                                                </a>
+                                                <input type="number" class="form-control" id="billingPhnumber" required>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="inputState" class="form-label fw-bold">Select Region</label>
+                                                <select id="billingCountry" class="form-select" required>
+                                                    <option selected>Select region..</option>
+                                                    <option>United Kingdom</option>
+                                                    <option>United States</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="inputAddress" class="form-label fw-bold">Address Line 1 (or Company Name)</label>
+                                                <input type="text" class="form-control" id="billingAddress1" placeholder="1234 Main St" required>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="inputAddress2" class="form-label fw-bold">Address line 2 (optional)</label>
+                                                <input type="text" class="form-control" id="billingAddress2" placeholder="Apartment, studio, or floor" >
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="inputAddress2" class="form-label fw-bold">Address line 3 (optional)</label>
+                                                <input type="text" class="form-control" id="billingAddress3" placeholder="....">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="inputCity" class="form-label fw-bold">Town/City</label>
+                                                <input type="text" class="form-control" id="billingCity" required>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="inputState" class="form-label fw-bold">County (if applicable)</label>
+                                                <input type="text" class="form-control" id="billingCounty">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="inputZip" class="form-label fw-bold">PostCode</label>
+                                                <input type="text" class="form-control" id="billingPostcode" required>
+                                            </div>
+                                            
+                                            <div  class="d-grid gap-2" >
+                                                <button id="signupNewaccount" type="submit" class="btn btn-warning">Sign Up</button>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                        
+                            </div>
+                        
+                            
+                            <div class="col-md-6">
+                                
+                                <div class="row">
+                                    
+                                    <div class="col-md-12 mb-4">
+                                        <div class="card" data-aos="fade-up">
+                                            
+                                            <div class="card-header ">
+                                                <div class="form-check" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                                                    <label class="form-check-label" for="gridCheck">
+                                                        Deliver to a different address?
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            
+                                            <div id="collapseThree" class="accordion-collapse collapse" >
+                                                <div class="card-body">
+                                                
+                                                    <div class="accordion-body p-0">
+                                                        
+                                                        <form class="row g-3">
+                                                            <div class="col-md-12">
+                                                                <label for="inputEmail4" class="form-label fw-bold">Full Name</label>
+                                                                <input type="email" class="form-control" id="deliveryName">
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label for="inputEmail4" class="form-label fw-bold">Email Address</label>
+                                                                <input type="email" class="form-control" id="deliveryEmail">
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <label for="inputPassword4" class="form-label fw-bold">Phone Number</label>
+                                                                <a href="#" data-toggle="tooltip" data-placement="right" title="May be used to assist delivery">
+                                                                    (Why?)
+                                                                </a>
+                                                                <input type="number" class="form-control " id="deliveryPhnumber">
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label for="inputState" class="form-label">Select Region</label>
+                                                                <select id="deliveryState" class="form-select">
+                                                                    <option selected>Select region..</option>
+                                                                    <option>United Kingdom</option>
+                                                                    <option>United States</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="inputAddress" class="form-label fw-bold">Address Line 1 (or Company Name)</label>
+                                                                <input type="text" class="form-control" id="deliveryAddress1" placeholder="1234 Main St">
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="inputAddress2" class="form-label fw-bold">Address line 2 (optional)</label>
+                                                                <input type="text" class="form-control" id="deliveryAddress2" placeholder="Apartment, studio, or floor">
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="inputAddress2" class="form-label fw-bold">Address line 3 (optional)</label>
+                                                                <input type="text" class="form-control" id="deliveryAddress3" placeholder="....">
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label for="inputCity" class="form-label fw-bold">Town/City</label>
+                                                                <input type="text" class="form-control" id="deliveryCity">
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label for="inputState" class="form-label fw-bold">County (if applicable)</label>
+                                                                <input type="text" class="form-control" id="deliveryCounty">
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label for="inputZip" class="form-label fw-bold">PostCode</label>
+                                                                <input type="text" class="form-control" id="deliveryPostcode">
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                
+                                <div class="row ">
+                                    <div class="col-md-12 mb-4">
+                                        <div class="card" data-aos="fade-up">
+                                            <div class="card-header">
+                                                 Do we need additional instructions to find this address?
+                                            </div>
+                                            
+                                            <div class="card-body">
+
+                                                <div class="mb-12">
+                                                    <textarea class="form-control" id="deliveryAdditionainfo" rows="3" placeholder="provide details such as building description, nearby landmark or any other navigation instructions..."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                                
+                                <div class="row ">
+                                    <div class="col-md-12 mb-4">
+                                        <div class="card" data-aos="fade-up">
+                                            <div class="card-header">
+                                                Kindly provide us installation address
+                                            </div>
+                                            
+                                            <div class="card-body">
+
+                                                <p class='text-black-50'>
+                                                    We ask installation address to prepare your respective package to get accurate reading against Geo-location.
+                                                </p>
+                                                <div class="mb-12">
+                                                    <div class="d-grid gap-2">
+                                                        <a class="btn  mt-auto btn-warning" href="https://www.csiccservice.co.uk/Safehouse-Client-Form/">
+                                                            Provide Installation Address here
+                                                        </a>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                       
+                        
+                    </div>
+                    
+                    <div class="col-md-4">
+                        
+                        <div class="card" data-aos="fade-up"> <!-- h-100 viewoption basket_column -->
+                            
+                            <div class="card-header h5">
+                                Order Summary
+                            </div>
+                            
+                            
+                            <div class="card-body">
+                                   
+                                <div class="table-responsive ">
+                                    <table class="table table-hover ">
+                                        <thead>
+                                            <tr>
+                                              <th scope="col">Product</th>
+                                              <th scope="col">Quantity</th>
+                                              <th scope="col">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Safehouse compact</td>
+                                                <td style="text-align: center;">1</td>
+                                                <td>£460.80 </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Safehouse Hub</td>
+                                                <td style="text-align: center;">1</td>
+                                                <td class="text-right">£412.80 </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Safehouse USB</td>
+                                                <td style="text-align: center;">1</td>
+                                                <td class="text-xs-right">£45.60 </td>
+                                            </tr>
+<!--                                            <tr>
+                                                <td>Subtotal</td>
+                                                <td style="text-align: center;">3</td>
+                                                <td>£919.20 (incl. VAT)</td>
+                                            </tr>-->
+                                            
+                                             <tr>
+                                                <td>VAT</td>
+                                                <td style="text-align: center;"></td>
+                                                <td>£100</td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                        
+                                        <tfoot class="text-success h5 mt-4">
+                                            <th>Order Total</th>
+                                            <th style="text-align: center;">3</th>
+                                            <th>£919.20 (incl. VAT)</th>
+                                        </tfoot>
+                                    </table>
+                                </div> 
+                                                                
+                                
+                            </div>
+                            
+                            <div class="card-footer bg-transparent border-0">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-warning" type="button" onclick="buyNow()">Buy now</button> <!-- form="signupForm" -->
+                                </div>
+                                <div class="small mb-1 text-black-50" id="">
+                                    By placing your order you agree to Safehouse Technology conditions of use & sale.
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                            
+                    </div>
+                    
+                </div>
+                
+               
+                
+                
+            
+                
+               
+             </div>
+        </section>    
+
+    </main>
+    
+    <br><br>
+    
+    <div id="footerdiv" class=""></div>
+
+    
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    
+    
+
+</body>
+
+</html>
