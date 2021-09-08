@@ -4,18 +4,90 @@
  * and open the template in the editor.
  */
 
+/* global  AOS, fetch*/
+
 var sessionDetails= new Object();
 
-var products_values = new Object();
-var product_values;
-
 var sensorDescription = new Object();
-var loginDetails = new Object();
+var personDetails = new Object();
 
 $(document).ready(function(){
     
+    $("#headerdiv").load("header.html");
+    
+    $("#calltoaction").load("call-to-action.html");
+    
+    $("#footerdiv").load("footer.html");
+    
+  //  AOS.init();  
+  
+    AOS.init({
+        duration: 1200
+    });
+    
 });
 
+
+function logOut ()
+{
+    window.localStorage.clear(); //clear all localstorage
+//    window.localStorage.removeItem("my_item_key"); //remove one item
+
+    window.location.href = 'index.html';
+}
+
+function firstLoad ()
+{
+    var firstTime = localStorage.getItem("first_time");
+    if(!firstTime) 
+    {
+    // first time loaded!
+        localStorage.setItem("first_time","1");
+    }
+}
+
+
+async function customerLogin () 
+{
+    await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111')
+    .then(function(response) 
+    {
+        if (response.status !== 200 && response.ok!==true) 
+        {
+            console.log('Looks like there was a problem. Status Code: ' +   response.status);
+            return;
+        }
+
+      // Examine the text in the response
+        response.json().then(function(data) 
+        {
+            console.log(data);
+            if (data.status !== '200' ) 
+            {
+                console.log('Looks like there was a problem. Status Code: ' +   response.status);
+                return;
+            }
+
+            console.log(data.extra.personDetails.person_name);
+
+            sessionDetails.personDetails = data.extra.personDetails;
+            sessionDetails.previousOrders = data.extra.previousOrders;
+
+            //console.log("sessionDetails", sessionDetails);
+
+            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails)); 
+
+
+            //$("#loginName").text(data.extra.personDetails.person_name);
+
+            history.back();
+        });
+    })
+    .catch(function(err) {
+        console.log('Fetch Error :-S', err);
+    });
+    
+}
 
 
 function shopProduct(product_id, product_name, price, image_path, description_path, technology, extra)
@@ -33,12 +105,20 @@ function shopProduct(product_id, product_name, price, image_path, description_pa
     sensorDescription.description_path = description_path;
     sensorDescription.technology = technology;
     sensorDescription.extra = extra;
- 
-
-    sessionDetails.sensorDescription = sensorDescription;               //console.log('sessionDetails', JSON.stringify(sessionDetails));
     
-
-    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails)); 
+    if(!localStorage.hasOwnProperty('sessionDetails'))
+    {
+        sessionDetails.sensorDescription = sensorDescription;     
+        localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails)); 
+    }
+   
+    else 
+   
+    {
+        sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+        sessionDetails.sensorDescription = sensorDescription;            //   console.log('sessionDetails', JSON.stringify(sessionDetails));
+        localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails)); 
+    }
    
 
     window.location.href = 'product-description.html';
@@ -50,6 +130,8 @@ function shopProduct(product_id, product_name, price, image_path, description_pa
 function productDescription()
 {
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+    
+    console.log("sessionDetails12", sessionDetails);
     
     sensorDescription = sessionDetails.sensorDescription;
     
@@ -103,19 +185,66 @@ function addtobasket()
     
 }
 
-function customerLogin()
-{
+
+// start saving local staorage
+
+ 
+
+/*
+    const userAction = async () => 
+    {
+//        const response = await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111');
+//        const myJson = await response.json(); //extract JSON from the http response
+//    // do something with myJson
+//        console.log("myJson",myJson);
+         const response = await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=11')
+            .then(response => {
+                console.log('success!');
+                console.log(response.status, response.ok); // 404 false 
+            })
+            .catch(error => {
+              console.log('API failure' + error);
+            });
+       
     
-    loginDetails.person_name = "Gagan";
+    };
     
-    $("#loginName").text("Gagan");
+   var request = new XMLHttpRequest();
+
+    request.open(
+            'GET', 
+            '/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111', 
+            true
+    );
     
-    
-    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
-    sessionDetails.loginDetails = loginDetails;
-    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails)); 
-    
-    
-    console.log('sessionDetails', JSON.stringify(JSON.parse(localStorage.getItem('sessionDetails'))));
-    
- };
+    request.send();
+
+    request.onload = function () {
+      
+        console.log("response: ", request.status);
+      
+        console.log("response: ", request.response);
+        
+        var responseObj = JSON.parse(request.response);
+        
+        console.log(responseObj.extra.personDetails.person_name);
+        
+        console.log(responseObj);
+        
+        console.log("1 end");
+    };
+     * 
+     * 
+        const userAction = async () => {
+        const response = await fetch('http://example.com/movies.json', {
+          method: 'POST',
+          body: myBody, // string or object
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const myJson = await response.json(); //extract JSON from the http response
+        // do something with myJson
+        }
+
+     */

@@ -21,7 +21,6 @@ function product(product_id, product_name, price, image_path, description_path, 
 {
     console.log("product_id: "+ product_id);
     
-    
     console.log("image_path: "+ image_path);
     
     var products_values = {"product_id": product_id, "product_name": product_name, "price": price, 'image_path': image_path,
