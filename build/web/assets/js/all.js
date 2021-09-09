@@ -79,8 +79,10 @@ async function customerLogin ()
 
 
             //$("#loginName").text(data.extra.personDetails.person_name);
-
-            history.back();
+            var lastURL = document.referrer;
+            
+            lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : history.back() ;
+           
         });
     })
     .catch(function(err) {
@@ -170,18 +172,42 @@ function productDescription()
 
 function addtobasket()
 {
-     $("#staticBackdrop").modal('show'); 
+    if(!localStorage.hasOwnProperty('sessionDetails'))
+    {
+//        window.location.href = 'login.html';
+
+        $("#staticBackdrop").modal('show'); 
+        $("#staticBackdrop_body").load("login.html?nav=shop"); 
+    } 
+    else 
+    {
+        sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+       
+        if(!sessionDetails.hasOwnProperty('personDetails'))
+        {
+            $("#staticBackdrop").modal('show'); 
+            $("#staticBackdrop_body").load("login.html?nav=shop"); 
+//            window.location.href = 'login.html';
+        }
+        else {
+            console.log("adding product to cart session");
+//            window.location.replace('basket.html');
+            
+//            $(".pos-demo").notify(
+//                "I'm to the right of this box", 
+//                { position:"right" }
+//            );
+                
+            $(".pos-demo").notify(
+            "Item added to basket ",
+            { 
+                className:"success",
+                position:"right"
+            });
+        }
+    }
      
-     $("#staticBackdrop_body").load("login.html?nav=shop"); 
-     
-//    if(login===0)
-//    {
-//       $("#staticBackdrop").modal('show'); 
-//       login=1;
-//    }
-//    else{
-//       // window.location.replace('basket.html');
-//    }
+ 
     
 }
 
