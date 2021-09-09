@@ -5,8 +5,10 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <link href="assets/img/favicon_1.png" rel="icon">
+        <!--<link href="assets/img/favicon_1.png" rel="icon">-->
 
+        <script src="assets/js/main.js"></script>
+        
     </head>
     
     <script>
@@ -16,9 +18,9 @@
             
             var currentURL = window.location.href;          // console.log("currentURL: "+ currentURL);
             
-            var pagehref = currentURL.split("home/");       // console.log("pagehref[1] "+ pagehref[1]);
+            var pagehref = currentURL.split("home/");      
             
-            if(pagehref[1].includes("index") || pagehref[1]==="" ) //|| pagehref[1].includes("starter")
+            if(pagehref[1].includes("index") || pagehref[1]==="" ) 
             {
                 $("#header").addClass('header-transparent');
             }
@@ -49,7 +51,7 @@
                 else {
                     $("#accountDetails").show();
                     $("#asklogin").hide(); 
-                   $("#loginName").text(sessionDetails.personDetails.person_name); 
+                    $("#loginName").text(sessionDetails.personDetails.person_name); 
                 }
                  
             }
@@ -89,7 +91,6 @@
                         <li class="dropdown"><a href="products.html"><span>Products</span> <i class="bi bi-chevron-down"></i></a>
                             <ul>
                                 <li><a href="sensors.html">Sensors</a></li>
-                                <!--<li><a href="mobileApp.html">Mobile App</a></li>-->
                                 <li><a href="viper.html">Viper - SaaS</a></li>
                                 <li><a href="upcoming.html">Upcoming products</a></li>
                             </ul>

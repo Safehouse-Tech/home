@@ -27,6 +27,9 @@
         <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
         <link href="assets/css/style.css" rel="stylesheet">
+         
+        <!--<link rel="stylesheet" href="assets/css/bubblystyle.css" id="theme-stylesheet">-->
+   
 
         <script src="assets/vendor/aos/aos.js"></script>
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -57,9 +60,29 @@
         <script type="text/javascript">
             $(document).ready( function() 
             {    
-                var currentURL = window.location.href;           //console.log("currentURL: "+ currentURL);
+                 $(window).resize(function() 
+                {
+                    // This will fire each time the window is resized:
+                    if($(window).width() >= 768) // if larger or equal
+                    {   
+                        $(".card").css("margin-top","8%");
+                        $("#login_imagediv").show();
+                        
+//                        $("#memberloginheader").removeClass("py-4");
+                        
+                    } 
+                    else // if smaller
+                    {   
+                        $(".card").css("margin-top","20%");
+                        $("#login_imagediv").hide();
+//                        $("#memberloginheader").addClass("py-4");
+                    }
+                }).resize(); // This will simulate a resize to trigger the initial run.
+    
+    
+//                var currentURL = window.location.href;           //console.log("currentURL: "+ currentURL);
 
-                currentURL.includes("login") ? $("#pagecontainer").addClass('vh-100') :  $("#pagecontainer").removeClass('vh-100') ;
+//                currentURL.includes("login") ? $("#pagecontainer").addClass('vh-100') :  $("#pagecontainer").removeClass('vh-100') ;
                 
                 
                 $("#loginForm").submit(function()
@@ -67,6 +90,7 @@
                     customerLogin();
                     return false;
                 });
+                
             });
 
         </script>
@@ -75,25 +99,116 @@
     
     </head>
     
-    <style></style>
+    <style>
+        .page-holder {
+            display: flex;
+            overflow-x: hidden;
+            width: 100%;
+            min-height: calc(100vh - 72px);
+            padding-top: 3rem;
+            flex-wrap: wrap
+        }
+
+        .card {
+                border: none;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)
+        }
+
+        .card-header {
+                position: relative;
+                padding: 2rem 2rem;
+                border-bottom: none;
+                background-color: white;
+                box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+                z-index: 2
+        }
+
+        .card-header:first-child {
+                border-radius: calc(1rem - 1px) calc(1rem - 1px) 0 0
+        }
+
+        .card-header-tabs {
+                margin-bottom: -2rem
+        }
+
+        .card-header-tabs .nav-link {
+                margin-bottom: 0;
+                border-bottom: none
+        }
+
+        .card-header-transparent {
+                border-bottom: none;
+                background-color: rgba(0, 0, 0, 0.3)
+        }
+        
+        .btn-primary {
+            color: #fff;
+            background-color: #4650dd;
+            border-color: #4650dd
+        }
+
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #3c44bc;
+            border-color: #3840b1
+        }
+
+        .btn-check:focus+.btn-primary,
+        .btn-primary:focus {
+            color: #fff;
+            background-color: #3c44bc;
+            border-color: #3840b1;
+            box-shadow: 0 0 0 .25rem rgba(98, 106, 226, 0.5)
+        }
+
+        .btn-check:checked+.btn-primary,
+        .btn-check:active+.btn-primary,
+        .btn-primary:active,
+        .btn-primary.active,
+        .show>.btn-primary.dropdown-toggle {
+            color: #fff;
+            background-color: #3840b1;
+            border-color: #353ca6
+        }
+
+        .btn-check:checked+.btn-primary:focus,
+        .btn-check:active+.btn-primary:focus,
+        .btn-primary:active:focus,
+        .btn-primary.active:focus,
+        .show>.btn-primary.dropdown-toggle:focus {
+            box-shadow: 0 0 0 .25rem rgba(98, 106, 226, 0.5)
+        }
+
+        .btn-primary:disabled,
+        .btn-primary.disabled {
+            color: #fff;
+            background-color: #4650dd;
+            border-color: #4650dd
+        }
+        
+        .text-primary {
+            color: #4650dd !important
+        }
+    </style>
     
     
     <body>
         
         <div id="headerdiv"></div>
         
-        <div id="pagecontainer" class="page-holder align-items-center py-4 bg-gray-100  d-flex align-content-center flex-wrap">  <!-- vh-100 -->
-            <div class="container">
+        
+        <div id="" class="page-holder align-items-center py-4 bg-gray-100">  <!-- vh-100 -->
+            <div class="container ">
                 <div class="row align-items-center">
                     <div class="col-lg-6 px-lg-4">
                         <div class="card cardindexpage" >
                             <div class="card-header px-lg-5 bg-transparent">
-                                <div class=" text-primary py-4">SAFEHOUSE MEMBER'S LOGIN</div>
+                                <div id="" class="text-primary">SAFEHOUSE MEMBER'S LOGIN</div>
                             </div>
                             <div class="card-body p-lg-5">
                                 <h3 class="mb-4 fw-bold ">Hi, welcome back! 👋👋</h3>
                                 <p class="text-muted text-sm mb-5 pb-2" style="font-size:13px;">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                                    If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to register as a new customer.
                                 </p>
                                 
                                 <form id="loginForm">
@@ -117,7 +232,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-xl-5 ms-xl-auto px-lg-4 text-center text-primary">
+                    <div id="login_imagediv" class="col-lg-6 col-xl-5 ms-xl-auto px-lg-4 text-center text-primary">
                         <img class="img-fluid mb-4" width="400" src="assets/img/website-images/safehouse-login.png" alt="" style="transform: rotate(10deg)"> <!--  -->
                         <h1 class="mb-4 fw-bold" style="color: #3F51B5;">Start saving <br class="d-none d-lg-inline">your time & money</h1>
                         <p class=" text-muted text-14">Smarter monitoring for the next generation of home & care environments.</p>
