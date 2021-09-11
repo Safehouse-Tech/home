@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+
+        <title>Customer Profile | Safehouse Technology</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <link href="assets/img/favicon_1.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+        <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+        <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+        <link href="assets/css/style.css" rel="stylesheet">
+
+        <!-- Vendor JS Files -->
+
+        <!--<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>-->
+        <!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
+
+        <script src="assets/vendor/aos/aos.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+        <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
+        <script src="assets/vendor/purecounter/purecounter.js"></script>
+        <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+        <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+        <!--<script src="assets/js/main.js"></script>-->
+        <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/js/all.js"></script>
+
+    </head>
+
+    <script>
+        $(document).ready(function()
+        {
+            load_allAdress();
+            
+//            $(".remove").click(function () {
+//                $(this).parents(".card").hide();
+//            });
+           
+        });
+    </script>
+
+    <style>
+        #add_installationAddress{
+            /*box-shadow: 0 6px 20px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);*/
+        }
+
+
+        #add_installationAddress:active{
+            transform: translateY(4px);
+            cursor: pointer;
+        }
+        
+        
+    </style>    
+
+    <body>
+        <div id="headerdiv"></div>
+
+        <main id="main">
+
+            <section  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+                <div class="container">
+                    <button id="add_installationAddress" type="button" class="btn btn-primary btn-sm" onclick="add_newAddress();">
+                        <i class="fas fa-plus"></i> Installation Address
+                    </button>
+                    
+                    <div id="existingAddress" class="my-5"></div>
+                    
+                </div>
+            </section>
+            
+            
+            
+            
+        </main>
+
+        <!--<div id="footerdiv"></div>-->
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+        
+        <div class="modal fade" id="newAddress" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-xl"> <!-- modal-dialog-centered -->
+              <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                  <h5 class="modal-title" id="staticBackdropLabel">New Installation Address</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                  
+                <div id="staticBackdrop_body" class="modal-body mb-2">
+                </div>
+
+              </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

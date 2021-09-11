@@ -1,0 +1,32 @@
+[
+    {
+        "name": "John Griffiths",
+        "property_type": "house",
+        "property_address": "36, Mark Street, Cardiff, CF11"
+    },
+    {
+        "name": "Lionel Phillips",
+        "property_type": "house",
+        "property_address": "Granary Farm, NP11"
+    },
+    {
+        "name": "Kieran Bradys",
+        "property_type": "house",
+        "property_address": "Pontcanna, CF11"
+    },
+    {
+        "name": "Gagan Singh",
+        "property_type": "house",
+        "property_address": "Richmond Road, CF24"
+    },
+    {
+        "name": "Brian Doherty",
+        "property_type": "house",
+        "property_address": "Scotland"
+    },
+    {
+        "name": "Tracey",
+        "property_type": "building",
+        "property_address": "Castle Court, 6 Cathedral Road, Cardiff, CF11 9LJ"
+    }
+]

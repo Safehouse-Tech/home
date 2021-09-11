@@ -6,29 +6,29 @@
 
 /* global  AOS, fetch*/
 
-var sessionDetails= new Object();
+var sessionDetails = new Object();
 
 var sensorDescription = new Object();
 var personDetails = new Object();
 
-$(document).ready(function(){
-    
+$(document).ready(function () {
+
     $("#headerdiv").load("header.html");
-    
+
     $("#calltoaction").load("call-to-action.html");
-    
+
     $("#footerdiv").load("footer.html");
-    
-  //  AOS.init();  
-  
+
+    //  AOS.init();  
+
     AOS.init({
         duration: 1200
     });
-    
+
 });
 
 
-function logOut ()
+function logOut()
 {
     window.localStorage.clear(); //clear all localstorage
 //    window.localStorage.removeItem("my_item_key"); //remove one item
@@ -36,70 +36,60 @@ function logOut ()
     window.location.href = 'index.html';
 }
 
-function firstLoad ()
+function firstLoad()
 {
     var firstTime = localStorage.getItem("first_time");
-    if(!firstTime) 
+    if (!firstTime)
     {
-    // first time loaded!
-        localStorage.setItem("first_time","1");
+        // first time loaded!
+        localStorage.setItem("first_time", "1");
     }
 }
 
 
-async function customerLogin () 
+async function customerLogin()
 {
     await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111')
-    .then(function(response) 
-    {
-        if (response.status !== 200 && response.ok!==true) 
-        {
-            console.log('Looks like there was a problem. Status Code: ' +   response.status);
-            return;
-        }
-
-      // Examine the text in the response
-        response.json().then(function(data) 
-        {
-            console.log(data);
-            if (data.status !== '200' ) 
+            .then(function (response)
             {
-                console.log('Looks like there was a problem. Status Code: ' +   response.status);
-                return;
-            }
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
 
-            console.log(data.extra.personDetails.person_name);
+                // Examine the text in the response
+                response.json().then(function (data)
+                {
+                    console.log(data);
+                    if (data.status !== '200')
+                    {
+                        console.log('Looks like there was a problem. Status Code: ' + response.status);
+                        return;
+                    }
 
-            sessionDetails.personDetails = data.extra.personDetails;
-            sessionDetails.previousOrders = data.extra.previousOrders;
+                    console.log(data.extra.personDetails.person_name);
 
-            //console.log("sessionDetails", sessionDetails);
+                    sessionDetails.personDetails = data.extra.personDetails;
+                    sessionDetails.previousOrders = data.extra.previousOrders;
 
-            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails)); 
+                    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
+                    var lastURL = document.referrer;
 
-            //$("#loginName").text(data.extra.personDetails.person_name);
-            var lastURL = document.referrer;
-            
-            lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : history.back() ;
-           
-        });
-    })
-    .catch(function(err) {
-        console.log('Fetch Error :-S', err);
-    });
-    
+                    lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : history.back();
+
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
+
 }
 
 
 function shopProduct(product_id, product_name, price, image_path, description_path, technology, extra)
 {
-
-//    products_values = {"product_id": product_id, "product_name": product_name, "price": price, 'image_path': image_path,
-//                            "description_path": description_path, "technology": technology, "extra": extra}; 
-
- //   console.log('products_values', products_values);
- 
     sensorDescription.product_id = product_id;
     sensorDescription.product_name = product_name;
     sensorDescription.price = price;
@@ -107,21 +97,19 @@ function shopProduct(product_id, product_name, price, image_path, description_pa
     sensorDescription.description_path = description_path;
     sensorDescription.technology = technology;
     sensorDescription.extra = extra;
-    
-    if(!localStorage.hasOwnProperty('sessionDetails'))
+
+    if (!localStorage.hasOwnProperty('sessionDetails'))
     {
-        sessionDetails.sensorDescription = sensorDescription;     
-        localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails)); 
-    }
-   
-    else 
-   
+        sessionDetails.sensorDescription = sensorDescription;
+        localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+    } else
+
     {
         sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
         sessionDetails.sensorDescription = sensorDescription;            //   console.log('sessionDetails', JSON.stringify(sessionDetails));
-        localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails)); 
+        localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
     }
-   
+
 
     window.location.href = 'product-description.html';
 
@@ -132,145 +120,140 @@ function shopProduct(product_id, product_name, price, image_path, description_pa
 function productDescription()
 {
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
-    
+
     console.log("sessionDetails12", sessionDetails);
-    
+
     sensorDescription = sessionDetails.sensorDescription;
-    
+
     $("#product_id").text(sensorDescription.product_id);
     $("#product_name").text(sensorDescription.product_name);
     $("#product_price").text(sensorDescription.price);
-    
+
     $("#product_technology").text(sensorDescription.technology);
-    
+
     $("#product_extra").text(sensorDescription.extra);
-    
-    
-    var allimages = sensorDescription.image_path+'';
-    
+
+
+    var allimages = sensorDescription.image_path + '';
+
     var images = allimages.split(",");
-    
+
     $("#image-slider").empty();
-    
-    for (var i=0;i<images.length;i++)
+
+    for (var i = 0; i < images.length; i++)
     {
         $("#image-slider").append('<div class="swiper-slide">\n\
-                                        <img class="descriptionimageheight " src="'+images[i]+'" alt="">\n\
+                                        <img class="descriptionimageheight " src="' + images[i] + '" alt="">\n\
                                     </div>');
     }
-    
-    
-    for (i=1;i<=100;i++)
+
+
+    for (i = 1; i <= 100; i++)
     {
         $("#select_quantity").append($('<option></option>').val(i).html(i));
     }
-    
-    var path = "product-description/"+ sensorDescription.description_path ;
-    $("#product_description_div").load(path); 
-    
+
+    var path = "product-description/" + sensorDescription.description_path;
+    $("#product_description_div").load(path);
+
 }
 
 function addtobasket()
 {
-    if(!localStorage.hasOwnProperty('sessionDetails'))
+    if (!localStorage.hasOwnProperty('sessionDetails'))
     {
-//        window.location.href = 'login.html';
-
-        $("#staticBackdrop").modal('show'); 
-        $("#staticBackdrop_body").load("login.html?nav=shop"); 
-    } 
-    else 
+        $("#staticBackdrop").modal('show');
+        $("#staticBackdrop_body").load("login.html?nav=shop");
+    } else
     {
         sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
-       
-        if(!sessionDetails.hasOwnProperty('personDetails'))
+
+        if (!sessionDetails.hasOwnProperty('personDetails'))
         {
-            $("#staticBackdrop").modal('show'); 
-            $("#staticBackdrop_body").load("login.html?nav=shop"); 
-//            window.location.href = 'login.html';
-        }
-        else {
+            $("#staticBackdrop").modal('show');
+            $("#staticBackdrop_body").load("login.html?nav=shop");
+        } else {
             console.log("adding product to cart session");
-//            window.location.replace('basket.html');
-            
-//            $(".pos-demo").notify(
-//                "I'm to the right of this box", 
-//                { position:"right" }
-//            );
-                
+
             $(".pos-demo").notify(
-            "Item added to basket ",
-            { 
-                className:"success",
-                position:"right"
-            });
+                    "Item added to basket ",
+                    {
+                        className: "success",
+                        position: "right"
+                    });
         }
     }
-     
- 
-    
+
+}
+
+function load_allAdress()
+{
+    $.getJSON("assets/js/name_address.json", function (json) {
+       // console.log(json); // this will show the info it in firebug console
+
+        for (var i = 0; i < json.length; i++)
+        {
+            var name = json[i].name;
+            var address = json[i].property_address;
+
+            var icon = (json[i].property_type === "building") ? "fa-building" : "fa-home";
+
+            $("#existingAddress").append(
+                '<div class="card cardindexpage my-4">\n\
+                    <div class="row g-0">\n\
+                        <div class="col-md-1 d-flex align-items-center justify-content-center">\n\
+                            <i class="fas ' + icon + '  fa-4x text-warning"></i>\n\
+                        </div> \n\
+                        <div class="col-md-10 "> \n\
+                            <div class="card-body ">\n\
+                                <h5 class="card-title">'+name+'</h5>\n\
+                                <h6 class="text-muted">'+address+'</h6>\n\
+                            </div>\n\
+                        </div>\n\
+                        <div class="col-md-1"> \n\
+                            <button type="button" class="remove btn btn-link btn-sm text-danger float-end">Remove</button>\n\
+                        </div>\n\
+                    </div>\n\
+                </div>');
+}
+        
+        $(".remove").click(function () {
+            $(this).parents(".card").hide();
+        });
+
+    });
+    // var address = require('assets/js/name_address.json');
+
+    //console.log("address", address);
+
 }
 
 
-// start saving local staorage
 
- 
-
-/*
-    const userAction = async () => 
-    {
-//        const response = await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111');
-//        const myJson = await response.json(); //extract JSON from the http response
-//    // do something with myJson
-//        console.log("myJson",myJson);
-         const response = await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=11')
-            .then(response => {
-                console.log('success!');
-                console.log(response.status, response.ok); // 404 false 
-            })
-            .catch(error => {
-              console.log('API failure' + error);
-            });
-       
+function add_newAddress()
+{
+    $("#newAddress").modal('show');
     
-    };
+    $("#existingAddress").prepend(
+        '<div class="card cardindexpage my-4">\n\
+            <div class="row g-0">\n\
+                <div class="col-md-1 d-flex align-items-center justify-content-center">\n\
+                    <i class="fas fa-house  fa-4x text-warning"></i>\n\
+                </div> \n\
+                <div class="col-md-10 "> \n\
+                    <div class="card-body ">\n\
+                        <h5 class="card-title">New Name</h5>\n\
+                        <h6 class="text-muted">New Address</h6>\n\
+                    </div>\n\
+                </div>\n\
+                <div class="col-md-1"> \n\
+                    <button type="button" class="remove btn btn-link btn-sm text-danger float-end">Remove</button>\n\
+                </div>\n\
+            </div>\n\
+        </div>');
     
-   var request = new XMLHttpRequest();
+    $(".remove").click(function () {
+        $(this).parents(".card").hide();
+    });
 
-    request.open(
-            'GET', 
-            '/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111', 
-            true
-    );
-    
-    request.send();
-
-    request.onload = function () {
-      
-        console.log("response: ", request.status);
-      
-        console.log("response: ", request.response);
-        
-        var responseObj = JSON.parse(request.response);
-        
-        console.log(responseObj.extra.personDetails.person_name);
-        
-        console.log(responseObj);
-        
-        console.log("1 end");
-    };
-     * 
-     * 
-        const userAction = async () => {
-        const response = await fetch('http://example.com/movies.json', {
-          method: 'POST',
-          body: myBody, // string or object
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        const myJson = await response.json(); //extract JSON from the http response
-        // do something with myJson
-        }
-
-     */
+}
