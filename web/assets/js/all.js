@@ -189,7 +189,7 @@ function addtobasket()
 function load_allAdress()
 {
     $.getJSON("assets/js/name_address.json", function (json) {
-       // console.log(json); // this will show the info it in firebug console
+        // console.log(json); // this will show the info it in firebug console
 
         for (var i = 0; i < json.length; i++)
         {
@@ -206,8 +206,8 @@ function load_allAdress()
                         </div> \n\
                         <div class="col-md-10 "> \n\
                             <div class="card-body ">\n\
-                                <h5 class="card-title">'+name+'</h5>\n\
-                                <h6 class="text-muted">'+address+'</h6>\n\
+                                <h5 class="card-title">' + name + '</h5>\n\
+                                <h6 class="text-muted">' + address + '</h6>\n\
                             </div>\n\
                         </div>\n\
                         <div class="col-md-1"> \n\
@@ -215,27 +215,40 @@ function load_allAdress()
                         </div>\n\
                     </div>\n\
                 </div>');
-}
-        
+        }
+
         $(".remove").click(function () {
-            $(this).parents(".card").hide();
+            $(this).parents(".card").remove();
+
+            $('#existingAddress').is(':empty') ? 
+                $('#existingAddress').append(
+                        '<h4 class="text-muted text-center">No Installation Address</h4>'
+                        ) 
+                : "";
+
+
         });
 
     });
-    // var address = require('assets/js/name_address.json');
 
-    //console.log("address", address);
+    
 
 }
-
 
 
 function add_newAddress()
 {
-    $("#newAddress").modal('show');
+  //  $("#newAddress").modal('show');
+
+
+    if($("#existingAddress").children('h4').length > 0){
+        
+         $("#existingAddress").empty();
+    }
+
     
     $("#existingAddress").prepend(
-        '<div class="card cardindexpage my-4">\n\
+            '<div class="card cardindexpage my-4">\n\
             <div class="row g-0">\n\
                 <div class="col-md-1 d-flex align-items-center justify-content-center">\n\
                     <i class="fas fa-house  fa-4x text-warning"></i>\n\
@@ -251,9 +264,15 @@ function add_newAddress()
                 </div>\n\
             </div>\n\
         </div>');
-    
+
     $(".remove").click(function () {
-        $(this).parents(".card").hide();
+        $(this).parents(".card").remove();
+        
+        $('#existingAddress').is(':empty') ? 
+            $('#existingAddress').append(
+                    '<h4 class="text-muted text-center">No Installation Address</h4>'
+                    ) 
+            : "";
     });
 
 }
