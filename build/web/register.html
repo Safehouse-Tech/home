@@ -6,7 +6,7 @@
         <title>Registration | Safehouse Technology</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-       
+
         <link href="assets/img/favicon_1.png" rel="icon">
         <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
@@ -17,7 +17,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    
+
         <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
         <link href="assets/vendor/aos/aos.css" rel="stylesheet">
         <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -28,6 +28,7 @@
 
         <link href="assets/css/style.css" rel="stylesheet">
 
+        <link rel="stylesheet" href="assets/css/bubblystyle.css" id="theme-stylesheet">
 
         <script src="assets/vendor/aos/aos.js"></script>
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -42,139 +43,165 @@
         <!--<script src="assets/js/main.js"></script>-->
         <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/all.js"></script>
-    
+
     </head>
-    
-    <style>
-        
-    </style>
-    
+
     <script type="text/javascript">
-      
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-        
+
+        $(document).ready(function ()
+        {
+
+            $(window).resize(function ()
+            {
+                if ($(window).width() >= 768) // if larger or equal
+                {
+//                    $(".card").css("margin-top", "15%");
+//                    $(".card-body").css("max-height", "700px");
+                    $("#register_imagediv").show();
+                } else // if smaller
+                {
+//                    $(".card").css("margin-top", "20%");
+                    $("#register_imagediv").hide();
+                }
+            }).resize();
+
+
+
+        });
+
+
     </script>
-    
+
+    <style>
+
+    </style>
+
     <body>
-        <div class="page-holder align-items-center py-4 bg-gray-100 vh-100 d-flex align-content-center flex-wrap">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 px-lg-4">
-                        <div class="card cardindexpage" >
-                            <div class="card-header px-lg-5 bg-transparent">
-                                <div class=" text-primary py-4">NEW REGISTRATION</div>
-                            </div>
-                            <div class="card-body p-lg-5" style="max-height: 900px; overflow-y: auto;">
-                                <h3 class="mb-4 fw-bold ">Get started with Safehouse</h3>
-                                <p class="text-muted text-sm mb-5 pb-2" style="font-size:13px;">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
-                                </p>
-                                
-                                <form id="signupForm" action="index.html">
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingName" type="text" placeholder="John Doe" required>
-                                        <label for="billingName">Full Name</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingEmail" type="email" placeholder="name@example.com" required>
-                                        <label for="billingEmail">Email address</label>
-                                    </div>
-                                    
-                                    <div class="input-group mb-3">
-                                        <div class="form-floating flex-grow-1">
-                                            <input class="form-control" id="billingPassword" type="password" placeholder="Password" required>
-                                            <label for="billingPassword">Password</label>
+
+        <div id="headerdiv"></div>
+
+        <main id="main">
+            <!--<div id="pagecontainer" class=" align-items-center py-4 bg-gray-100">-->
+            <div class="page-holder align-items-center py-4 bg-gray-100 ">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 px-lg-4 py-4">
+                            <div class="card cardindexpage " >
+                                <div class="card-header px-lg-5 bg-transparent">
+                                    <div class=" text-primary">GET STARTED WITH SAFEHOUSE</div>
+                                </div>
+                                <div class="card-body p-lg-5" >
+                                    <!--                                <h3 class="mb-4 fw-bold ">Get started with Safehouse</h3>
+                                                                    <p class="text-muted text-sm " style="font-size:13px;">
+                                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
+                                                                    </p>-->
+
+                                    <form id="signupForm" action="index.html">
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingName" type="text" placeholder="John Doe" required>
+                                            <label for="billingName">Full Name</label>
                                         </div>
-                                        <span class="input-group-text" style="cursor:pointer" onclick="alert()">show</span>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingPhnumber" type="number" placeholder="phone number" data-bind="value:replyNumber" required>
-                                        <label for="billingPhnumber">Phone Number</label>
-                                        <a href="#" data-toggle="tooltip" data-placement="right" title="May be used to assist delivery">
-                                            (Why?)
-                                        </a>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="billingCountry" required>
-                                          <option selected>Select region..</option>
-                                          <option value="1">United Kingdom</option>
-                                          <option value="2">United States</option>
-                                        </select>
-                                        <label for="billingCountry">Select Region</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingAddress1" type="text" placeholder="1234 Main St" required>
-                                        <label for="billingAddress1">Address Line 1 (or Company Name)</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingAddress2" type="text" placeholder="Apartment, studio, or floor" >
-                                        <label for="billingAddress2">Address line 2 (optional)</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingAddress3" type="text" placeholder="..." >
-                                        <label for="billingAddress3">Address line 3 (optional)</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingCity" type="text" placeholder="e.g London"  required>
-                                        <label for="billingCity">Town/City</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingCounty" type="text" placeholder="e.g Greater London"  >
-                                        <label for="billingCounty">County (if applicable)</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingPostcode" type="text" placeholder="e.g SW1V 3JD"  >
-                                        <label for="billingPostcode">PostCode</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingLatitude" type="text" placeholder="e.g Latitude"  >
-                                        <label for="billingLatitude">Latitude</label>
-                                    </div>
-                                    
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="billingLongitude" type="text" placeholder="e.g Longitude"  >
-                                        <label for="billingLongitude">Longitude</label>
-                                    </div>
-                                    
-                                    <div class="form-check mb-3 text-14">
-                                        <input class="form-check-input" type="checkbox" name="agree" id="agree">
-                                        <label class="form-check-label" for="agree">I agree with the <a href="register.html#">Terms & Conditions</a>.</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <!--<button class="btn btn-primary" id="regidter" type="submit" name="registerSubmit">Register</button>-->
-                                        <button class="btn btn-primary btn-sm" id="register" type="submit" name="registerSubmit">REGISTER</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="card-footer px-lg-5 py-lg-4">
-                                <div class="text-muted text-14" >Already have an account? <a href="login.html">Login</a>.</div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingEmail" type="email" placeholder="name@example.com" required>
+                                            <label for="billingEmail">Email address</label>
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <div class="form-floating flex-grow-1">
+                                                <input class="form-control" id="billingPassword" type="password" placeholder="Password" required>
+                                                <label for="billingPassword">Password</label>
+                                            </div>
+                                            <span class="input-group-text" style="cursor:pointer" onclick="alert()">show</span>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingPhnumber" type="number" placeholder="phone number" data-bind="value:replyNumber" required>
+                                            <label for="billingPhnumber">Phone Number</label>
+                                            <a href="#" data-toggle="tooltip" data-placement="right" title="May be used to assist delivery">
+                                                (Why?)
+                                            </a>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="billingCountry" required>
+                                                <option selected>Select region..</option>
+                                                <option value="1">United Kingdom</option>
+                                                <option value="2">United States</option>
+                                            </select>
+                                            <label for="billingCountry">Select Region</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingAddress1" type="text" placeholder="1234 Main St" required>
+                                            <label for="billingAddress1">Address Line 1 (or Company Name)</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingAddress2" type="text" placeholder="Apartment, studio, or floor" >
+                                            <label for="billingAddress2">Address line 2 (optional)</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingAddress3" type="text" placeholder="..." >
+                                            <label for="billingAddress3">Address line 3 (optional)</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingCity" type="text" placeholder="e.g London"  required>
+                                            <label for="billingCity">Town/City</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingCounty" type="text" placeholder="e.g Greater London"  >
+                                            <label for="billingCounty">County (if applicable)</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingPostcode" type="text" placeholder="e.g SW1V 3JD"  >
+                                            <label for="billingPostcode">PostCode</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingLatitude" type="text" placeholder="e.g Latitude"  >
+                                            <label for="billingLatitude">Latitude</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="billingLongitude" type="text" placeholder="e.g Longitude"  >
+                                            <label for="billingLongitude">Longitude</label>
+                                        </div>
+
+                                        <div class="form-check mb-3 text-14">
+                                            <input class="form-check-input" type="checkbox" name="agree" id="agree">
+                                            <label class="form-check-label" for="agree">I agree with the <a href="register.html#">Terms & Conditions</a>.</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <!--<button class="btn btn-primary" id="regidter" type="submit" name="registerSubmit">Register</button>-->
+                                            <button class="btn btn-primary btn-sm" id="register" type="submit" name="registerSubmit">REGISTER</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer px-lg-5 py-lg-4">
+                                    <div class="text-muted text-14" >Already have an account? <a class="text-primary" href="login.html">Login</a>.</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6 col-xl-5 ms-xl-auto px-lg-4 text-center text-primary">
-                        <img class="img-fluid mb-4" width="400" src="assets/img/website-images/safehouse-registration.png" alt="" style="transform: rotate(10deg)"> <!--  -->
-                        <h1 class="mb-4 fw-bold" style="color: #3F51B5;">Start saving <br class="d-none d-lg-inline">your time & money</h1>
-                        <p class=" text-muted text-14">Wireless monitoring systems for improving the health of homes, quality of social care and maintenance of buildings.</p>
+                        <div id="register_imagediv" class="col-lg-6 col-xl-5 ms-xl-auto px-lg-4 text-center text-primary">
+                            <img class="img-fluid mb-4" width="400" src="assets/img/website-images/safehouse-registration.png" alt="" style="transform: rotate(10deg)"> <!--  -->
+                            <h1 class="mb-4 fw-bold" style="color: #3F51B5;">Start saving <br class="d-none d-lg-inline">your time & money</h1>
+                            <p class=" text-muted text-14">Wireless monitoring systems for improving the health of homes, quality of social care and maintenance of buildings.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-   
-    
-    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+
+        </main>
+
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+        <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     </body>
 </html>
