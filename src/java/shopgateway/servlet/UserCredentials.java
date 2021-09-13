@@ -145,7 +145,5 @@ public class UserCredentials extends HttpServlet {
         response.put("extra", null);
 
         printWriter.println(JSONValue.toJSONString(response));
-        
-        
     }
 }

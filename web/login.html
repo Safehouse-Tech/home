@@ -30,6 +30,9 @@
 
         <link rel="stylesheet" href="assets/css/bubblystyle.css" id="theme-stylesheet">
 
+        <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+        <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">-->
+
 
         <script src="assets/vendor/aos/aos.js"></script>
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -56,6 +59,7 @@
             }
 
         </script>
+        <script src="assets/vendor/notify.min.js"></script>
         <script type="text/javascript" src="assets/js/all.js" init=""></script>
         <script type="text/javascript">
             $(document).ready(function ()
@@ -68,12 +72,12 @@
                     {
                         if ($(window).width() >= 768) // if larger or equal
                         {
-                            $(".card").css("margin-top", "8%");
+//                            $(".card").css("margin-top", "8%");
                             $("#login_imagediv").show();
 
                         } else // if smaller
                         {
-                            $(".card").css("margin-top", "20%");
+//                            $(".card").css("margin-top", "20%");
                             $("#login_imagediv").hide();
                         }
                     }).resize();
@@ -100,7 +104,7 @@
     </head>
 
     <style>
-        
+
     </style>
 
 
@@ -108,46 +112,72 @@
 
         <div id="headerdiv"></div>
 
+        <main id="main">
+            <!--<div id="pagecontainer" class=" align-items-center py-4 bg-gray-100">-->
+            <div class="page-holder align-items-center py-4 bg-gray-100 ">
+                <!--<div id="pagecontainer" class=" align-items-center py-4 bg-gray-100">   vh-100 -->
+                <div class="container ">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 px-lg-4">
+                            <div class="card cardindexpage" >
+                                <div class="card-header px-lg-5 bg-transparent">
+                                    <div id="" class="text-primary">SAFEHOUSE MEMBER'S LOGIN</div>
+                                </div>
+                                <div class="card-body p-lg-5">
+                                    <h3 class="mb-4 fw-bold ">Hi, welcome back! 👋👋</h3>
+                                    <p class="text-muted text-sm mb-5 pb-2" style="font-size:13px;">
+                                        If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to register as a new customer.
+                                    </p>
 
-        <div id="pagecontainer" class=" align-items-center py-4 bg-gray-100">  <!-- vh-100 -->
-            <div class="container ">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 px-lg-4">
-                        <div class="card cardindexpage" >
-                            <div class="card-header px-lg-5 bg-transparent">
-                                <div id="" class="text-primary">SAFEHOUSE MEMBER'S LOGIN</div>
-                            </div>
-                            <div class="card-body p-lg-5">
-                                <h3 class="mb-4 fw-bold ">Hi, welcome back! 👋👋</h3>
-                                <p class="text-muted text-sm mb-5 pb-2" style="font-size:13px;">
-                                    If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to register as a new customer.
-                                </p>
-
-                                <form id="loginForm">
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="floatingInput" type="email" placeholder="name@example.com">
-                                        <label for="floatingInput">Email address</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="floatingPassword" type="password" placeholder="Password">
-                                        <label for="floatingPassword">Password</label>
-                                    </div>
-                                    <div class="form-check mb-3 text-14">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                                        <label class="form-check-label" for="remember">Remember me</label>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" type="submit">LOG IN</button>
-                                </form>
-                            </div>
-                            <div class="card-footer px-lg-5 py-lg-4 border-top-0 ">
-                                <div class="text-muted text-14" >Don't have an account? <a href="register.html" class="text-primary">Register</a>.</div>
+                                    <form id="loginForm">
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="login_email" type="email" placeholder="name@example.com" required>
+                                            <label for="login_email">Email address</label>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="form-floating flex-grow-1">
+                                                <input class="form-control" id="login_password" type="password" placeholder="Password" required>
+                                                <label for="login_password">Password</label>
+                                            </div>
+                                            <span class="input-group-text" style="cursor:pointer" onclick="showPassword('login_password')">show</span>
+                                        </div>
+                                        <div class="form-group d-flex justify-content-between">
+                                            <button class="btn btn-primary btn-sm pos-demo" id="login" type="submit" name="loginSubmit">LOG IN</button>
+                                            <button class="btn btn-link btn-sm" id="forgot_password" type="button" data-bs-toggle="modal" data-bs-target="#forgotpassword_modal">Forgot Password</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer px-lg-5 py-lg-4 border-top-0 ">
+                                    <div class="text-muted text-14" >Don't have an account? <a href="register.html" class="text-primary">Register</a>.</div>
+                                </div>
                             </div>
                         </div>
+                        <div id="login_imagediv" class="col-lg-6 col-xl-5 ms-xl-auto px-lg-4 text-center text-primary">
+                            <img class="img-fluid mb-4" width="400" src="assets/img/website-images/safehouse-login.png" alt="" style="transform: rotate(10deg)"> <!--  -->
+                            <h1 class="mb-4 fw-bold" style="color: #3F51B5;">Start saving <br class="d-none d-lg-inline">your time & money</h1>
+                            <p class=" text-muted text-14">Smarter monitoring for the next generation of home & care environments.</p>
+                        </div>
                     </div>
-                    <div id="login_imagediv" class="col-lg-6 col-xl-5 ms-xl-auto px-lg-4 text-center text-primary">
-                        <img class="img-fluid mb-4" width="400" src="assets/img/website-images/safehouse-login.png" alt="" style="transform: rotate(10deg)"> <!--  -->
-                        <h1 class="mb-4 fw-bold" style="color: #3F51B5;">Start saving <br class="d-none d-lg-inline">your time & money</h1>
-                        <p class=" text-muted text-14">Smarter monitoring for the next generation of home & care environments.</p>
+                </div>
+            </div>
+
+        </main>
+
+
+        <!-- Forgot password Modal -->
+        <div class="modal fade" id="forgotpassword_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Forgot Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+                        <button type="button" class="btn btn-primary">Send Code</button>
                     </div>
                 </div>
             </div>
@@ -157,7 +187,5 @@
         <!--        <div id="footerdiv" class=""></div>
                 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>-->
 
-        <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     </body>
 </html>

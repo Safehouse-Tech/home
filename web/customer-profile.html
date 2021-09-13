@@ -49,14 +49,14 @@ and open the template in the editor.
     </head>
 
     <script>
-        $(document).ready(function()
+        $(document).ready(function ()
         {
             load_allAdress();
-            
+
 //            $(".remove").click(function () {
 //                $(this).parents(".card").hide();
 //            });
-           
+
         });
     </script>
 
@@ -70,8 +70,8 @@ and open the template in the editor.
             transform: translateY(4px);
             cursor: pointer;
         }
-        
-        
+
+
     </style>    
 
     <body>
@@ -79,40 +79,73 @@ and open the template in the editor.
 
         <main id="main">
 
+            <section class="pb-0 mb-0"  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+                <div class="container">
+
+                    <div class="card cardindexpage">
+                        <!--                        <div class="card-header">
+                                                    Featured
+                                                </div>-->
+                        <div class="card-body">
+                            <h5 class="card-title">Details</h5>
+                            
+                            <div class="row g-2 mb-3">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="floatingInputGrid" placeholder="name@example.com" value="mdo@example.com">
+                                        <label for="floatingInputGrid">Email address</label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control" id="floatingInputGrid" placeholder="name@example.com" value="mdo@example.com">
+                                        <label for="floatingInputGrid">Password</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
             <section  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
                 <div class="container">
                     <button id="add_installationAddress" type="button" class="btn btn-primary btn-sm" onclick="add_newAddress();">
                         <i class="fas fa-plus"></i> Installation Address
                     </button>
-                    
+
                     <div id="existingAddress" class="my-5"></div>
-                    
+
                 </div>
             </section>
-            
-            
-            
-            
+
+
+
+
         </main>
 
         <!--<div id="footerdiv"></div>-->
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-        
+
         <div class="modal fade" id="newAddress" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog  modal-xl"> <!-- modal-dialog-centered -->
-              <div class="modal-content">
-                <div class="modal-header border-bottom-0">
-                  <h5 class="modal-title" id="staticBackdropLabel">New Installation Address</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                  
-                <div id="staticBackdrop_body" class="modal-body mb-2">
-                </div>
+                <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title" id="staticBackdropLabel">New Installation Address</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
 
-              </div>
+                    <div id="staticBackdrop_body" class="modal-body mb-2">
+                    </div>
+
+                </div>
             </div>
         </div>
-        
+
     </body>
 </html>

@@ -46,44 +46,58 @@ function firstLoad()
     }
 }
 
+function showPassword(inputID)
+{
+    var x = document.getElementById(inputID);
+    x.type === "password" ? x.type = "text" : x.type = "password";
+}
 
 async function customerLogin()
 {
-    await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111')
-            .then(function (response)
+    var email = $("#login_email").val();
+    var password = $("#login_password").val();
+
+    await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=' + email + '&password=' + password + ' ')
+    .then(function (response)
+    {
+        if (response.status !== 200 && response.ok !== true)
+        {
+            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+            return;
+        }
+
+        // Examine the text in the response
+        response.json().then(function (data)
+        {
+            console.log(data);
+            if (data.status !== '200')
             {
-                if (response.status !== 200 && response.ok !== true)
-                {
-                    console.log('Looks like there was a problem. Status Code: ' + response.status);
-                    return;
-                }
+                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                $(".pos-demo").notify(
+                        "Invalid username or password",
+                        {
+                            className: "error",
+                            position: "right"
+                        });
+                return;
+            }
 
-                // Examine the text in the response
-                response.json().then(function (data)
-                {
-                    console.log(data);
-                    if (data.status !== '200')
-                    {
-                        console.log('Looks like there was a problem. Status Code: ' + response.status);
-                        return;
-                    }
+            console.log(data.extra.personDetails.person_name);
 
-                    console.log(data.extra.personDetails.person_name);
+            sessionDetails.personDetails = data.extra.personDetails;
+            sessionDetails.previousOrders = data.extra.previousOrders;
 
-                    sessionDetails.personDetails = data.extra.personDetails;
-                    sessionDetails.previousOrders = data.extra.previousOrders;
+            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
-                    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+            var lastURL = document.referrer;
 
-                    var lastURL = document.referrer;
+            lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : window.location.href = 'index.html';// history.back();
 
-                    lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : history.back();
-
-                });
-            })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-            });
+        });
+    })
+    .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
 
 }
 
@@ -199,7 +213,7 @@ function load_allAdress()
             var icon = (json[i].property_type === "building") ? "fa-building" : "fa-home";
 
             $("#existingAddress").append(
-                '<div class="card cardindexpage my-4">\n\
+                    '<div class="card cardindexpage my-4">\n\
                     <div class="row g-0">\n\
                         <div class="col-md-1 d-flex align-items-center justify-content-center">\n\
                             <i class="fas ' + icon + '  fa-4x text-warning"></i>\n\
@@ -220,33 +234,27 @@ function load_allAdress()
         $(".remove").click(function () {
             $(this).parents(".card").remove();
 
-            $('#existingAddress').is(':empty') ? 
-                $('#existingAddress').append(
-                        '<h4 class="text-muted text-center">No Installation Address</h4>'
-                        ) 
-                : "";
-
-
+            $('#existingAddress').is(':empty') ?
+                    $('#existingAddress').append(
+                    '<h4 class="text-muted text-center">No Installation Address</h4>'
+                    )
+                    : "";
         });
-
     });
-
-    
-
 }
 
 
 function add_newAddress()
 {
-  //  $("#newAddress").modal('show');
+    //  $("#newAddress").modal('show');
 
 
-    if($("#existingAddress").children('h4').length > 0){
-        
-         $("#existingAddress").empty();
+    if ($("#existingAddress").children('h4').length > 0) {
+
+        $("#existingAddress").empty();
     }
 
-    
+
     $("#existingAddress").prepend(
             '<div class="card cardindexpage my-4">\n\
             <div class="row g-0">\n\
@@ -267,12 +275,47 @@ function add_newAddress()
 
     $(".remove").click(function () {
         $(this).parents(".card").remove();
-        
-        $('#existingAddress').is(':empty') ? 
-            $('#existingAddress').append(
-                    '<h4 class="text-muted text-center">No Installation Address</h4>'
-                    ) 
-            : "";
+
+        $('#existingAddress').is(':empty') ?
+                $('#existingAddress').append(
+                '<h4 class="text-muted text-center">No Installation Address</h4>'
+                )
+                : "";
     });
+
+}
+
+//function signupCustomer()
+async function signupCustomer()
+{
+    var newCustomer = 
+            'fullname='+ $('#register_fullname').val() +'&email='+ $('#register_email').val()+'&password' +$('#register_password').val();
+    
+
+    await fetch('/home/newcustomer?'+newCustomer, {
+        method: 'POST',
+//        body: JSON.stringify(newCustomer), // string or object
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(function (response)
+    {
+        if (response.status !== 200 && response.ok !== true)
+        {
+            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+            return;
+        }
+
+        // Examine the text in the response
+        response.json().then(function (data)
+        {
+
+        });
+    })
+    .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
+
 
 }
