@@ -50,7 +50,7 @@ public class UserCredentials extends HttpServlet {
 
             if(authkey == null || methodstring == null || email == null)
             {
-                 System.out.println("wcwec");
+                 //System.out.println("wcwec");
                 printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
                 return;
             }
@@ -67,6 +67,21 @@ public class UserCredentials extends HttpServlet {
             int method = Integer.parseInt(methodstring);
             switch (method) 
             {
+                case CONFIG.CREATION:
+                {
+                    /*fetch full name
+                    
+                    1. check if email exists if not create usercredentials and person id
+                    2. send success or fail result to javascript
+                    3. at javascript if success call customerLogin else show the error code
+                    4. everything should be loaded now
+                    */
+                   
+                    printResponse(printWriter, null);
+                    
+                    break;
+                }
+                
                 case CONFIG.LOGIN:
                 {
 // http://localhost:8080/viper-gateway/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111

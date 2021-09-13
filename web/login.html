@@ -91,7 +91,9 @@
 
                 $("#loginForm").submit(function ()
                 {
-                    customerLogin();
+                    var email = $("#login_email").val();
+                    var password = $("#login_password").val();
+                    customerLogin(email, password);
                     return false;
                 });
 

@@ -52,10 +52,12 @@ function showPassword(inputID)
     x.type === "password" ? x.type = "text" : x.type = "password";
 }
 
-async function customerLogin()
+async function customerLogin(email, password)
 {
-    var email = $("#login_email").val();
-    var password = $("#login_password").val();
+    console.log("email, "+email, password);
+    
+//    var email = $("#login_email").val();
+//    var password = $("#login_password").val();
 
     await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=' + email + '&password=' + password + ' ')
     .then(function (response)
@@ -288,11 +290,13 @@ function add_newAddress()
 //function signupCustomer()
 async function signupCustomer()
 {
-    var newCustomer = 
-            'fullname='+ $('#register_fullname').val() +'&email='+ $('#register_email').val()+'&password' +$('#register_password').val();
+    var fullname = $('#register_fullname').val();
+    var email = $('#register_email').val();
+    var password = $('#register_password').val();
     
-
-    await fetch('/home/newcustomer?'+newCustomer, {
+    var newCustomer = 'fullname=' +fullname+ '&email=' +email+ '&password' +password;
+    
+    await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1001&'+newCustomer, {
         method: 'POST',
 //        body: JSON.stringify(newCustomer), // string or object
         headers: {
@@ -310,7 +314,8 @@ async function signupCustomer()
         // Examine the text in the response
         response.json().then(function (data)
         {
-
+            console.log("data", data);
+            customerLogin(email, password);
         });
     })
     .catch(function (err) {
