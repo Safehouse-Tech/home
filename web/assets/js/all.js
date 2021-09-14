@@ -103,6 +103,8 @@ async function customerLogin(email, password)
 
 }
 
+/*************************************  Product Description Functions   *****************************************************/
+
 
 function shopProduct(product_id, product_name, price, image_path, description_path, technology, extra)
 {
@@ -218,7 +220,7 @@ function addtobasket()
 
             localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
-            // update basketSession  at backend against person_is 
+            // call post API to update basketSession  at backend against person_is 
 
             $(".pos-demo").notify(
                     "Item added to basket ",
@@ -230,6 +232,20 @@ function addtobasket()
     }
 
 }
+
+
+/*************************************  Basket Page Representation Functions   *****************************************************/
+
+function loadBasketItems()
+{
+    // load at basket page
+    
+    // check best representation with table or cards
+}
+
+
+
+/*************************************      Person Profile Functions   *****************************************************/
 
 function load_allAdress()
 {
