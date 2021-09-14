@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import shopgateway.config.CONFIG;
+import shopgateway.javaclass.BasketItems;
 import shopgateway.javaclass.UserValidation;
 
 /**
@@ -92,9 +93,12 @@ public class UserCredentials extends HttpServlet {
 
                     String personId = personDetails.get("person_id").toString();
 
-                    JSONObject result = uv.retrieveUserDetails(email, personId); //generate login token for session;
+//                    JSONObject result = uv.retrieveUserDetails(email, personId); //generate login token for session;
 
-                    validate.put("previousOrders", result.get("personOrders"));
+                    BasketItems bitems = new BasketItems();
+                    JSONObject result = bitems.retrieveBasket(personId);
+
+                    validate.put("previousOrders", result.get("previousOrders"));
                     validate.put("basketSession", result.get("basketSession"));
 
                     printResponse(printWriter, validate);

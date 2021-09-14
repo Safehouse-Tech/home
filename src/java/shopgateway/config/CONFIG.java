@@ -28,6 +28,8 @@ public class CONFIG
     public static final String session_token = "session_token"; 
     
     public static final String basketSession = "basketSession";
+    public static final String basketItems = "basketItems";
+    public static final String basket_id ="basket_id";
     
     public static final String fullname = "fullname";
     public static final String email = "email";

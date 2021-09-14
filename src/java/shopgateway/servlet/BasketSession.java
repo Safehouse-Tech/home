@@ -59,14 +59,14 @@ public class BasketSession extends HttpServlet {
             {
                 case CONFIG.UPDATE: 
                 {
-// http://localhost:8080/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&email=gaganpreet.singh@safehouse.technology&person_id=1672&session_token=7fx-2FxvTdousidOLWkhPFs_8JB-Y8wm
-                    
-                    JSONObject basketSession =  (JSONObject) jsonParser.parse(request.getParameter(CONFIG.basketSession) );
+                 
+                    String basket_id = request.getParameter(CONFIG.basket_id);
+                    JSONObject basketItems =  (JSONObject) jsonParser.parse(request.getParameter(CONFIG.basketItems) );
                     
                     BasketItems bitems = new BasketItems();
-                    // = bitems.updateBasket(person_id);
+                    String result = bitems.updateBasket(person_id, basket_id, basketItems);
                     
-                    printResponse(printWriter, null);
+                    printResponse(printWriter, result);
                     break;
                 }
 

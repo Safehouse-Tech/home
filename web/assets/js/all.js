@@ -167,7 +167,7 @@ function productDescription()
 
 }
 
-function addtobasket()
+async function addtobasket()
 {
     if (!localStorage.hasOwnProperty('sessionDetails'))
     {
@@ -214,30 +214,127 @@ function addtobasket()
             {
                 basketSession.totalItems = product_quantity;
             } else {
-                basketSession.totalItems = basketSession.totalItems + product_quantity;
+                
+                var totalItems = 0 ;
+                // each object quantity calculate
+                Object.keys(basketSession.basketItems).forEach(function(key) {
+
+                    //console.log(key, basketSession.basketItems[key].quantity);
+                    totalItems = totalItems +  basketSession.basketItems[key].quantity ;
+
+                });
+                
+                basketSession.totalItems = totalItems ;
             }
 
-            $("#basketalert_num").text(basketSession.totalItems);
+         
+            var person_id = sessionDetails.personDetails.person_id;
+            var basket_id = basketSession.basketId;
+            var basketItems = JSON.stringify(basketSession.basketItems);
+            
+            // updatebasket(person_id, basket_id, basketItems)
+         ///*   
+            await fetch('/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' +person_id+ '&basket_id=' +basket_id+ '&basketItems=' +basketItems , {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(function (response)
+            {
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    return;
+                }
 
-            sessionDetails.basketSession = basketSession;
-
-            console.log("sessionDetails", sessionDetails);
-
-            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
-
-            // call post API to update basketSession at backend against person_id 
-
-            $(".pos-demo").notify(
-                    "Item added to basket ",
+                response.json().then(function (data)
+                {
+                    console.log("data", data);
+                    var notifyText, notifyStatus ;
+                    
+                    if(data.extra === "basket items updated")
                     {
-                        className: "success",
-                        position: "right"
-                    });
+                        notifyText = "Item added to basket" ;
+                        notifyStatus = "success";
+
+                        $("#basketalert_num").text(basketSession.totalItems);
+
+                        sessionDetails.basketSession = basketSession;
+
+                        console.log("sessionDetails", sessionDetails);
+
+                        localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+                    }
+
+                    else {
+                        notifyText = "Item not added to basket" ;
+                        notifyStatus = "error";
+                    }
+
+                    $(".pos-demo").notify(
+                        notifyText,
+                        {
+                            className: notifyStatus,
+                            position: "right"
+                        });
+            
+                    
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
+         //*/   
+            
+           
         }
     }
 
 }
 
+/*
+ * 
+ *const secondFunction = async () => {
+  const result = await firstFunction()
+  // do something else here after firstFunction completes
+}
+ */
+
+ /*
+async function updatebasket(person_id, basket_id, basketItems)
+{
+    var result;
+    await fetch('/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' +person_id+ '&basket_id=' +basket_id+ '&basketItems=' +basketItems , {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(function (response)
+    {
+        if (response.status !== 200 && response.ok !== true)
+        {
+            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+            return;
+        }
+
+        response.json().then(function (data)
+        {
+            console.log("data", data);
+            result = data.extra;
+            console.log("result: "+ result);
+            
+        });
+    })
+    .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
+    
+    return result;
+}
+
+  */
 
 /*************************************  Basket Page Representation Functions   *****************************************************/
 
@@ -353,24 +450,24 @@ async function signupCustomer()
             'Content-Type': 'application/json'
         }
     })
-            .then(function (response)
-            {
-                if (response.status !== 200 && response.ok !== true)
-                {
-                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-                    return;
-                }
+    .then(function (response)
+    {
+        if (response.status !== 200 && response.ok !== true)
+        {
+            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+            return;
+        }
 
-                // Examine the text in the response
-                response.json().then(function (data)
-                {
-                    console.log("data", data);
-                    customerLogin(email, password);
-                });
-            })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-            });
+        // Examine the text in the response
+        response.json().then(function (data)
+        {
+            console.log("data", data);
+            customerLogin(email, password);
+        });
+    })
+    .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
 
 
 }

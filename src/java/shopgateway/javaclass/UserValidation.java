@@ -89,7 +89,7 @@ public class UserValidation {
         return validate;
     }
     
-    
+/*    
     public JSONObject retrieveUserDetails(String email, String person_id) throws SQLException, java.text.ParseException
     {
         PreparedStatement pst = null;
@@ -98,7 +98,6 @@ public class UserValidation {
         JSONObject result = new JSONObject(); 
         JSONObject previousOrders = new JSONObject();
         
-        String subscription = null, org_ids = null, session_token = null;
         
         try{
             String sql2 = "SELECT * from SAFEHOUSE_DASHBOARD_USER WHERE PERSON_ID='"+person_id+"' ";
@@ -113,9 +112,9 @@ public class UserValidation {
             BasketItems bitems = new BasketItems();
             JSONObject basketSession = bitems.retrieveBasket(person_id);
             
-            result.put("subscription", subscription) ;
+//            result.put("subscription", subscription) ;
             result.put("basketSession", basketSession);
-            //            result.put("previousOrders", previousOrders);
+            result.put("previousOrders", previousOrders);
         }
         catch(SQLException  ex)
         {
@@ -130,7 +129,7 @@ public class UserValidation {
         
         return result;
     }
-    
+*/    
     
     public boolean userLogout(String email, String person_id, String session_token) throws SQLException
     {
