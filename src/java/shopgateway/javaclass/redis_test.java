@@ -17,12 +17,14 @@ public class redis_test {
     public static void main(String args[])
     {
         // on server change to private IP  : 10.0.0.191
-        // for testing use public IP : 34.254.191.66
-        Jedis jedis = new Jedis("34.254.191.66");
-        jedis.set("uid102", "{ loggedIn: true, cartItems: [{ pid: 1, qty 2 }] }");
-        String value = jedis.get("uid102");
+        // for testing use public IP : 63.33.164.36
+        Jedis jedis = new Jedis("3.250.215.199");
         
-        System.out.println("value:"+ value);
+        
+//        jedis.set("uid102", "{ loggedIn: true, cartItems: [{ pid: 1, qty 2 }] }");
+//        String value = jedis.get("uid102");
+//        
+        System.out.println("value:"+ jedis.isConnected());
         
         
 //        jedis.expire("uid102", 10);

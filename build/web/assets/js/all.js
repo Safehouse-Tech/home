@@ -10,6 +10,7 @@ var sessionDetails = new Object();
 
 var sensorDescription = new Object();
 var personDetails = new Object();
+var basketSession = new Object();
 
 $(document).ready(function () {
 
@@ -54,52 +55,51 @@ function showPassword(inputID)
 
 async function customerLogin(email, password)
 {
-    console.log("email, "+email, password);
-    
+    console.log("email, " + email, password);
+
 //    var email = $("#login_email").val();
 //    var password = $("#login_password").val();
 
     await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=' + email + '&password=' + password + ' ')
-    .then(function (response)
-    {
-        if (response.status !== 200 && response.ok !== true)
-        {
-            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-            return;
-        }
-
-        // Examine the text in the response
-        response.json().then(function (data)
-        {
-            console.log(data);
-            if (data.status !== '200')
+            .then(function (response)
             {
-                console.log('Looks like there was a problem. Status Code: ' + response.status);
-                $(".pos-demo").notify(
-                        "Invalid username or password",
-                        {
-                            className: "error",
-                            position: "right"
-                        });
-                return;
-            }
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    return;
+                }
 
-            console.log(data.extra.personDetails.person_name);
+                // Examine the text in the response
+                response.json().then(function (data)
+                {
+                    console.log(data);
+                    if (data.status !== '200')
+                    {
+                        console.log('Looks like there was a problem. Status Code: ' + response.status);
+                        $(".pos-demo").notify(
+                                "Invalid username or password",
+                                {
+                                    className: "error",
+                                    position: "right"
+                                });
+                        return;
+                    }
 
-            sessionDetails.personDetails = data.extra.personDetails;
-            sessionDetails.previousOrders = data.extra.previousOrders;
+                    sessionDetails.personDetails = data.extra.personDetails;
+                    sessionDetails.previousOrders = data.extra.previousOrders;
+                    sessionDetails.basketSession = data.extra.basketSession;
 
-            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+                    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
-            var lastURL = document.referrer;
+                    var lastURL = document.referrer;
 
-            lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : window.location.href = 'index.html';// history.back();
+                    lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : window.location.href = 'index.html';// history.back();
 
-        });
-    })
-    .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-    });
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
 
 }
 
@@ -188,8 +188,37 @@ function addtobasket()
         {
             $("#staticBackdrop").modal('show');
             $("#staticBackdrop_body").load("login.html?nav=shop");
-        } else {
+        } else
+        {
             console.log("adding product to cart session");
+
+            var product_id = $("#product_id").text();
+            var product_name = $("#product_name").text();
+            var product_quantity = parseInt($('#select_quantity').find(":selected").text());
+            var price_id = $("#price_id").text();
+            var price = parseFloat(($("#product_price").text()).toString().replace( /^\D+/g, ''));
+            var total_price = price * product_quantity ;
+
+            var productObject = {
+                product_name: product_name,
+                quantity: product_quantity,
+                price_id: price_id,
+                price : price, 
+                total_price : total_price
+            };
+
+            console.log("productObject", productObject);
+
+            basketSession = sessionDetails.basketSession;
+            basketSession[product_id] = productObject;
+
+            sessionDetails.basketSession = basketSession;
+
+            console.log("sessionDetails", sessionDetails);
+
+            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+
+            // update basketSession  at backend against person_is 
 
             $(".pos-demo").notify(
                     "Item added to basket ",
@@ -293,34 +322,34 @@ async function signupCustomer()
     var fullname = $('#register_fullname').val();
     var email = $('#register_email').val();
     var password = $('#register_password').val();
-    
-    var newCustomer = 'fullname=' +fullname+ '&email=' +email+ '&password' +password;
-    
-    await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1001&'+newCustomer, {
+
+    var newCustomer = 'fullname=' + fullname + '&email=' + email + '&password' + password;
+
+    await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1001&' + newCustomer, {
         method: 'POST',
 //        body: JSON.stringify(newCustomer), // string or object
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    .then(function (response)
-    {
-        if (response.status !== 200 && response.ok !== true)
-        {
-            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-            return;
-        }
+            .then(function (response)
+            {
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    return;
+                }
 
-        // Examine the text in the response
-        response.json().then(function (data)
-        {
-            console.log("data", data);
-            customerLogin(email, password);
-        });
-    })
-    .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-    });
+                // Examine the text in the response
+                response.json().then(function (data)
+                {
+                    console.log("data", data);
+                    customerLogin(email, password);
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
 
 
 }

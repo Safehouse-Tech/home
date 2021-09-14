@@ -14,8 +14,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -50,9 +52,7 @@ public class UserValidation {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try
-        {
-           // Connection conn = ODBConnection.getInstance().connection;
-                    
+        {     
             email = email.toLowerCase().replaceAll(" ", "");
             String encrypt_password = Cipher.generateDigest(password);
             
@@ -118,9 +118,14 @@ public class UserValidation {
                 
             }
             
-//            result.put("subscription", subscription) ;
-            result.put("previousOrders", previousOrders);
-//            result.put("session_token", session_token);
+          
+            basketItems bitems = new basketItems();
+            JSONObject basket = bitems.retrieveBasket(person_id);
+            
+            result.put("subscription", subscription) ;
+//            result.put("previousOrders", previousOrders);
+            
+            result.put("basketSession", basket);
         }
         catch(SQLException  ex)
         {

@@ -62,7 +62,7 @@ public class UserCredentials extends HttpServlet {
                 return;
             }
             
-            UserValidation vu = new UserValidation();
+            UserValidation uv = new UserValidation();
     
             int method = Integer.parseInt(methodstring);
             switch (method) 
@@ -86,7 +86,7 @@ public class UserCredentials extends HttpServlet {
                 {
 // http://localhost:8080/viper-gateway/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111
                     
-                    JSONObject validate = vu.validateUser(email, password);
+                    JSONObject validate = uv.validateUser(email, password);
             
                     if(validate.get("userExist") == null )
                     {
@@ -104,10 +104,10 @@ public class UserCredentials extends HttpServlet {
                     
                     String personId = personDetails.get("person_id").toString() ;
                     
-                    JSONObject result = vu.retrieveUserDetails( email, personId) ; //generate login token for session;
+                    JSONObject result = uv.retrieveUserDetails( email, personId) ; //generate login token for session;
                     
                     validate.put("previousOrders", result.get("personOrders"));
-                    
+                    validate.put("basketSession", result.get("basketSession"));
                     
                     printResponse(printWriter, validate);
                     
@@ -119,7 +119,7 @@ public class UserCredentials extends HttpServlet {
 // http://localhost:8080/viper-gateway/usercredentials?key=BzJKl8b4UQ76nLw&method=1003&email=gaganpreet.singh@safehouse.technology&person_id=1672&session_token=7fx-2FxvTdousidOLWkhPFs_8JB-Y8wm
                    
                     String session_token = request.getParameter(CONFIG.session_token);
-                    boolean result = vu.userLogout(email, person_id, session_token);
+                    boolean result = uv.userLogout(email, person_id, session_token);
                     
                     printResponse(printWriter, result);
                     break;
