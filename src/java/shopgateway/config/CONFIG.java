@@ -27,6 +27,8 @@ public class CONFIG
     
     public static final String session_token = "session_token"; 
     
+    public static final String basketSession = "basketSession";
+    
     public static final String fullname = "fullname";
     public static final String email = "email";
     public static final String password = "password";

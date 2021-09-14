@@ -5,20 +5,25 @@
  */
 package shopgateway.javaclass;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import shopgateway.config.ODBConnection;
 
 /**
  *
  * @author gagan
  */
-public class basketItems {
+public class BasketItems {
     
-    public basketItems() {
-    }
+    public BasketItems() {}
+    
+   // JSONParser jsonParser = new JSONParser();
+   // Connection conn = ODBConnection.getInstance().connection;
 
     public JSONObject retrieveBasket(String person_id) {
 
@@ -33,9 +38,13 @@ public class basketItems {
         return result;
     }
     
-    public JSONObject updateBasket(String person_id) {
+    public JSONObject updateBasket(String person_id, JSONObject basketSession) {
         
+        /* check if persion id exist for the session 
         
+            if yes then update if no then create
+        
+        */
         return null;
     }
 }

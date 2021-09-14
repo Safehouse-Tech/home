@@ -5,8 +5,6 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <!--<link href="assets/img/favicon_1.png" rel="icon">-->
-
         <script src="assets/js/main.js"></script>
         
     </head>
@@ -41,7 +39,7 @@
             {
                 var sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
-                console.log("sessionDetails", sessionDetails);
+//                console.log("sessionDetails", sessionDetails);
 
                 if(!sessionDetails.hasOwnProperty("personDetails"))
                 {
@@ -52,8 +50,15 @@
                     $("#accountDetails").show();
                     $("#asklogin").hide(); 
                     $("#loginName").text(sessionDetails.personDetails.person_name); 
+                } 
+                
+                if(sessionDetails.hasOwnProperty("basketSession"))
+                {
+                    $("#basketalert_num").text(sessionDetails.basketSession.totalItems);
                 }
-                 
+//                
+                
+                
             }
            
         });
@@ -115,7 +120,7 @@
                         <li>
                             <a href="basket.html">Basket
                                 <i class="fas fa-shopping-cart fa-2x"></i>
-                                <span class="badge badge-danger badge-counter" id="alert_num">0</span>
+                                <span class="badge badge-danger badge-counter" id="basketalert_num">0</span>
                             </a>
                         </li>
                         <li id="asklogin">

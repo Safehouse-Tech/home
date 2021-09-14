@@ -56,50 +56,47 @@ function showPassword(inputID)
 async function customerLogin(email, password)
 {
     console.log("email, " + email, password);
-
-//    var email = $("#login_email").val();
-//    var password = $("#login_password").val();
-
+    
     await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=' + email + '&password=' + password + ' ')
-            .then(function (response)
+    .then(function (response)
+    {
+        if (response.status !== 200 && response.ok !== true)
+        {
+            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+            return;
+        }
+
+        // Examine the text in the response
+        response.json().then(function (data)
+        {
+            //console.log(data);
+            if (data.status !== '200')
             {
-                if (response.status !== 200 && response.ok !== true)
-                {
-                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-                    return;
-                }
+                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                $(".pos-demo").notify(
+                        "Invalid username or password",
+                        {
+                            className: "error",
+                            position: "right"
+                        });
+                return;
+            }
 
-                // Examine the text in the response
-                response.json().then(function (data)
-                {
-                    console.log(data);
-                    if (data.status !== '200')
-                    {
-                        console.log('Looks like there was a problem. Status Code: ' + response.status);
-                        $(".pos-demo").notify(
-                                "Invalid username or password",
-                                {
-                                    className: "error",
-                                    position: "right"
-                                });
-                        return;
-                    }
+            sessionDetails.personDetails = data.extra.personDetails;
+            sessionDetails.previousOrders = data.extra.previousOrders;
+            sessionDetails.basketSession = data.extra.basketSession;
 
-                    sessionDetails.personDetails = data.extra.personDetails;
-                    sessionDetails.previousOrders = data.extra.previousOrders;
-                    sessionDetails.basketSession = data.extra.basketSession;
+            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
-                    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+            var lastURL = document.referrer;
 
-                    var lastURL = document.referrer;
+            lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : window.location.href = 'index.html';// history.back();
 
-                    lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : window.location.href = 'index.html';// history.back();
-
-                });
-            })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-            });
+        });
+    })
+    .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
 
 }
 
@@ -116,22 +113,16 @@ function shopProduct(product_id, product_name, price, image_path, description_pa
     sensorDescription.technology = technology;
     sensorDescription.extra = extra;
 
-    if (!localStorage.hasOwnProperty('sessionDetails'))
-    {
+    if (!localStorage.hasOwnProperty('sessionDetails')){
         sessionDetails.sensorDescription = sensorDescription;
         localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
-    } else
-
-    {
+    } 
+    else{
         sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
         sessionDetails.sensorDescription = sensorDescription;            //   console.log('sessionDetails', JSON.stringify(sessionDetails));
         localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
     }
-
-
     window.location.href = 'product-description.html';
-
-
 }
 
 
@@ -139,7 +130,7 @@ function productDescription()
 {
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
-    console.log("sessionDetails12", sessionDetails);
+//    console.log("sessionDetails12", sessionDetails);
 
     sensorDescription = sessionDetails.sensorDescription;
 
@@ -198,21 +189,35 @@ function addtobasket()
             var product_name = $("#product_name").text();
             var product_quantity = parseInt($('#select_quantity').find(":selected").text());
             var price_id = $("#price_id").text();
-            var price = parseFloat(($("#product_price").text()).toString().replace( /^\D+/g, ''));
-            var total_price = price * product_quantity ;
+            var price = parseFloat(($("#product_price").text()).toString().replace(/^\D+/g, ''));
+            var total_price = price * product_quantity;
 
             var productObject = {
                 product_name: product_name,
                 quantity: product_quantity,
                 price_id: price_id,
-                price : price, 
-                total_price : total_price
+                price: price,
+                total_price: total_price
             };
 
-            console.log("productObject", productObject);
-
             basketSession = sessionDetails.basketSession;
-            basketSession[product_id] = productObject;
+            if (!basketSession.hasOwnProperty('basketItems')){
+                var basketItems = {};
+                basketItems[product_id] = productObject;
+                basketSession.basketItems = basketItems;
+            } 
+            else {
+                basketSession.basketItems[product_id] = productObject;
+            }
+
+            if (!basketSession.hasOwnProperty('totalItems'))
+            {
+                basketSession.totalItems = product_quantity;
+            } else {
+                basketSession.totalItems = basketSession.totalItems + product_quantity;
+            }
+
+            $("#basketalert_num").text(basketSession.totalItems);
 
             sessionDetails.basketSession = basketSession;
 
@@ -220,7 +225,7 @@ function addtobasket()
 
             localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
-            // call post API to update basketSession  at backend against person_is 
+            // call post API to update basketSession at backend against person_id 
 
             $(".pos-demo").notify(
                     "Item added to basket ",
@@ -239,7 +244,7 @@ function addtobasket()
 function loadBasketItems()
 {
     // load at basket page
-    
+
     // check best representation with table or cards
 }
 

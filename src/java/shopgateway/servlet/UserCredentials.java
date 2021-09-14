@@ -23,137 +23,118 @@ import shopgateway.javaclass.UserValidation;
  *
  * @author gagan
  */
-
 @WebServlet(name = "usercredentials", urlPatterns = {"/usercredentials"})
 public class UserCredentials extends HttpServlet {
 
-   
-    public UserCredentials() 
-    {
+    public UserCredentials() {
         super();
     }
-    
-    
+
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-    {
-    	PrintWriter printWriter = response.getWriter();
-        
-        try
-        {
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter printWriter = response.getWriter();
+
+        try {
             String authkey = request.getParameter(CONFIG.key);
             String methodstring = request.getParameter(CONFIG.method);
             String email = request.getParameter(CONFIG.email);
             String password = request.getParameter(CONFIG.password);
-            
+
             String person_id = request.getParameter(CONFIG.person_id);
 
-            if(authkey == null || methodstring == null || email == null)
-            {
-                 //System.out.println("wcwec");
+            if (authkey == null || methodstring == null || email == null) {
+                //System.out.println("wcwec");
                 printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
                 return;
             }
 
-            if(!authkey.equals(CONFIG.AUTHKEY))
-            {
-                
+            if (!authkey.equals(CONFIG.AUTHKEY)) {
+
                 printError(printWriter, CONFIG.RESULT_UNAUTHORISED_ACCESS, "Unauthorised Access", request);
                 return;
             }
-            
+
             UserValidation uv = new UserValidation();
-    
+
             int method = Integer.parseInt(methodstring);
             switch (method) 
             {
-                case CONFIG.CREATION:
-                {
+                case CONFIG.CREATION: {
                     /*fetch full name
                     
                     1. check if email exists if not create usercredentials and person id
                     2. send success or fail result to javascript
                     3. at javascript if success call customerLogin else show the error code
                     4. everything should be loaded now
-                    */
-                   
+                     */
+
                     printResponse(printWriter, null);
-                    
+
                     break;
                 }
-                
-                case CONFIG.LOGIN:
-                {
-// http://localhost:8080/viper-gateway/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111
-                    
+
+                case CONFIG.LOGIN: {
+// http://localhost:8080/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=gaganpreet.singh@safehouse.technology&password=111
+
                     JSONObject validate = uv.validateUser(email, password);
-            
-                    if(validate.get("userExist") == null )
-                    {
+
+                    if (validate.get("userExist") == null) {
                         printError(printWriter, CONFIG.RESULT_FAILED, "Invalid Login Detail", request);
                         return;
                     }
 
-                    if(validate.get("personDetails")== null)
-                    {
+                    if (validate.get("personDetails") == null) {
                         printError(printWriter, CONFIG.RESULT_FAILED, "Person Do Not Exists.", request);
                         return;
                     }
 
                     JSONObject personDetails = (JSONObject) validate.get("personDetails");
-                    
-                    String personId = personDetails.get("person_id").toString() ;
-                    
-                    JSONObject result = uv.retrieveUserDetails( email, personId) ; //generate login token for session;
-                    
+
+                    String personId = personDetails.get("person_id").toString();
+
+                    JSONObject result = uv.retrieveUserDetails(email, personId); //generate login token for session;
+
                     validate.put("previousOrders", result.get("personOrders"));
                     validate.put("basketSession", result.get("basketSession"));
-                    
+
                     printResponse(printWriter, validate);
-                    
+
                     break;
                 }
-                
-                case CONFIG.LOGOUT:
-                {
-// http://localhost:8080/viper-gateway/usercredentials?key=BzJKl8b4UQ76nLw&method=1003&email=gaganpreet.singh@safehouse.technology&person_id=1672&session_token=7fx-2FxvTdousidOLWkhPFs_8JB-Y8wm
-                   
+
+                case CONFIG.LOGOUT: {
+// http://localhost:8080/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1003&email=gaganpreet.singh@safehouse.technology&person_id=1672&session_token=7fx-2FxvTdousidOLWkhPFs_8JB-Y8wm
+
                     String session_token = request.getParameter(CONFIG.session_token);
                     boolean result = uv.userLogout(email, person_id, session_token);
-                    
+
                     printResponse(printWriter, result);
                     break;
                 }
-                    
+
                 default:
-                   
+
                     printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
-                break;
+                    break;
             }
 
-            
-            
-        }
-        catch (Exception ex)
-    	{
+        } catch (Exception ex) {
             ex.printStackTrace();
             printError(printWriter, CONFIG.RESULT_SERVER_ERROR, ex.getMessage(), request);
-       	}
+        }
     }
-    
-    private void printResponse(PrintWriter printWriter, Object result)
-    {
+
+    private void printResponse(PrintWriter printWriter, Object result) {
         Map<String, Object> obj = new LinkedHashMap<>();
         obj.put("status", CONFIG.RESULT_SUCCESS);
         obj.put("error", null);
         obj.put("extra", result);
-       
+
         printWriter.println(JSONValue.toJSONString(obj));
     }
-    
-    private void printError(PrintWriter printWriter, String status, String error, HttpServletRequest request)
-    {
-		// print error result
+
+    private void printError(PrintWriter printWriter, String status, String error, HttpServletRequest request) {
+        // print error result
         Map<String, String> response = new LinkedHashMap<>();
         response.put("status", status);
         response.put("error", error);

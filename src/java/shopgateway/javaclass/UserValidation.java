@@ -13,14 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
-import java.util.List;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import shopgateway.config.ODBConnection;
 
 /**
@@ -30,8 +24,6 @@ import shopgateway.config.ODBConnection;
 public class UserValidation {
     
     public UserValidation(){}
-    
-    JSONParser jsonParser = new JSONParser();
     
     Connection conn = ODBConnection.getInstance().connection;
     
@@ -118,14 +110,12 @@ public class UserValidation {
                 
             }
             
-          
-            basketItems bitems = new basketItems();
-            JSONObject basket = bitems.retrieveBasket(person_id);
+            BasketItems bitems = new BasketItems();
+            JSONObject basketSession = bitems.retrieveBasket(person_id);
             
             result.put("subscription", subscription) ;
-//            result.put("previousOrders", previousOrders);
-            
-            result.put("basketSession", basket);
+            result.put("basketSession", basketSession);
+            //            result.put("previousOrders", previousOrders);
         }
         catch(SQLException  ex)
         {
