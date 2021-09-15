@@ -62,9 +62,10 @@ public class BasketSession extends HttpServlet {
                  
                     String basket_id = request.getParameter(CONFIG.basket_id);
                     JSONObject basketItems =  (JSONObject) jsonParser.parse(request.getParameter(CONFIG.basketItems) );
+                    String totalItems = request.getParameter(CONFIG.totalItems);
                     
                     BasketItems bitems = new BasketItems();
-                    String result = bitems.updateBasket(person_id, basket_id, basketItems);
+                    String result = bitems.updateBasket(person_id, basket_id, basketItems, totalItems);
                     
                     printResponse(printWriter, result);
                     break;

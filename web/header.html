@@ -31,6 +31,7 @@
             if(!localStorage.hasOwnProperty('sessionDetails'))
             {
                 $("#accountDetails").hide();
+                $("#basketHeader").hide();
                 $("#asklogin").show();
                 
                 window.localStorage.clear();
@@ -44,10 +45,12 @@
                 if(!sessionDetails.hasOwnProperty("personDetails"))
                 {
                     $("#accountDetails").hide();
+                    $("#basketHeader").hide();
                     $("#asklogin").show(); 
                 }
                 else {
                     $("#accountDetails").show();
+                    $("#basketHeader").show();
                     $("#asklogin").hide(); 
                     $("#loginName").text(sessionDetails.personDetails.person_name); 
                 } 
@@ -117,7 +120,7 @@
                         <li><a href="news-and-updates.html">News & Updates</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
                         <li><a href="shop.html">Shop<i class="fas fa-shopping-bag fa-2x"></i></a></li>
-                        <li>
+                        <li id="basketHeader">
                             <a href="basket.html">Basket
                                 <i class="fas fa-shopping-cart fa-2x"></i>
                                 <span class="badge badge-danger badge-counter" id="basketalert_num">0</span>

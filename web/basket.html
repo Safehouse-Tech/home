@@ -1,211 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Shopping Basket | Safehouse Technology</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+        <title>Shopping Basket | Safehouse Technology</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
 
-    <link href="assets/img/favicon_1.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-    
-    <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/img/favicon_1.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+        <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link href="assets/css/basket.css" rel="stylesheet">
-    
-    <link href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet">
-    
-    
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    
-    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/purecounter/purecounter.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
 
-    <!--<script src="assets/js/main.js"></script>-->
-    <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/all.js"></script>
-    
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-    
-    <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.25/api/sum().js"></script> 
-    
-    
-    <script src="assets/js/basket.js"></script>
-    
-</head>
-<style>
-    
-    
-    #example td, #example tr 
-    {
-        text-align: center; 
-        font-size: 15px;
-        cursor:pointer;
-    }
-    
-     #example  td {
-        padding: 40px 10px; /* e.g. change 8x to 4px here */
-    }
-    
-/*    #example td:last-child, table tr th:last-child{
-        text-align: right;
-    }*/
-    
-/*    .dataTables_wrapper table thead{
-    display:none;
-}*/
+        <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+        <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-/*border-spacing: 20px*/
-    
-</style>
+        <link href="assets/css/style.css" rel="stylesheet">
+        <link href="assets/css/basket.css" rel="stylesheet">
+
+        <link href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet">
 
 
-<body class="">
+        <script src="assets/vendor/aos/aos.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <div id="headerdiv"></div>
-    
-    <main id="main">
-    
-        <section class="features no-margin-bottom">
-            <div class="container" data-aos="zoom-in">
+        <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+        <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
+        <script src="assets/vendor/purecounter/purecounter.js"></script>
+        <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+        <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
 
-                <div class="section-title">
-                    <h2 style="color: #68A4C4;">Shopping Basket</h2>
-                    <p></p>
+        <!--<script src="assets/js/main.js"></script>-->
+        <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/js/all.js"></script>
+
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+        <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.25/api/sum().js"></script> 
+
+        <script src="assets/vendor/notify.min.js"></script>
+
+        <!--<script src="assets/js/basket.js"></script>-->
+
+    </head>
+
+    <script>
+
+        $(document).ready(function () {
+
+            //        loadBasketItems();
+
+            loadBasketTable();
+
+            $('#basketTable').on('click', '.remove', function ()
+            {
+                var table = $('#basketTable').DataTable();
+                
+                var selected_row = table.row($(this).parents('tr')).data();
+                var product_id   = selected_row[1]; //console.log("product_id", product_id);
+                
+                updatebasket(product_id);
+                table.row($(this).parents('tr')).remove().draw();
+                
+            });
+
+            $(window).resize(function ()
+            {
+                $(window).width() >= 768 ? $(".cart").css("min-height", "600px") : "";
+            }).resize();
+
+        });
+
+    </script>
+    <style>
+
+        #basketTable
+        {
+            /*overflow-x: scroll;*/
+        }
+
+        #basketTable td, #basketTable tr 
+        {
+            text-align: center; 
+            font-size: 15px;
+            cursor:pointer;
+        }
+
+        #basketTable  td {
+            padding: 40px 10px; /* e.g. change 8x to 4px here */
+        }
+
+        /*    #example td:last-child, table tr th:last-child{
+                text-align: right;
+            }*/
+
+        /*    .dataTables_wrapper table thead{
+            display:none;
+        }*/
+
+        /*border-spacing: 20px*/
+
+    </style>
+
+
+    <body class="">
+
+        <div id="headerdiv"></div>
+
+        <main id="main">
+
+            <section class="features no-margin-bottom">
+                <div class="container" data-aos="zoom-in">
+
+                    <div class="section-title">
+                        <h2 style="color: #68A4C4;">Shopping Basket</h2>
+                        <p></p>
+                    </div>
+
                 </div>
-                
-            </div>
-        </section>
-        
-        
-        <section class="">
-            <div class="container">
-                
-               
-                <div class="card mb-5">
-                    <div class="row">
-                        <div class="col-md-8 cart">
-                            
-                            <div class="title ">
-                                <div class="row ">
-                                    <div class="col">
-                                        <h4><b>Shopping Cart</b></h4>
-                                    </div>
-                                    <div class="col align-self-center text-end text-muted">3 items</div>
-                                </div>
-                                
-                            </div>
-                            
-                            
-                            <table id="example" class="row-border m-0 p-0 hover" style="width:100%; ">
-                                <thead>
-                                    <tr>
-                                        <th style="min-width:60px;"></th>
-                                        <th style="min-width:100px;"></th>
-                                        <th style="min-width:60px;"></th>
-                                         
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        
-<!--                                        <th style="min-width:60px;">number</th>
-                                        <th style="min-width:60px;">per price</th>-->
-                                    </tr>
-                                </thead>
-                            </table>
-                            
-                            
-                            
-                            <div class="card-footer border-0 p-0 bg-transparent" >
-                                <div class="back-to-shop">
-                                    <a href="shop.html">&leftarrow; 
-                                    <span class="text-muted">
-                                        Back to shop
-                                    </span>
+            </section>
 
+
+            <section class="">
+                <div class="container">
+
+
+                    <div id="basketCard" class="card mb-5 pos-demo">
+                        <div class="row">
+                            <div class="col-md-8 cart">
+
+                                <div class="title ">
+                                    <div class="row ">
+                                        <div class="col">
+                                            <h4><b>Shopping Cart</b></h4>
+                                        </div>
+                                        <div class="col align-self-center text-end text-muted">
+                                            <span id="total_itemsLeftCard"></span> items
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table id="basketTable" class="row-border m-0 p-0 hover" style="width:100%; ">
+
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Product id</th>
+                                                <th>Product name</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Remove item</th>
+                                            </tr>
+                                        </thead>
+
+                                        <thead>
+                                            <tr>
+                                                <th style="min-width:60px;"></th>
+                                                <th style="min-width:100px;"></th>
+                                                <th style="min-width:60px;"></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+
+                                                <!--                                        <th style="min-width:60px;">number</th>
+                                                                                        <th style="min-width:60px;">per price</th>-->
+                                            </tr>
+                                        </thead>
+                                    </table>
+
+                                </div>
+
+                                <div class="card-footer border-0 p-0 bg-transparent" >
+                                    <div class="back-to-shop">
+                                        <a href="shop.html">&leftarrow; 
+                                            <span class="text-muted">
+                                                Back to shop
+                                            </span>
+
+                                        </a>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-4 summary">
+                                <div>
+                                    <h5><b>Summary</b></h5>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col" style="padding-left:0;">
+                                        ITEMS <label id="total_itemsRightCard"></label>
+                                    </div>
+                                    <div  class="col text-end">
+                                        &pound; <label id="priceamt"></label>
+                                    </div>
+                                </div>
+                                <form>
+                                    <p>SHIPPING</p> 
+                                    <select class="form-select">
+                                        <option class="text-muted">Standard-Delivery- &pound;5.00</option>
+                                    </select>
+                                    <p>PROMOTION CODE</p> 
+                                    <input type="text" class="form-control" id="code" placeholder="Enter your code">
+
+                                </form>
+                                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                                    <div class="col">TOTAL PRICE</div>
+                                    <div class="col text-end">&pound; 137.00</div>
+                                </div> 
+                                <!--<button class="btn">CHECKOUT</button>-->
+                                <div class="d-grid gap-2 mt-4">
+                                    <a class="btn mt-auto checkout" href="basket-checkout.html"> <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
+                                        Proceed to checkout
                                     </a>
                                 </div>
-                                
+
+
                             </div>
-                            
-                            
                         </div>
-                        
-                        <div class="col-md-4 summary">
-                            <div>
-                                <h5><b>Summary</b></h5>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col" style="padding-left:0;">
-                                    ITEMS <label id="totalItems"></label>
-                                </div>
-                                <div  class="col text-end">
-                                    &pound; <label id="priceamt"></label>
-                                </div>
-                            </div>
-                            <form>
-                                <p>SHIPPING</p> 
-                                <select class="form-select">
-                                    <option class="text-muted">Standard-Delivery- &pound;5.00</option>
-                                </select>
-                                <p>GIVE CODE</p> 
-                                <input type="text" class="form-control" id="code" placeholder="Enter your code">
-                               
-                            </form>
-                            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                                <div class="col">TOTAL PRICE</div>
-                                <div class="col text-end">&pound; 137.00</div>
-                            </div> 
-                            <!--<button class="btn">CHECKOUT</button>-->
-                            <div class="d-grid gap-2 mt-4">
-                                <a class="btn mt-auto checkout" href="basket-checkout.html"> <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
-                                    Proceed to checkout
-                                </a>
-                            </div>
-                            
-                            
-                        </div>
+
                     </div>
-                    
+
+
+
                 </div>
-                
-               
-                
-            </div>
-        </section>
-        
+            </section>
 
-    </main>
-   
-    <div id="footerdiv"></div>
 
-    
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+        </main>
 
- 
-    
+        <div id="footerdiv"></div>
 
-</body>
+
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+
+
+    </body>
 
 </html>
 

@@ -40,7 +40,7 @@ public class BasketItems {
         try {
 
             JSONObject basketSession = new JSONObject();
-            long basketId = 0;
+            long basketId = 0, totalItems = 0;
             JSONObject basketItems = new JSONObject();
             JSONObject previousOrders = new JSONObject();
 
@@ -49,7 +49,13 @@ public class BasketItems {
             rs = pst.executeQuery();
             if (rs.next()) {
                 basketId = rs.getLong("BASKET_ID");
-                basketItems = (JSONObject) jsonParser.parse(rs.getString("BASKET_ITEMS"));
+                
+                if(rs.getString("BASKET_ITEMS")!= null)
+                {
+                    basketItems = (JSONObject) jsonParser.parse(rs.getString("BASKET_ITEMS"));
+                }
+                
+                totalItems = rs.getLong("TOTAL_ITEMS");
             } else {
 
                 String sqlIdentifier = "select SHOP_SEQ.NEXTVAL from dual";
@@ -69,16 +75,20 @@ public class BasketItems {
                 pst.setLong(1, basketId);
                 pst.setString(2, person_id);
                 pst.setString(3, "basket");
+                
                 pst.executeUpdate();
             }
 
             /*
             
-            write same sql to get previous orders where status is ordered or deliverd
+                    write same sql to get previous orders where status is ordered or deliverd
              */
+            
+            
             basketSession.put("basketId", basketId);
             basketSession.put("basketItems", basketItems);
-
+            basketSession.put("totalItems", totalItems);
+            
             result.put("basketSession", basketSession);
             result.put("previousOrders", previousOrders);
 
@@ -105,7 +115,7 @@ public class BasketItems {
         return result;
     }
 
-    public String updateBasket(String person_id, String basket_id, JSONObject basketItems) {
+    public String updateBasket(String person_id, String basket_id, JSONObject basketItems, String totalItems) {
 
         String result = "basket items not updated";
 
@@ -115,7 +125,8 @@ public class BasketItems {
         try 
         {
             String basketUpdate = "Update SHOP_ORDERS set "
-                    + "BASKET_ITEMS= '" + basketItems + "'"
+                    + "BASKET_ITEMS= '" + basketItems + "', "
+                    + "TOTAL_ITEMS= '" + totalItems + "'"
                     + "where BASKET_ID = '" + basket_id + "' ";
             pst = conn.prepareStatement(basketUpdate);
 

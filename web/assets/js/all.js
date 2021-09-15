@@ -12,6 +12,8 @@ var sensorDescription = new Object();
 var personDetails = new Object();
 var basketSession = new Object();
 
+var basketItems = new Object();
+
 $(document).ready(function () {
 
     $("#headerdiv").load("header.html");
@@ -55,48 +57,55 @@ function showPassword(inputID)
 
 async function customerLogin(email, password)
 {
-    console.log("email, " + email, password);
-    
     await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=' + email + '&password=' + password + ' ')
-    .then(function (response)
-    {
-        if (response.status !== 200 && response.ok !== true)
-        {
-            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-            return;
-        }
-
-        // Examine the text in the response
-        response.json().then(function (data)
-        {
-            //console.log(data);
-            if (data.status !== '200')
+            .then(function (response)
             {
-                console.log('Looks like there was a problem. Status Code: ' + response.status);
-                $(".pos-demo").notify(
-                        "Invalid username or password",
-                        {
-                            className: "error",
-                            position: "right"
-                        });
-                return;
-            }
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    return;
+                }
 
-            sessionDetails.personDetails = data.extra.personDetails;
-            sessionDetails.previousOrders = data.extra.previousOrders;
-            sessionDetails.basketSession = data.extra.basketSession;
+                // Examine the text in the response
+                response.json().then(function (data)
+                {
+                    //console.log(data);
+                    if (data.status !== '200')
+                    {
+                        console.log('Looks like there was a problem. Status Code: ' + response.status);
+                        $(".pos-demo").notify(
+                                "Invalid username or password",
+                                {
+                                    className: "error",
+                                    position: "right"
+                                });
+                        return;
+                    }
 
-            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+                    if(localStorage.hasOwnProperty('sessionDetails'))
+                    {
+                        sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+                        console.log("sessionDetails12", sessionDetails);
+                    }
+                    
+                    sessionDetails.personDetails = data.extra.personDetails;
+                    sessionDetails.previousOrders = data.extra.previousOrders;
+                    sessionDetails.basketSession = data.extra.basketSession;
 
-            var lastURL = document.referrer;
+                    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
-            lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : window.location.href = 'index.html';// history.back();
+                    //var lastURL = document.referrer;  // console.log("lastURL", lastURL);
+                    var lastURL = window.location.href ;
+//                    lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : window.location.href = 'index.html';// history.back();
 
-        });
-    })
-    .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-    });
+                    window.location.href = lastURL.includes("product-description.html") ? 
+                      'product-description.html' : 'index.html';// history.back();
+
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
 
 }
 
@@ -113,11 +122,10 @@ function shopProduct(product_id, product_name, price, image_path, description_pa
     sensorDescription.technology = technology;
     sensorDescription.extra = extra;
 
-    if (!localStorage.hasOwnProperty('sessionDetails')){
+    if (!localStorage.hasOwnProperty('sessionDetails')) {
         sessionDetails.sensorDescription = sensorDescription;
         localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
-    } 
-    else{
+    } else {
         sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
         sessionDetails.sensorDescription = sensorDescription;            //   console.log('sessionDetails', JSON.stringify(sessionDetails));
         localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
@@ -130,16 +138,14 @@ function productDescription()
 {
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
-//    console.log("sessionDetails12", sessionDetails);
+    console.log("sessionDetails123", sessionDetails);
 
     sensorDescription = sessionDetails.sensorDescription;
 
     $("#product_id").text(sensorDescription.product_id);
     $("#product_name").text(sensorDescription.product_name);
     $("#product_price").text(sensorDescription.price);
-
     $("#product_technology").text(sensorDescription.technology);
-
     $("#product_extra").text(sensorDescription.extra);
 
 
@@ -169,6 +175,8 @@ function productDescription()
 
 async function addtobasket()
 {
+    // need to add total items to database
+    
     if (!localStorage.hasOwnProperty('sessionDetails'))
     {
         $("#staticBackdrop").modal('show');
@@ -192,7 +200,13 @@ async function addtobasket()
             var price = parseFloat(($("#product_price").text()).toString().replace(/^\D+/g, ''));
             var total_price = price * product_quantity;
 
+            var allimages = sessionDetails.sensorDescription.image_path + '';
+            var images = allimages.split(",");
+
+            var product_image = images[0];
+
             var productObject = {
+                product_image: product_image,
                 product_name: product_name,
                 quantity: product_quantity,
                 price_id: price_id,
@@ -201,93 +215,93 @@ async function addtobasket()
             };
 
             basketSession = sessionDetails.basketSession;
-            if (!basketSession.hasOwnProperty('basketItems')){
+            if (!basketSession.hasOwnProperty('basketItems')) {
                 var basketItems = {};
                 basketItems[product_id] = productObject;
                 basketSession.basketItems = basketItems;
-            } 
-            else {
+            } else {
                 basketSession.basketItems[product_id] = productObject;
             }
 
             if (!basketSession.hasOwnProperty('totalItems'))
             {
                 basketSession.totalItems = product_quantity;
-            } else {
-                
-                var totalItems = 0 ;
+            } else
+            {
+                var totalItems = 0;
                 // each object quantity calculate
-                Object.keys(basketSession.basketItems).forEach(function(key) {
-
-                    //console.log(key, basketSession.basketItems[key].quantity);
-                    totalItems = totalItems +  basketSession.basketItems[key].quantity ;
-
+                Object.keys(basketSession.basketItems).forEach(function (key) {
+                    totalItems = totalItems + basketSession.basketItems[key].quantity;   //console.log(key, basketSession.basketItems[key].quantity);
                 });
-                
-                basketSession.totalItems = totalItems ;
+
+                basketSession.totalItems = totalItems;
             }
 
-         
-            var person_id = sessionDetails.personDetails.person_id;
-            var basket_id = basketSession.basketId;
-            var basketItems = JSON.stringify(basketSession.basketItems);
-            
-            // updatebasket(person_id, basket_id, basketItems)
-         ///*   
-            await fetch('/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' +person_id+ '&basket_id=' +basket_id+ '&basketItems=' +basketItems , {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(function (response)
-            {
-                if (response.status !== 200 && response.ok !== true)
-                {
-                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-                    return;
-                }
+// if we pass basketSession i.e global object to function value will be the one with the change.
 
-                response.json().then(function (data)
-                {
-                    console.log("data", data);
-                    var notifyText, notifyStatus ;
-                    
-                    if(data.extra === "basket items updated")
-                    {
-                        notifyText = "Item added to basket" ;
-                        notifyStatus = "success";
+            updatebasket();
 
-                        $("#basketalert_num").text(basketSession.totalItems);
+            /* 
+             var person_id = sessionDetails.personDetails.person_id;
+             var basket_id = basketSession.basketId;
+             var basketItems = JSON.stringify(basketSession.basketItems);
+             
+             // updatebasket(person_id, basket_id, basketItems)
+             
+             await fetch('/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&basket_id=' + basket_id + '&basketItems=' + basketItems, {
+             method: 'POST',
+             headers: {
+             'Content-Type': 'application/json'
+             }
+             })
+             .then(function (response)
+             {
+             if (response.status !== 200 && response.ok !== true)
+             {
+             console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+             return;
+             }
+             
+             response.json().then(function (data)
+             {
+             console.log("data", data);
+             var notifyText, notifyStatus;
+             
+             
+             if (data.extra === "basket items updated")
+             {
+             notifyText = "Item added to basket";
+             notifyStatus = "success";
+             
+             $("#basketalert_num").text(basketSession.totalItems);
+             
+             sessionDetails.basketSession = basketSession;
+             
+             console.log("sessionDetails", sessionDetails);
+             
+             localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+             
+             } else {
+             notifyText = "Item not added to basket";
+             notifyStatus = "error";
+             }
+             
+             $(".pos-demo").notify(
+             notifyText,
+             {
+             className: notifyStatus,
+             position: "right"
+             });
+             
+             
+             });
+             })
+             .catch(function (err) {
+             console.log('Fetch Error :-S', err);
+             });
+             */
 
-                        sessionDetails.basketSession = basketSession;
 
-                        console.log("sessionDetails", sessionDetails);
-
-                        localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
-                    }
-
-                    else {
-                        notifyText = "Item not added to basket" ;
-                        notifyStatus = "error";
-                    }
-
-                    $(".pos-demo").notify(
-                        notifyText,
-                        {
-                            className: notifyStatus,
-                            position: "right"
-                        });
-            
-                    
-                });
-            })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-            });
-         //*/   
-            
-           
         }
     }
 
@@ -296,16 +310,34 @@ async function addtobasket()
 /*
  * 
  *const secondFunction = async () => {
-  const result = await firstFunction()
-  // do something else here after firstFunction completes
-}
+ const result = await firstFunction()
+ // do something else here after firstFunction completes
+ }
  */
 
- /*
-async function updatebasket(person_id, basket_id, basketItems)
+
+async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketItems)
 {
+    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+
+    var person_id = sessionDetails.personDetails.person_id;
+    var basket_id = basketSession.basketId;
+    var totalItems = basketSession.totalItems;
+
+    if (typeof removeProduct_id !== 'undefined')
+    {
+        //var totalItems = 0;
+        basketSession.totalItems = basketSession.totalItems - basketSession.basketItems[removeProduct_id].quantity;
+        delete basketSession.basketItems[removeProduct_id];
+
+        // console.log("basketSession", basketSession);
+    }
+
+    var basketItems = JSON.stringify(basketSession.basketItems);        //console.log("basketItems", basketItems);
+
     var result;
-    await fetch('/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' +person_id+ '&basket_id=' +basket_id+ '&basketItems=' +basketItems , {
+    await fetch('/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&basket_id=' +
+            basket_id + '&basketItems=' + basketItems + '&totalItems=' + totalItems, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -321,28 +353,134 @@ async function updatebasket(person_id, basket_id, basketItems)
 
         response.json().then(function (data)
         {
-            console.log("data", data);
-            result = data.extra;
-            console.log("result: "+ result);
-            
+            result = data.extra;        //console.log("result: " + result);
+
+            var notifyText = "Item not added to basket",
+                    notifyStatus = "error",
+                    notifyPosition = "right";
+
+            if (data.extra === "basket items updated")
+            {
+                if (window.location.href.includes("basket.html"))
+                {
+                    notifyText = "Item removed from basket";
+                    notifyStatus = "info";
+                    notifyPosition = "top center";
+                    
+                } else {
+                    notifyText = "Item added to basket";
+                    notifyStatus = "success";
+                }
+            }
+
+            $(".pos-demo").notify(
+                    notifyText,
+                    {
+                        className: notifyStatus,
+                        position: notifyPosition
+                    });
+
+            $("#basketalert_num").text(basketSession.totalItems);
+
+            sessionDetails.basketSession = basketSession;       //console.log("sessionDetails", sessionDetails);
+
+            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+
         });
     })
     .catch(function (err) {
         console.log('Fetch Error :-S', err);
     });
+
     
-    return result;
+
 }
 
-  */
+
 
 /*************************************  Basket Page Representation Functions   *****************************************************/
 
-function loadBasketItems()
-{
-    // load at basket page
 
-    // check best representation with table or cards
+
+function loadBasketTable()
+{
+    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+
+    basketSession = sessionDetails.basketSession;
+//    basketItems = sessionDetails.basketSession.basketItems;
+
+    var tablerowdata = new Array();
+
+    Object.keys(basketSession.basketItems).forEach(function (key) {
+
+//        console.log(key, basketSession.basketItems[key].quantity);
+
+        var rowdata = new Array();
+        rowdata.push('<img src="' + basketSession.basketItems[key].product_image + '" class="img-fluid " alt="">');
+        rowdata.push(key);
+        rowdata.push(basketSession.basketItems[key].product_name);
+        rowdata.push(basketSession.basketItems[key].quantity);
+        rowdata.push('£ ' + basketSession.basketItems[key].total_price);
+        rowdata.push('<button class="btn btn-link btn-sm remove" type="button"><i class="fas fa-times text-danger fa-lg" style="cursor:pointer"></i></button>');
+
+        tablerowdata.push(rowdata);
+    });
+
+    var dt = $('#Property_list').DataTable();
+
+
+    $('#basketTable').DataTable({
+        data: tablerowdata,
+        "searching": false,
+        "paging": false,
+        "bInfo": false,
+        "bSort": false,
+        "responsive": true,
+        "language": {
+            "emptyTable": "Basket is empty, please proceed to shop"
+        },
+        'columns': [
+            null,
+            //hide the second column
+            {'visible': false},
+            null,
+            null,
+            null,
+            null
+        ],
+        "footerCallback": function (row, data, start, end, display)
+        {
+//                console.log(data);
+            var totalAmount = 0;
+            var totatItems = 0;
+
+            for (var i = 0; i < data.length; i++)
+            {
+                totatItems += data[i][3];
+
+                var price = data[i][4].split('£ ');
+                totalAmount += parseFloat(price[1]);
+
+            }
+            $('#total_itemsLeftCard').text(totatItems);
+            $('#total_itemsRightCard').text(totatItems);
+            $('#priceamt').text(totalAmount);
+        },
+        "rowCallback": function (row, data)
+        {
+
+
+        }
+    });
+
+//    var total_items = 0;
+//    $.each($('#basketTable').DataTable().column(3).data(), function (i, cell)
+//    {
+//        var cellObject = $.parseHTML(cell);
+//        total_items += parseInt(cellObject[0]);
+//    });
+
+
 }
 
 
@@ -450,24 +588,24 @@ async function signupCustomer()
             'Content-Type': 'application/json'
         }
     })
-    .then(function (response)
-    {
-        if (response.status !== 200 && response.ok !== true)
-        {
-            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-            return;
-        }
+            .then(function (response)
+            {
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    return;
+                }
 
-        // Examine the text in the response
-        response.json().then(function (data)
-        {
-            console.log("data", data);
-            customerLogin(email, password);
-        });
-    })
-    .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-    });
+                // Examine the text in the response
+                response.json().then(function (data)
+                {
+                    console.log("data", data);
+                    customerLogin(email, password);
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
 
 
 }
