@@ -117,6 +117,8 @@ public class BasketItems {
 
     public String updateBasket(String person_id, String basket_id, JSONObject basketItems, String totalItems) {
 
+        // WHEN basket ordered then get order timestamp.
+        
         String result = "basket items not updated";
 
         PreparedStatement pst = null;

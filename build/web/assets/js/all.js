@@ -322,7 +322,7 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
 
     var person_id = sessionDetails.personDetails.person_id;
     var basket_id = basketSession.basketId;
-    var totalItems = basketSession.totalItems;
+    
 
     if (typeof removeProduct_id !== 'undefined')
     {
@@ -332,7 +332,8 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
 
         // console.log("basketSession", basketSession);
     }
-
+    
+    var totalItems = basketSession.totalItems;
     var basketItems = JSON.stringify(basketSession.basketItems);        //console.log("basketItems", basketItems);
 
     var result;
@@ -382,7 +383,7 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
 
             $("#basketalert_num").text(basketSession.totalItems);
 
-            sessionDetails.basketSession = basketSession;       //console.log("sessionDetails", sessionDetails);
+            sessionDetails.basketSession = basketSession;       console.log("sessionDetails", sessionDetails);
 
             localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
