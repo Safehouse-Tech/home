@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shopgateway.rough;
+package checkout;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,32 +45,36 @@ public class stripecheckout extends HttpServlet {
 //            System.out.println("product: " + a);
 //
 //            Stripe.apiKey = "sk_test_51JPqtTGpCsnZmArETlyBBu1ut4PoOsIfxihO1srVaAXDOSRqzBH8zyKO2ymWWznIapvYC8qCIRWOtLQeQ73uGDFs00LDHtuCAc";
-
 //            Price a = Price.retrieve("price_1JX3mgGpCsnZmArEgzvUViL6");
-        
-
             List<Object> paymentMethodTypes = new ArrayList<>();
             paymentMethodTypes.add("card");
             List<Object> lineItems = new ArrayList<>();
-            
+
             Map<String, Object> lineItem1 = new HashMap<>();
             lineItem1.put("price", "price_1JX3mgGpCsnZmArEgzvUViL6");
             lineItem1.put("quantity", 2);
-            
+
             Map<String, Object> lineItem2 = new HashMap<>();
             lineItem2.put("price", "price_1JX3jfGpCsnZmArECw0S45GP");
             lineItem2.put("quantity", 1);
+  /*          
+            Map<String, Object> adjustable_quantity = new HashMap<>();
+            adjustable_quantity.put("minimum", 1);
+            adjustable_quantity.put("maximum", 10);
+            adjustable_quantity.put("enabled", true);
             
+            lineItem1.put("adjustable_quantity", adjustable_quantity);
+            lineItem2.put("adjustable_quantity", adjustable_quantity);
             
+*/
             lineItems.add(lineItem1);
             lineItems.add(lineItem2);
-            
-            System.out.println("lineItems: "+ lineItems);
-                    
-            
-            Map<String,Object> payment = new HashMap<>();
+
+            System.out.println("lineItems: " + lineItems);
+
+            Map<String, Object> payment = new HashMap<>();
             payment.put("receipt_email", "gagansingh2822@gmail.com");
-            
+
             Map<String, Object> params = new HashMap<>();
             params.put(
                     "success_url",
@@ -87,16 +91,18 @@ public class stripecheckout extends HttpServlet {
             params.put("line_items", lineItems);
             params.put("mode", "payment");
 
+            params.put("shipping_rates[]", "shr_1JaKRJGpCsnZmArEKQzOIgRJ");
+
+            params.put("allow_promotion_codes", true);
+
             params.put("payment_intent_data", payment);
 
-            System.out.println("params: "+ params);
-            
+//            System.out.println("params: "+ params);
             Session session = Session.create(params);
-            
+
 //            System.out.println("get order id / payment id");
-            
-            System.out.println("session: "+session);
-            
+            System.out.println("session: " + session);
+
         }
     }
 
