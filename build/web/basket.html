@@ -57,7 +57,7 @@
     <script>
 
         $(document).ready(function () {
-
+//$('#checkoutButton').prop('disabled', true);
             //        loadBasketItems();
 
             loadBasketTable();
@@ -71,6 +71,13 @@
                 
                 updatebasket(product_id);
                 table.row($(this).parents('tr')).remove().draw();
+                
+                if ( ! table.data().any() ) {
+                    $('#checkoutButton').prop('disabled', true);
+                }
+                else {
+                    $('#checkoutButton').prop('disabled', false);
+                }
                 
             });
 
@@ -221,13 +228,15 @@
                                 </form>
                                 <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                                     <div class="col">TOTAL PRICE</div>
-                                    <div class="col text-end">&pound; 137.00</div>
+                                    <div class="col text-end">
+                                        &pound; <label id="finalpriceamt"></label>
+                                    </div>
                                 </div> 
                                 <!--<button class="btn">CHECKOUT</button>-->
                                 <div class="d-grid gap-2 mt-4">
-                                    <a class="btn mt-auto checkout" href="basket-checkout.html"> <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
+                                    <button id="checkoutButton" class="btn mt-auto checkout" href="basket-checkout.html" > <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
                                         Proceed to checkout
-                                    </a>
+                                    </button>
                                 </div>
 
 

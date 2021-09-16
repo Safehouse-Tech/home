@@ -201,7 +201,7 @@ async function addtobasket()
             var product_quantity = parseInt($('#select_quantity').find(":selected").text());
             var price_id = $("#price_id").text();
             var price = parseFloat(($("#product_price").text()).toString().replace(/^\D+/g, ''));
-            var total_price = price * product_quantity;
+            var total_price = Number.parseFloat(price * product_quantity).toFixed(2);
 
             var allimages = sessionDetails.sensorDescription.image_path + '';
             var images = allimages.split(",");
@@ -464,11 +464,16 @@ function loadBasketTable()
 
                 var price = data[i][4].split('£ ');
                 totalAmount += parseFloat(price[1]);
-
+                
             }
             $('#total_itemsLeftCard').text(totatItems);
             $('#total_itemsRightCard').text(totatItems);
+            
+            totalAmount = Number.parseFloat(totalAmount).toFixed(2);
+            
             $('#priceamt').text(totalAmount);
+            
+            $('#finalpriceamt').text(totalAmount);
         },
         "rowCallback": function (row, data)
         {
