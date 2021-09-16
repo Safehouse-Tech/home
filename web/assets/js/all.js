@@ -112,7 +112,7 @@ async function customerLogin(email, password)
 /*************************************  Product Description Functions   *****************************************************/
 
 
-function shopProduct(product_id, product_name, price, image_path, description_path, technology, extra)
+function shopProduct(product_id, product_name, price, image_path, description_path, technology, extra, price_id)
 {
     sensorDescription.product_id = product_id;
     sensorDescription.product_name = product_name;
@@ -121,6 +121,7 @@ function shopProduct(product_id, product_name, price, image_path, description_pa
     sensorDescription.description_path = description_path;
     sensorDescription.technology = technology;
     sensorDescription.extra = extra;
+    sensorDescription.price_id = price_id;
 
     if (!localStorage.hasOwnProperty('sessionDetails')) {
         sessionDetails.sensorDescription = sensorDescription;
@@ -147,6 +148,8 @@ function productDescription()
     $("#product_price").text(sensorDescription.price);
     $("#product_technology").text(sensorDescription.technology);
     $("#product_extra").text(sensorDescription.extra);
+
+    $("#price_id").text(sensorDescription.price_id);
 
 
     var allimages = sensorDescription.image_path + '';
