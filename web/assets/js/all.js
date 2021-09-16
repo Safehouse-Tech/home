@@ -30,6 +30,9 @@ $(document).ready(function () {
 
 });
 
+$(function () {
+  $('[data-bs-toggle="tooltip"]').tooltip()
+});
 
 function logOut()
 {
@@ -430,8 +433,6 @@ function loadBasketTable()
         tablerowdata.push(rowdata);
     });
 
-    var dt = $('#Property_list').DataTable();
-
 
     $('#basketTable').DataTable({
         data: tablerowdata,
@@ -443,15 +444,10 @@ function loadBasketTable()
         "language": {
             "emptyTable": "Basket is empty, please proceed to shop"
         },
-        'columns': [
-            null,
-            //hide the second column
-            {'visible': false},
-            null,
-            null,
-            null,
-            null
-        ],
+        'columns': [null,{'visible': false},null,null,null,null],
+        "columnDefs": [
+            {"className": "dt-center", "targets": "_all"}
+          ],
         "footerCallback": function (row, data, start, end, display)
         {
 //                console.log(data);
@@ -489,6 +485,9 @@ function loadBasketTable()
 //        total_items += parseInt(cellObject[0]);
 //    });
 
+    //sessionDetails.basketSession.totalItems === 0 ? $('#checkoutButton').prop('disabled', true) : $('#checkoutButton').prop('disabled', false);
+
+    sessionDetails.basketSession.totalItems === 0 ? $('#checkoutDiv').hide() : $('#checkoutDiv').show();;
 
 }
 

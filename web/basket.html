@@ -44,21 +44,23 @@
         <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/all.js"></script>
 
-        <script type="text/javascript" src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<!--        <script type="text/javascript" src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.25/api/sum().js"></script> -->
 
-        <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.25/api/sum().js"></script> 
-
+        <script type="text/javascript" src="assets/vendor/dataTables.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/datatable.sum().js"></script>
+        
         <script src="assets/vendor/notify.min.js"></script>
 
         <!--<script src="assets/js/basket.js"></script>-->
+        
+        <!--<script src="https://js.stripe.com/v3/"></script>-->
 
     </head>
 
     <script>
 
         $(document).ready(function () {
-//$('#checkoutButton').prop('disabled', true);
-            //        loadBasketItems();
 
             loadBasketTable();
 
@@ -70,14 +72,12 @@
                 var product_id   = selected_row[1]; //console.log("product_id", product_id);
                 
                 updatebasket(product_id);
+                
                 table.row($(this).parents('tr')).remove().draw();
                 
-                if ( ! table.data().any() ) {
-                    $('#checkoutButton').prop('disabled', true);
-                }
-                else {
-                    $('#checkoutButton').prop('disabled', false);
-                }
+//                ( ! table.data().any() ) ? $('#checkoutDiv').hide() : $('#checkoutDiv').show() ;
+
+                ( ! table.data().any() ) ? $("#checkoutDiv *").prop('disabled', true).off('click')  : $("#checkoutDiv *").prop('disabled', false).on('click');
                 
             });
 
@@ -85,6 +85,7 @@
             {
                 $(window).width() >= 768 ? $(".cart").css("min-height", "600px") : "";
             }).resize();
+            
 
         });
 
@@ -107,13 +108,11 @@
             padding: 40px 10px; /* e.g. change 8x to 4px here */
         }
 
-        /*    #example td:last-child, table tr th:last-child{
-                text-align: right;
-            }*/
-
-        /*    .dataTables_wrapper table thead{
-            display:none;
-        }*/
+        .tooltip-inner {
+            max-width: 350px;
+            /* If max-width does not work, try using width instead */
+            width: 300px; 
+        }
 
         /*border-spacing: 20px*/
 
@@ -158,8 +157,8 @@
 
                                 </div>
 
-                                <div class="table-responsive">
-                                    <table id="basketTable" class="row-border m-0 p-0 hover" style="width:100%; ">
+                                <div class="table-responsive ">
+                                    <table id="basketTable" class=" row-border m-0 p-0 hover" style="width:100%; ">
 
                                         <thead>
                                             <tr>
@@ -169,20 +168,6 @@
                                                 <th>Quantity</th>
                                                 <th>Price</th>
                                                 <th>Remove item</th>
-                                            </tr>
-                                        </thead>
-
-                                        <thead>
-                                            <tr>
-                                                <th style="min-width:60px;"></th>
-                                                <th style="min-width:100px;"></th>
-                                                <th style="min-width:60px;"></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-
-                                                <!--                                        <th style="min-width:60px;">number</th>
-                                                                                        <th style="min-width:60px;">per price</th>-->
                                             </tr>
                                         </thead>
                                     </table>
@@ -217,28 +202,37 @@
                                         &pound; <label id="priceamt"></label>
                                     </div>
                                 </div>
-                                <form>
-                                    <p>SHIPPING</p> 
-                                    <select class="form-select">
-                                        <option class="text-muted">Standard-Delivery- &pound;5.00</option>
-                                    </select>
-                                    <p>PROMOTION CODE</p> 
-                                    <input type="text" class="form-control" id="code" placeholder="Enter your code">
+                                <div id="checkoutDiv">
+                                    <form>
+                                        <p>SHIPPING 
+                                            <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" 
+                                               title="Standard Delivery: 5-7 Business Days 
+                                                      Express Delivery: 1-3 Business Days"></i>
+                                        </p> 
+                                        <select class="form-select">
+                                            <option class="text-muted" value="shr_1JaKRJGpCsnZmArEKQzOIgRJ">Standard Delivery - &pound;5.00</option>
+                                            <option class="text-muted" value="shr_1JaKYsGpCsnZmArESHQb9E6S">Express Delivery - &pound;10.00</option>
+                                        </select>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" id="promotion_code" placeholder="Promotion code">
+                                            <span class="input-group-text" onclick="alert('checking code')" style="cursor:pointer">Check</span>
+                                        </div>
 
-                                </form>
-                                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                                    <div class="col">TOTAL PRICE</div>
-                                    <div class="col text-end">
-                                        &pound; <label id="finalpriceamt"></label>
+                                        
+                                    </form>
+                                    <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                                        <div class="col">TOTAL PRICE</div>
+                                        <div class="col text-end">
+                                            &pound; <label id="finalpriceamt"></label>
+                                        </div>
+                                    </div> 
+
+                                    <div class="d-grid gap-2 mt-4">
+                                        <button id="checkoutButton" class="btn mt-auto checkout" href="basket-checkout.html" > <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
+                                            Proceed to checkout
+                                        </button>
                                     </div>
-                                </div> 
-                                <!--<button class="btn">CHECKOUT</button>-->
-                                <div class="d-grid gap-2 mt-4">
-                                    <button id="checkoutButton" class="btn mt-auto checkout" href="basket-checkout.html" > <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
-                                        Proceed to checkout
-                                    </button>
                                 </div>
-
 
                             </div>
                         </div>
@@ -264,239 +258,3 @@
     </body>
 
 </html>
-
-<!--    data-aos="fade-up" -->
-
-<!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
-
-<!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
-
-<!-- 
-
-
- <br><br>
-                <div class="row justify-content-between">  
-                    
-                    <div class="col-md-3">
-                        
-                        <a class="btn add_to_cart mt-auto" href="shop.html"> 
-                            Continue shopping
-                        </a>
-                    </div>
-                    
-                    <div class="col-md-3 text-end">
-                        
-                        <a class="btn add_to_cart mt-auto" href="basket-checkout.html"> 
-                            Proceed to checkout
-                        </a>
-                    </div>
-                    
-                </div>
-
-<div class=" d-flex justify-content-between">
-                    <h5>Your items</h5>
-                    
-                    <span>Price</span>
-                </div>
-                
-                <hr>
-                <div class="row d-flex justify-content-between" data-aos="fade-up">
-                    
-                    <div class="col-md-11">
-                        
-                        <div class="row">
-                            <div class="col-md-2 my-auto">
-                                <img src="assets/img/website-images/safehousehub.png" class="img-fluid" alt="">
-                            </div>
-                            <div class="col-md-10 pt-4 my-auto">
-                                <h5 style="color:#68A4C4;" class="mb-3">
-                                    Safehouse hub
-                                </h5>
-                                <div class="small mb-1" id=""> Product-Id:  sh-1</div>
-
-                                <select id="" class="form-select" style="max-width: 5rem">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                                <button type="button" class="btn btn-link">Delete</button>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="col-md-1" >
-                        <p class="text-end text-dark">
-                            £412.80
-                        </p>
-                    </div>
-                    
-                </div>
-
-                <hr>
-                
-                <div class="row d-flex justify-content-between" data-aos="fade-up">
-                    
-                    <div class="col-md-11">
-
-                        <div class="row" data-aos="fade-up">
-                            <div class="col-md-2 my-auto">
-                                <img src="assets/img/website-images/safehouse-compact.png" class="img-fluid" alt="">
-                            </div>
-                            <div class="col-md-10 pt-4 my-auto">
-                                <h5 style="color:#68A4C4;" class="mb-3">
-                                    Safehouse compact
-                                </h5>
-
-                                <div class="small mb-1" id=""> Product-Id:  sh-1</div>
-
-                                <select id="" class="form-select" style="max-width: 5rem">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                                <button type="button" class="btn btn-link">Delete</button>
-
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-1" >
-                        <p class="text-end text-dark">
-                            £412.80
-                        </p>
-                    </div>
-                    
-                </div>
-
-                <hr>
-                
-                <div class="row d-flex justify-content-between" data-aos="fade-up">
-                    
-                    <div class="col-md-11">
-
-                        <div class="row" data-aos="fade-up">
-                            <div class="col-md-2 my-auto">
-                                <img src="assets/img/website-images/safehouse-usb.png" class="img-fluid" alt="">
-                            </div>
-                            <div class="col-md-10 pt-4 my-auto">
-                                <h5 style="color:#68A4C4;" class="mb-3">
-                                    Safehouse USB
-                                </h5>
-
-                                <div class="small mb-1" id=""> Product-Id:  sh-1</div>
-
-                                <select id="" class="form-select" style="max-width: 5rem">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                                <button type="button" class="btn btn-link">Delete</button>
-
-                            </div>
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="col-md-1" >
-                        <p class="text-end text-dark">
-                            £45.60
-                        </p>
-                    </div>
-                    
-                </div>
-              
-                <hr>
-                
-                <div class="row text-end text-success" data-aos="fade-up">
-                    
-                    <h5 class="">
-                        Subtotal : £919.20
-                    </h5>
-                </div>
-
--->
-
-
-<!--
-
-<div id="shopContent">
-                                <div class="row border-top border-bottom">
-                                    <div class="row main align-items-center">
-                                        <div class="col-2">
-                                            <img class="img-fluid" src="https://i.imgur.com/1GrakTl.jpg">
-                                        </div>
-                                        <div class="col">
-                                            <div class="row text-muted">Shirt</div>
-                                            <div class="row">Cotton T-shirt</div>
-                                        </div>
-                                        <div class="col"> 
-                                            <a href="#">
-                                                -
-                                            </a>
-                                            <a href="#" class="border">
-                                                1
-                                            </a>
-                                            <a href="#">
-                                                +
-                                            </a> 
-                                        </div>
-                                        <div class="col d-flex justify-content-between">
-                                            &pound; 44.00 
-                                            <span class="close text-end" onclick="$('#shopContent').empty();">&#10005;</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="row main align-items-center">
-                                        <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/ba3tvGm.jpg"></div>
-                                        <div class="col">
-                                            <div class="row text-muted">Shirt</div>
-                                            <div class="row">Cotton T-shirt</div>
-                                        </div>
-                                         <div class="col"> 
-                                            <a href="#">
-                                                -
-                                            </a>
-                                            <a href="#" class="border">
-                                                1
-                                            </a>
-                                            <a href="#">
-                                                +
-                                            </a> 
-                                        </div>
-                                        <div class="col d-flex justify-content-between">
-                                            &pound; 44.00 
-                                            <span class="close text-end">&#10005;</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row border-top border-bottom">
-                                    <div class="row main align-items-center">
-                                        <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/pHQ3xT3.jpg"></div>
-                                        <div class="col">
-                                            <div class="row text-muted">Shirt</div>
-                                            <div class="row">Cotton T-shirt</div>
-                                        </div>
-                                         <div class="col"> 
-                                            <a href="#">
-                                                -
-                                            </a>
-                                            <a href="#" class="border">
-                                                1
-                                            </a>
-                                            <a href="#">
-                                                +
-                                            </a> 
-                                        </div>
-                                        <div class="col d-flex justify-content-between">
-                                            &pound; 44.00 
-                                            <span class="close text-end">&#10005;</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                            
-                            </div>
-
--->
