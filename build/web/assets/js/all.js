@@ -343,7 +343,7 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
     var basketItems = JSON.stringify(basketSession.basketItems);        //console.log("basketItems", basketItems);
 
     var result;
-    await fetch('/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&basket_id=' +
+    await fetch('/home/basketsession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&basket_id=' +
             basket_id + '&basketItems=' + basketItems + '&totalItems=' + totalItems, {
         method: 'POST',
         headers: {
@@ -413,8 +413,7 @@ function loadBasketTable()
 {
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
-    basketSession = sessionDetails.basketSession;
-//    basketItems = sessionDetails.basketSession.basketItems;
+    basketSession = sessionDetails.basketSession;   //    basketItems = sessionDetails.basketSession.basketItems;
 
     var tablerowdata = new Array();
 
@@ -453,6 +452,7 @@ function loadBasketTable()
 //                console.log(data);
             var totalAmount = 0;
             var totatItems = 0;
+            var final_price = 0;
 
             for (var i = 0; i < data.length; i++)
             {
@@ -469,7 +469,14 @@ function loadBasketTable()
             
             $('#priceamt').text(totalAmount);
             
-            $('#finalpriceamt').text(totalAmount);
+            var shippingCharges = $('#shippingcharges').find(":selected").text().replace( /^\D+/g, '');
+            
+            final_price = Number(shippingCharges) + Number(totalAmount);
+            
+            final_price = Number.parseFloat(final_price).toFixed(2);
+            
+            $('#finalpriceamt').text(final_price);
+            
         },
         "rowCallback": function (row, data)
         {
@@ -478,19 +485,42 @@ function loadBasketTable()
         }
     });
 
-//    var total_items = 0;
-//    $.each($('#basketTable').DataTable().column(3).data(), function (i, cell)
-//    {
-//        var cellObject = $.parseHTML(cell);
-//        total_items += parseInt(cellObject[0]);
-//    });
-
     //sessionDetails.basketSession.totalItems === 0 ? $('#checkoutButton').prop('disabled', true) : $('#checkoutButton').prop('disabled', false);
 
     sessionDetails.basketSession.totalItems === 0 ? $('#checkoutDiv').hide() : $('#checkoutDiv').show();;
-
 }
 
+
+async function basketCheckout()
+{
+    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+    
+    var shippingChargesCode = $( "#shippingcharges option:selected" ).val();        //console.log("shippingChargesCode", shippingChargesCode);
+    
+    basketItems = JSON.stringify(sessionDetails.basketSession.basketItems);
+    
+    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=1001&basketItems='+ basketItems + '&shippingCode=' + shippingChargesCode)
+    .then(function (response)
+    {
+        if (response.status !== 200 && response.ok !== true)
+        {
+            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+            return;
+        }
+
+        // Examine the text in the response
+        response.json().then(function (data)
+        {
+            console.log("data", data);
+            
+            window.location.href = data.extra.url;
+            
+        });
+    })
+    .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+    });
+}
 
 
 /*************************************      Person Profile Functions   *****************************************************/

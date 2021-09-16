@@ -86,6 +86,18 @@
                 $(window).width() >= 768 ? $(".cart").css("min-height", "600px") : "";
             }).resize();
             
+            $('#shippingcharges').on('change', function() 
+            {
+                var final_price = 0;
+                   
+                var shippingCharges = $(this).find("option:selected").text().replace( /^\D+/g, '');
+               
+                final_price = Number(shippingCharges) + Number($('#priceamt').text());
+                
+                final_price = Number.parseFloat(final_price).toFixed(2);
+                
+                $('#finalpriceamt').text(final_price);
+            });
 
         });
 
@@ -139,14 +151,11 @@
 
             <section class="">
                 <div class="container">
-
-
                     <div id="basketCard" class="card mb-5 pos-demo">
                         <div class="row">
                             <div class="col-md-8 cart">
-
-                                <div class="title ">
-                                    <div class="row ">
+                                <div class="title">
+                                    <div class="row">
                                         <div class="col">
                                             <h4><b>Shopping Cart</b></h4>
                                         </div>
@@ -154,12 +163,10 @@
                                             <span id="total_itemsLeftCard"></span> items
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <div class="table-responsive ">
-                                    <table id="basketTable" class=" row-border m-0 p-0 hover" style="width:100%; ">
-
+                                    <table id="basketTable" class=" row-border m-0 p-0 hover" style="width:100%;">
                                         <thead>
                                             <tr>
                                                 <th>Product</th>
@@ -171,7 +178,6 @@
                                             </tr>
                                         </thead>
                                     </table>
-
                                 </div>
 
                                 <div class="card-footer border-0 p-0 bg-transparent" >
@@ -180,13 +186,9 @@
                                             <span class="text-muted">
                                                 Back to shop
                                             </span>
-
                                         </a>
                                     </div>
-
                                 </div>
-
-
                             </div>
 
                             <div class="col-md-4 summary">
@@ -194,29 +196,45 @@
                                     <h5><b>Summary</b></h5>
                                 </div>
                                 <hr>
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col" style="padding-left:0;">
-                                        ITEMS <label id="total_itemsRightCard"></label>
+                                        ITEMS  <!--  <label id="total_itemsRightCard"></label> -->
+                                    </div>
+                                    <div  class="col text-end">
+                                        <label id="total_itemsRightCard"></label>
+                                        <!--&pound; <label id="priceamt"></label>-->
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col" style="padding-left:0;">
+                                        PRICE 
                                     </div>
                                     <div  class="col text-end">
                                         &pound; <label id="priceamt"></label>
                                     </div>
                                 </div>
+                                
                                 <div id="checkoutDiv">
                                     <form>
                                         <p>SHIPPING 
                                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" 
-                                               title="Standard Delivery: 5-7 Business Days 
-                                                      Express Delivery: 1-3 Business Days"></i>
+                                               title="Standard Delivery: 5-7 Business Days Express Delivery: 1-3 Business Days"></i>
                                         </p> 
-                                        <select class="form-select">
+                                        
+                                        <select class="form-select" id="shippingcharges">
                                             <option class="text-muted" value="shr_1JaKRJGpCsnZmArEKQzOIgRJ">Standard Delivery - &pound;5.00</option>
                                             <option class="text-muted" value="shr_1JaKYsGpCsnZmArESHQb9E6S">Express Delivery - &pound;10.00</option>
+                                            <option class="text-muted" value="shr_1JaP0YGpCsnZmArEM9agMun7">Free Delivery - &pound;00.00</option>
+                                        
                                         </select>
-                                        <div class="input-group mb-3">
+                                        
+<!--                                        <p class="text-muted text-sm">Standard Delivery: 5-7 Business Day</p>
+                                        <p class="text-muted text-sm">Express Delivery: 1-3 Business Days</p>-->
+<!--                                        <div class="input-group mb-3">
                                             <input type="text" class="form-control" id="promotion_code" placeholder="Promotion code">
                                             <span class="input-group-text" onclick="alert('checking code')" style="cursor:pointer">Check</span>
-                                        </div>
+                                        </div>-->
 
                                         
                                     </form>
@@ -228,7 +246,7 @@
                                     </div> 
 
                                     <div class="d-grid gap-2 mt-4">
-                                        <button id="checkoutButton" class="btn mt-auto checkout" href="basket-checkout.html" > <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
+                                        <button id="checkoutButton" class="btn mt-auto checkout" onclick="basketCheckout()" > <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
                                             Proceed to checkout
                                         </button>
                                     </div>

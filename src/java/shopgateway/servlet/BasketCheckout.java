@@ -5,6 +5,7 @@
  */
 package shopgateway.servlet;
 
+import com.stripe.model.checkout.Session;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
@@ -19,64 +20,71 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import shopgateway.config.CONFIG;
 import shopgateway.javaclass.BasketItems;
+import shopgateway.javaclass.StripeSession;
+import shopgateway.javaclass.UserValidation;
 
 /**
  *
  * @author gagan
  */
-@WebServlet(name = "basketsession", urlPatterns = {"/basketsession"})
-public class BasketSession extends HttpServlet {
+@WebServlet(name = "basketcheckout", urlPatterns = {"/basketcheckout"})
+public class BasketCheckout extends HttpServlet {
 
-   public BasketSession() {
+    public BasketCheckout() {
         super();
     }
-   
+    
     JSONParser jsonParser = new JSONParser();
-   
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter printWriter = response.getWriter();
 
-        try 
-        {
+        try {
             String authkey = request.getParameter(CONFIG.key);
             String methodstring = request.getParameter(CONFIG.method);
-            String person_id = request.getParameter(CONFIG.person_id);
-            
-            if (authkey == null || methodstring == null || person_id == null) {
+        
+            String basketitems = request.getParameter(CONFIG.basketItems);
+            String shippingCode = request.getParameter(CONFIG.shippingCode);
+
+            if (authkey == null || methodstring == null  || basketitems == null || shippingCode == null) {
+     
                 printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
                 return;
             }
 
             if (!authkey.equals(CONFIG.AUTHKEY)) {
+
                 printError(printWriter, CONFIG.RESULT_UNAUTHORISED_ACCESS, "Unauthorised Access", request);
                 return;
             }
-            
+
             int method = Integer.parseInt(methodstring);
             switch (method) 
             {
-                case CONFIG.UPDATE: 
-                {
-                 
-                    String basket_id = request.getParameter(CONFIG.basket_id);
+                case CONFIG.CREATION: {
+                   
+//                    String basket_id = request.getParameter(CONFIG.basket_id);
                     JSONObject basketItems =  (JSONObject) jsonParser.parse(request.getParameter(CONFIG.basketItems) );
-                    String totalItems = request.getParameter(CONFIG.totalItems);
                     
-                    BasketItems bitems = new BasketItems();
-                    String result = bitems.updateBasket(person_id, basket_id, basketItems, totalItems);
+                    StripeSession ss = new StripeSession();
                     
-                    printResponse(printWriter, result);
+                    JSONObject sessionContent = ss.createSession(basketItems, shippingCode);
+                    
+                    
+                    printResponse(printWriter, sessionContent);
+
                     break;
                 }
-                
+
+               
                 default:
 
                     printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
                     break;
             }
-            
-        }catch (Exception ex) {
+
+        } catch (Exception ex) {
             ex.printStackTrace();
             printError(printWriter, CONFIG.RESULT_SERVER_ERROR, ex.getMessage(), request);
         }
@@ -100,4 +108,5 @@ public class BasketSession extends HttpServlet {
 
         printWriter.println(JSONValue.toJSONString(response));
     }
+
 }
