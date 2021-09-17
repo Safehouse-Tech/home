@@ -79,7 +79,7 @@ public class StripeSession {
 
         JSONObject sessionResult = (JSONObject) jsonParser.parse(session.toJson());     
         
-        System.out.println("sessionResult: " + sessionResult);
+//        System.out.println("sessionResult: " + sessionResult);
 
         return sessionResult;
     }

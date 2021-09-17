@@ -10,6 +10,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.LineItemCollection;
 import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -112,22 +113,36 @@ public class Orders {
             
             String paymentStatus = (String) paymentIntent.get("status");
             
-                    
+            JSONObject shippingAddress = (JSONObject)paymentIntent.get("shipping") ;
+            
+            JSONObject charges = (JSONObject)paymentIntent.get("charges") ;
+            JSONArray chargesData = (JSONArray) charges.get("data") ;
+
+            JSONObject dataObject = (JSONObject)chargesData.get(0) ;
+
+            String orderReceipt = (String) dataObject.get("receipt_url");
+            
             String orderUpdate = "Update SHOP_ORDERS set "
                     
-//                    + "BASKET_STATUS= 'ordered', "
+                    + "BASKET_STATUS= 'ordered', "
 //                    + "BASKET_ITEMS= '" + checkoutItems + "', "
                     + "ORDER_TIMESTAMP= '" + createdAt + "', "
                     + "PAYMENT_STATUS= '" + paymentStatus + "', "
                     + "PAYMENT_INTENT_ID= '" + payment_intent_ID + "', "
-                    + "PAYMENT_INTENT= '" + paymentIntent + "' ,"
-                    + "CHECKOUT_SESSION_ID= '" + checkoutSession_id + "' ,"
-                    + "CHECKOUT_HISTORY_ITEMS= '" + checkoutItems + "' "
+//                    + "PAYMENT_INTENT= '" + paymentIntentClob + "' ,"
+                    + "CHECKOUT_SESSION_ID= '" + checkoutSession_id + "', "
+                    + "CHECKOUT_HISTORY_ITEMS= '" + checkoutItems + "', "
+                    + "SHIPPING_ADDRESS= '" + shippingAddress + "', "
+                    + "ORDER_RECEIPT= '" + orderReceipt + "' "
                     
                     + "where BASKET_ID = '" + basket_id + "' ";
             pst = conn.prepareStatement(orderUpdate);
             
             pst.executeUpdate(); 
+            
+            
+         
+            
         /*    
             if(pst.executeUpdate()>0)
             {
@@ -190,3 +205,14 @@ public class Orders {
     
     
 }
+
+/*
+
+
+
+Clob paymentIntentClob = conn.createClob();
+paymentIntentClob.setString(1, paymentIntent.toJSONString());
+
+System.out.println("paymentIntentClob"+ paymentIntentClob);
+
+*/
