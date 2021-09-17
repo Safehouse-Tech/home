@@ -103,7 +103,7 @@ public class Orders {
         try{
             
             JSONObject paymentIntent = retrievePaymentIntent(payment_intent_ID);
-            JSONObject checkouthistoryItems  = retrieveCheckoutHistory(checkoutSession_id);
+            JSONObject checkoutItems  = retrieveCheckoutHistory(checkoutSession_id);
             
 //            System.out.println("paymentIntent: "+ paymentIntent);
 //            System.out.println("orderedItems: "+ orderedItems);
@@ -116,18 +116,26 @@ public class Orders {
             String orderUpdate = "Update SHOP_ORDERS set "
                     
 //                    + "BASKET_STATUS= 'ordered', "
+//                    + "BASKET_ITEMS= '" + checkoutItems + "', "
                     + "ORDER_TIMESTAMP= '" + createdAt + "', "
                     + "PAYMENT_STATUS= '" + paymentStatus + "', "
                     + "PAYMENT_INTENT_ID= '" + payment_intent_ID + "', "
                     + "PAYMENT_INTENT= '" + paymentIntent + "' ,"
                     + "CHECKOUT_SESSION_ID= '" + checkoutSession_id + "' ,"
-                    + "CHECKOUT_HISTORY_ITEMS= '" + checkouthistoryItems + "' "
+                    + "CHECKOUT_HISTORY_ITEMS= '" + checkoutItems + "' "
                     
                     + "where BASKET_ID = '" + basket_id + "' ";
             pst = conn.prepareStatement(orderUpdate);
             
             pst.executeUpdate(); 
-        
+        /*    
+            if(pst.executeUpdate()>0)
+            {
+                BasketItems bi = new BasketItems();
+                long newBasketId = bi.createNewBasket(person_id);
+            }
+            
+            */
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -175,9 +183,9 @@ public class Orders {
        //JSONObject CheckoutHistory = new JSONObject();  
         //LineItemCollection lineItems = session.listLineItems(params);   System.out.println("lineItems: " + lineItems);
         
-        JSONObject CheckoutHistory = (JSONObject) jsonParser.parse(session.listLineItems(params).toJson()) ;
+        JSONObject checkoutItems = (JSONObject) jsonParser.parse(session.listLineItems(params).toJson()) ;
         
-        return CheckoutHistory;
+        return checkoutItems;
     }
     
     

@@ -53,37 +53,31 @@ public class StripeSession {
             lineItems.add(lineItem);
         });
         
-       // System.out.println("lineItems: " + lineItems);
+        List<Object> countryCode = new ArrayList<>();
+        countryCode.add("GB");
+        countryCode.add("US");
+        Map<String, Object> shipping_address = new HashMap<>();
+        shipping_address.put("allowed_countries", countryCode);
         
-        
-   // /*    
+          
         Map<String, Object> params = new HashMap<>();
-        params.put(
-                "success_url",
-                "http://localhost:8080/home/orders.html?nav=payment"
-        );
-        params.put(
-                "cancel_url",
-                "http://localhost:8080/home/order-cancel.html"
-        );
-        params.put(
-                "payment_method_types",
-                paymentMethodTypes
-        );
+        params.put("success_url","http://localhost:8080/home/orders.html?nav=payment");
+        params.put("cancel_url","http://localhost:8080/home/order-cancel.html");
+        params.put("payment_method_types",paymentMethodTypes);
+        
         params.put("line_items", lineItems);
         params.put("mode", "payment");
 
         params.put("shipping_rates[]", "shr_1JaKRJGpCsnZmArEKQzOIgRJ");
 
         params.put("allow_promotion_codes", true);
+        
+        params.put("shipping_address_collection", shipping_address);
 
-//        params.put("payment_intent_data", payment);           //            System.out.println("params: "+ params);
         Session session = Session.create(params);
 
-//            System.out.println("get order id / payment id");
 
-        JSONObject sessionResult = (JSONObject) jsonParser.parse(session.toJson());
- // */       
+        JSONObject sessionResult = (JSONObject) jsonParser.parse(session.toJson());     
         
         System.out.println("sessionResult: " + sessionResult);
 
