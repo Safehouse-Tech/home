@@ -58,30 +58,13 @@ public class BasketItems {
                 totalItems = rs.getLong("TOTAL_ITEMS");
             } else {
 
-                String sqlIdentifier = "select SHOP_SEQ.NEXTVAL from dual";
-                pst = conn.prepareStatement(sqlIdentifier);
-                synchronized (this) {
-                    rs = pst.executeQuery();
-                    if (rs.next()) {
-                        basketId = rs.getLong(1);
-                    }
-                }
-
-                String insert_basket = "insert into SHOP_ORDERS (BASKET_ID, PERSON_ID, BASKET_STATUS)"
-                        + "values (?,?,?)";
-
-                pst = conn.prepareStatement(insert_basket);
-
-                pst.setLong(1, basketId);
-                pst.setString(2, person_id);
-                pst.setString(3, "basket");
-                
-                pst.executeUpdate();
+                basketId = createNewBasket(person_id);
             }
 
             /*
-            
-                    write same sql to get previous orders where status is ordered or deliverd
+                Orders orders = new Orders();
+                previousOrders = orders.retrieveOrders(person_id);
+                write same sql to get previous orders where status is ordered or deliverd
              */
             
             
@@ -113,6 +96,58 @@ public class BasketItems {
         }
 
         return result;
+    }
+    
+    
+    public Long createNewBasket(String person_id)
+    {
+        long basketId = 0 ;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            
+            String sqlIdentifier = "select SHOP_SEQ.NEXTVAL from dual";
+            pst = conn.prepareStatement(sqlIdentifier);
+            synchronized (this) {
+                rs = pst.executeQuery();
+                if (rs.next()) {
+                    basketId = rs.getLong(1);
+                }
+            }
+
+            String insert_basket = "insert into SHOP_ORDERS (BASKET_ID, PERSON_ID, BASKET_STATUS)"
+                    + "values (?,?,?)";
+
+            pst = conn.prepareStatement(insert_basket);
+
+            pst.setLong(1, basketId);
+            pst.setString(2, person_id);
+            pst.setString(3, "basket");
+
+            pst.executeUpdate();
+            
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BasketItems.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BasketItems.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return basketId ;
     }
 
     public String updateBasket(String person_id, String basket_id, JSONObject basketItems, String totalItems) {

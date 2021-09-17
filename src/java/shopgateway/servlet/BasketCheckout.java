@@ -5,7 +5,6 @@
  */
 package shopgateway.servlet;
 
-import com.stripe.model.checkout.Session;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
@@ -19,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import shopgateway.config.CONFIG;
+import shopgateway.javaclass.Orders;
 import shopgateway.javaclass.StripeSession;
 
 /**
@@ -31,7 +31,7 @@ public class BasketCheckout extends HttpServlet {
     public BasketCheckout() {
         super();
     }
-    
+
     JSONParser jsonParser = new JSONParser();
 
     @Override
@@ -41,12 +41,10 @@ public class BasketCheckout extends HttpServlet {
         try {
             String authkey = request.getParameter(CONFIG.key);
             String methodstring = request.getParameter(CONFIG.method);
-        
-            String basketitems = request.getParameter(CONFIG.basketItems);
-            String shippingCode = request.getParameter(CONFIG.shippingCode);
+            String person_id = request.getParameter(CONFIG.person_id);
 
-            if (authkey == null || methodstring == null  || basketitems == null || shippingCode == null) {
-     
+            if (authkey == null || methodstring == null || person_id == null ) {
+
                 printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
                 return;
             }
@@ -58,24 +56,51 @@ public class BasketCheckout extends HttpServlet {
             }
 
             int method = Integer.parseInt(methodstring);
-            switch (method) 
-            {
+            switch (method) {
                 case CONFIG.CREATION: {
-                   
+
+                    String basketitems = request.getParameter(CONFIG.basketItems);
+                    String shippingCode = request.getParameter(CONFIG.shippingCode);
+                    
+                    if (basketitems == null || shippingCode == null) {
+                        printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
+                        return;
+                    }
+
 //                    String basket_id = request.getParameter(CONFIG.basket_id);
-                    JSONObject basketItems =  (JSONObject) jsonParser.parse(request.getParameter(CONFIG.basketItems) );
-                    
+                    JSONObject basketItems = (JSONObject) jsonParser.parse(basketitems);
+
                     StripeSession ss = new StripeSession();
-                    
+
                     JSONObject sessionContent = ss.createSession(basketItems, shippingCode);
-                    
-                    
+
                     printResponse(printWriter, sessionContent);
 
                     break;
                 }
 
-               
+                case CONFIG.UPDATE: {
+
+                    // update datatbase then create new basket ID and fetch previous orders date, amount paid number of items orders and receipts
+//                    String checkoutSession = request.getParameter(CONFIG.checkoutSession);
+                    String checkoutHistory = request.getParameter(CONFIG.checkoutHistory);
+                    String payment_intent = request.getParameter(CONFIG.payment_intent);
+                    
+                    if (checkoutHistory == null || payment_intent == null) {
+
+                        printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
+                        return;
+                    }
+                    
+                    
+                    Orders orders = new Orders();
+                    orders.updateOrders(person_id, checkoutHistory, payment_intent);
+
+                    printResponse(printWriter, null);
+
+                    break;
+                }
+
                 default:
 
                     printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);

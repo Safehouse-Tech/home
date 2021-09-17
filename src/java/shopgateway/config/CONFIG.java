@@ -15,6 +15,8 @@ public class CONFIG
     public static final String CIPHERKEY = "AI60pAKs980ypjk";
 
     public static final String AUTHKEY = "BzJKl8b4UQ76nLw";
+    
+    public static final String STRIPEKEY = "sk_test_51JPqtTGpCsnZmArETlyBBu1ut4PoOsIfxihO1srVaAXDOSRqzBH8zyKO2ymWWznIapvYC8qCIRWOtLQeQ73uGDFs00LDHtuCAc";
 
     public static final String key = "key";
     
@@ -34,6 +36,9 @@ public class CONFIG
     public static final String totalItems = "totalItems";
     
     public static final String shippingCode = "shippingCode";
+    public static final String checkoutSession = "checkoutSession";
+    public static final String checkoutHistory = "checkoutHistory";
+    public static final String payment_intent = "payment_intent";
     
     public static final String fullname = "fullname";
     public static final String email = "email";

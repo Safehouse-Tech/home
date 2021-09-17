@@ -513,11 +513,12 @@ async function basketCheckout()
 
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
+    var person_id = sessionDetails.personDetails.person_id;
     var shippingChargesCode = $("#shippingcharges option:selected").val();        //console.log("shippingChargesCode", shippingChargesCode);
 
     basketItems = JSON.stringify(sessionDetails.basketSession.basketItems);
 
-    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=1001&basketItems=' + basketItems + '&shippingCode=' + shippingChargesCode)
+    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=1001&person_id=' + person_id + '&basketItems=' + basketItems + '&shippingCode=' + shippingChargesCode)
             .then(function (response)
             {
                 if (response.status !== 200 && response.ok !== true)
@@ -545,7 +546,7 @@ async function basketCheckout()
                     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
                     $('#overlay1').hide();
-//            console.log("sessionDetails: "+ JSON.stringify(sessionDetails.checkoutSession));
+            console.log("sessionDetails: "+ JSON.stringify(sessionDetails.checkoutSession));
                     window.location.href = data.extra.url;
 
 
@@ -559,27 +560,80 @@ async function basketCheckout()
 
 /*************************************  Order Confirmation Functions   *****************************************************/
 
-function fetchOrderDetails()
+async function fetchOrderDetails()
 {
     $('#overlay1').show();
     
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+    var person_id = sessionDetails.personDetails.person_id;
     // show swal to say payment confirmation 
-    //fetch PI id, recript URL
+   
     // if status succeeded i.e payment successfull, else payment pending
     // save receipt URL for customer to see recipt from website
+    
 
+// fetch PI , CS as object
+
+    var payment_intent = sessionDetails.checkoutSession.payment_intent;
+    var checkoutHistory= sessionDetails.checkoutSession.id;
+    
+    console.log("payment_intent: "+ payment_intent);
+    console.log("checkoutHistory: "+ checkoutHistory);
+    
+    console.log("checkoutSession: "+ JSON.stringify(sessionDetails.checkoutSession));
     // customer details from customer id in the JSON
     
-    // reset basketSession Object nas test for basket_id
-    // update datatabse with the require column and values
-    sessionDetails.basketSession.basketItems = {};
-    sessionDetails.basketSession.totalItems = 0;
-    //console.log("sessionDetails", sessionDetails);
-
-    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
-
     
+    // update datatabse with the require column and values
+    
+   // /* 
+//    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&checkoutSession=' + checkoutSession 
+//            + '&payment_intent=' + payment_intent + '&checkoutHistory=' + checkoutHistory)
+//        
+    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&payment_intent=' + payment_intent + '&checkoutHistory=' + checkoutHistory, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })        
+            .then(function (response)
+            {
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    
+                    $('#overlay1').hide();
+                    return;
+                }
+
+                // Examine the text in the response
+                response.json().then(function (data)
+                {
+                    console.log("data", data);
+                    // reset basketSession Object  // update current basket_id in datatabase and fetch a new basket ID from there
+                    // also remove checkoutSession object 
+    //populate previous orders object
+                    
+                /*    delete sessionDetails.checkoutSession;
+                    sessionDetails.basketSession.basketItems = {};
+                    sessionDetails.basketSession.totalItems = 0;
+                    //console.log("sessionDetails", sessionDetails);
+
+                    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+
+                    $('#overlay1').hide();
+//            console.log("sessionDetails: "+ JSON.stringify(sessionDetails.checkoutSession));
+                    
+             //   */
+// /*
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+                $('#overlay1').hide();
+            });
+
+   // */
 
     $('#overlay1').hide();
 }

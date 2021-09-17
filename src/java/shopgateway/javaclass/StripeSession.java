@@ -15,6 +15,7 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import shopgateway.config.CONFIG;
 
 /**
  *
@@ -29,7 +30,7 @@ public class StripeSession {
     
     public JSONObject createSession(JSONObject basketItems, String shippingCode) throws StripeException, ParseException {
 
-        Stripe.apiKey = "sk_test_51JPqtTGpCsnZmArETlyBBu1ut4PoOsIfxihO1srVaAXDOSRqzBH8zyKO2ymWWznIapvYC8qCIRWOtLQeQ73uGDFs00LDHtuCAc";
+        Stripe.apiKey = CONFIG.STRIPEKEY ;
 
         List<Object> paymentMethodTypes = new ArrayList<>();
         paymentMethodTypes.add("card");
