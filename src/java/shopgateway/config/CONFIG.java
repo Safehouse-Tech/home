@@ -37,7 +37,7 @@ public class CONFIG
     
     public static final String shippingCode = "shippingCode";
     public static final String checkoutSession = "checkoutSession";
-    public static final String checkoutHistory = "checkoutHistory";
+    public static final String checkoutSession_id = "checkoutSession_id";
     public static final String payment_intent = "payment_intent";
     
     public static final String fullname = "fullname";

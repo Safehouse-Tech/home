@@ -89,7 +89,7 @@ public class Orders {
     }
     
     
-    public JSONObject updateOrders(String person_id, String checkoutHistory, String payment_intent) {
+    public JSONObject updateOrders(String person_id, String basket_id, String checkoutSession_id, String payment_intent_ID) {
         
         /*update order with 
             basket status = ordered
@@ -102,29 +102,31 @@ public class Orders {
         
         try{
             
-            JSONObject paymentIntent = retrievePaymentIntent(payment_intent);
-            JSONObject orderedItems  = retrieveCheckoutHistory(checkoutHistory);
+            JSONObject paymentIntent = retrievePaymentIntent(payment_intent_ID);
+            JSONObject checkouthistoryItems  = retrieveCheckoutHistory(checkoutSession_id);
             
 //            System.out.println("paymentIntent: "+ paymentIntent);
 //            System.out.println("orderedItems: "+ orderedItems);
+            long createdAt = (Long)paymentIntent.get("created") ;
+             // already id // created  // status
             
-            System.out.println(paymentIntent.get("created")); // already id // created  // status
+            String paymentStatus = (String) paymentIntent.get("status");
             
-            System.out.println(paymentIntent.get("status"));
-            
-            long time =  (Long) paymentIntent.get("created") ;
                     
-//                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-//                    Date date = df.parse(String.valueOf(time));
-//                    long currentTimestamp = date.getTime();
-//                    System.out.println(currentTimestamp);
+            String orderUpdate = "Update SHOP_ORDERS set "
+                    
+//                    + "BASKET_STATUS= 'ordered', "
+                    + "ORDER_TIMESTAMP= '" + createdAt + "', "
+                    + "PAYMENT_STATUS= '" + paymentStatus + "', "
+                    + "PAYMENT_INTENT_ID= '" + payment_intent_ID + "', "
+                    + "PAYMENT_INTENT= '" + paymentIntent + "' ,"
+                    + "CHECKOUT_SESSION_ID= '" + checkoutSession_id + "' ,"
+                    + "CHECKOUT_HISTORY_ITEMS= '" + checkouthistoryItems + "' "
+                    
+                    + "where BASKET_ID = '" + basket_id + "' ";
+            pst = conn.prepareStatement(orderUpdate);
             
-
-
-
-        LocalDateTime ldt = Instant.ofEpochMilli(time)
-                .atZone(ZoneId.systemDefault()).toLocalDateTime();
-        System.out.println(ldt);
+            pst.executeUpdate(); 
         
         }
         catch (Exception ex) {
@@ -164,15 +166,16 @@ public class Orders {
         return paymentIntent;
     }
     
-    public JSONObject retrieveCheckoutHistory(String checkoutHistory) throws StripeException, ParseException {
+    public JSONObject retrieveCheckoutHistory(String checkoutSession_id) throws StripeException, ParseException {
         
         Stripe.apiKey = CONFIG.STRIPEKEY ;
         
-        //Session session = Session.retrieve(checkoutHistory);
-        //Map<String, Object> params = new HashMap<>();  params.put("limit", 5);
-       //JSONObject CheckoutHistory = new JSONObject();  //LineItemCollection lineItems = session.listLineItems(params);   System.out.println("lineItems: " + lineItems);
+        Session session = Session.retrieve(checkoutSession_id);
+        Map<String, Object> params = new HashMap<>();  params.put("limit", 5);
+       //JSONObject CheckoutHistory = new JSONObject();  
+        //LineItemCollection lineItems = session.listLineItems(params);   System.out.println("lineItems: " + lineItems);
         
-        JSONObject CheckoutHistory = (JSONObject) jsonParser.parse(Session.retrieve(checkoutHistory).toJson()) ;
+        JSONObject CheckoutHistory = (JSONObject) jsonParser.parse(session.listLineItems(params).toJson()) ;
         
         return CheckoutHistory;
     }

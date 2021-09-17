@@ -83,10 +83,12 @@ public class BasketCheckout extends HttpServlet {
 
                     // update datatbase then create new basket ID and fetch previous orders date, amount paid number of items orders and receipts
 //                    String checkoutSession = request.getParameter(CONFIG.checkoutSession);
-                    String checkoutHistory = request.getParameter(CONFIG.checkoutHistory);
+                    String basket_id = request.getParameter(CONFIG.basket_id);
+                    String checkoutSession_id = request.getParameter(CONFIG.checkoutSession_id);
                     String payment_intent = request.getParameter(CONFIG.payment_intent);
                     
-                    if (checkoutHistory == null || payment_intent == null) {
+                    
+                    if (basket_id == null || checkoutSession_id == null || payment_intent == null) {
 
                         printError(printWriter, CONFIG.RESULT_BAD_REQUEST, "Bad Syntax", request);
                         return;
@@ -94,7 +96,7 @@ public class BasketCheckout extends HttpServlet {
                     
                     
                     Orders orders = new Orders();
-                    orders.updateOrders(person_id, checkoutHistory, payment_intent);
+                    orders.updateOrders(person_id, basket_id, checkoutSession_id, payment_intent);
 
                     printResponse(printWriter, null);
 

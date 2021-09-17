@@ -566,6 +566,8 @@ async function fetchOrderDetails()
     
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
     var person_id = sessionDetails.personDetails.person_id;
+    
+    var basket_id = sessionDetails.basketSession.basketId;
     // show swal to say payment confirmation 
    
     // if status succeeded i.e payment successfull, else payment pending
@@ -575,10 +577,12 @@ async function fetchOrderDetails()
 // fetch PI , CS as object
 
     var payment_intent = sessionDetails.checkoutSession.payment_intent;
-    var checkoutHistory= sessionDetails.checkoutSession.id;
+    var checkoutSession_id= sessionDetails.checkoutSession.id;
+    
+    console.log("basket_id: "+ basket_id);
     
     console.log("payment_intent: "+ payment_intent);
-    console.log("checkoutHistory: "+ checkoutHistory);
+    console.log("checkoutSession_id: "+ checkoutSession_id);
     
     console.log("checkoutSession: "+ JSON.stringify(sessionDetails.checkoutSession));
     // customer details from customer id in the JSON
@@ -590,7 +594,7 @@ async function fetchOrderDetails()
 //    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&checkoutSession=' + checkoutSession 
 //            + '&payment_intent=' + payment_intent + '&checkoutHistory=' + checkoutHistory)
 //        
-    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&payment_intent=' + payment_intent + '&checkoutHistory=' + checkoutHistory, {
+    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&basket_id=' + basket_id + '&payment_intent=' + payment_intent + '&checkoutSession_id=' + checkoutSession_id, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
