@@ -58,7 +58,7 @@ public class BasketItems {
                 totalItems = rs.getLong("TOTAL_ITEMS");
             } else {
 
-                basketId = createNewBasket(person_id);
+                basketId = createNewBasket(person_id); // create new basketSession
             }
 
             /*
@@ -97,7 +97,6 @@ public class BasketItems {
 
         return result;
     }
-    
     
     public Long createNewBasket(String person_id)
     {

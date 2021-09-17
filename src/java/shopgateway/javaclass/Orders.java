@@ -38,35 +38,33 @@ import shopgateway.config.ODBConnection;
  * @author gagan
  */
 public class Orders {
-    
+
     public Orders() {
     }
 
     JSONParser jsonParser = new JSONParser();
     Connection conn = ODBConnection.getInstance().connection;
-    
-    
+
     public JSONObject retrieveOrders(String person_id) {
-     
+
         PreparedStatement pst = null;
         ResultSet rs = null;
-        
+
         JSONArray orders = new JSONArray();
-        
-        try{
-            
+
+        try {
+
             String check_personBasket = "Select * from SHOP_ORDERS where PERSON_ID = '" + person_id + "' and BASKET_STATUS = 'ordered' ";
             pst = conn.prepareStatement(check_personBasket);
             rs = pst.executeQuery();
-            while(rs.next()) {
-               
+            while (rs.next()) {
+
                 JSONObject result = new JSONObject();
                 result.put("order_time", "");
-                
+
                 orders.add(result);
-            } 
-        }
-         catch (Exception ex) {
+            }
+        } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             if (rs != null) {
@@ -85,74 +83,69 @@ public class Orders {
                 }
             }
         }
-        
+
         return null;
     }
-    
-    
+
     public JSONObject updateOrders(String person_id, String basket_id, String checkoutSession_id, String payment_intent_ID) {
-        
-        /*update order with 
-            basket status = ordered
-            payment intent : payment status
-            full payment intent
-        */
+
+        JSONObject newbasketSession = new JSONObject();
         
         PreparedStatement pst = null;
         ResultSet rs = null;
-        
-        try{
-            
-            JSONObject paymentIntent = retrievePaymentIntent(payment_intent_ID);
-            JSONObject checkoutItems  = retrieveCheckoutHistory(checkoutSession_id);
-            
-//            System.out.println("paymentIntent: "+ paymentIntent);
-//            System.out.println("orderedItems: "+ orderedItems);
-            long createdAt = (Long)paymentIntent.get("created") ;
-             // already id // created  // status
-            
-            String paymentStatus = (String) paymentIntent.get("status");
-            
-            JSONObject shippingAddress = (JSONObject)paymentIntent.get("shipping") ;
-            
-            JSONObject charges = (JSONObject)paymentIntent.get("charges") ;
-            JSONArray chargesData = (JSONArray) charges.get("data") ;
 
-            JSONObject dataObject = (JSONObject)chargesData.get(0) ;
+        try {
+
+            JSONObject paymentIntent = retrievePaymentIntent(payment_intent_ID);
+            JSONObject checkoutItems = retrieveCheckoutHistory(checkoutSession_id);
+
+//            System.out.println("paymentIntent: "+ paymentIntent);     //            System.out.println("orderedItems: "+ orderedItems);
+            
+            // already id // created  // status
+
+            long createdAt = (Long) paymentIntent.get("created");
+            String paymentStatus = (String) paymentIntent.get("status");
+
+            JSONObject shippingAddress = (JSONObject) paymentIntent.get("shipping");
+
+            JSONObject charges = (JSONObject) paymentIntent.get("charges");
+            JSONArray chargesData = (JSONArray) charges.get("data");
+            JSONObject dataObject = (JSONObject) chargesData.get(0);
 
             String orderReceipt = (String) dataObject.get("receipt_url");
-            
+
             String orderUpdate = "Update SHOP_ORDERS set "
-                    
+                    + "BASKET_ITEMS= '', "
                     + "BASKET_STATUS= 'ordered', "
-//                    + "BASKET_ITEMS= '" + checkoutItems + "', "
+            // total items needs to tbe updated
+
                     + "ORDER_TIMESTAMP= '" + createdAt + "', "
-                    + "PAYMENT_STATUS= '" + paymentStatus + "', "
-                    + "PAYMENT_INTENT_ID= '" + payment_intent_ID + "', "
-//                    + "PAYMENT_INTENT= '" + paymentIntentClob + "' ,"
                     + "CHECKOUT_SESSION_ID= '" + checkoutSession_id + "', "
-                    + "CHECKOUT_HISTORY_ITEMS= '" + checkoutItems + "', "
+                    + "CHECKOUT_ITEMS= '" + checkoutItems + "', "
+                    + "PAYMENT_INTENT_ID= '" + payment_intent_ID + "', "
+                    + "PAYMENT_STATUS= '" + paymentStatus + "', "
+                    //                    + "PAYMENT_INTENT= '" + paymentIntentClob + "' ,"
+
+                    + "ORDER_RECEIPT= '" + orderReceipt + "', "
+            // installation id insertion
                     + "SHIPPING_ADDRESS= '" + shippingAddress + "', "
-                    + "ORDER_RECEIPT= '" + orderReceipt + "' "
-                    
+                    + "SHIPPING_STATUS = 'pending', "
+                    + "ORDER_STATUS = 'in progess' "
                     + "where BASKET_ID = '" + basket_id + "' ";
+            
             pst = conn.prepareStatement(orderUpdate);
-            
-            pst.executeUpdate(); 
-            
-            
-         
-            
-        /*    
+
+//            pst.executeUpdate();
+
+                
             if(pst.executeUpdate()>0)
             {
                 BasketItems bi = new BasketItems();
-                long newBasketId = bi.createNewBasket(person_id);
+                newbasketSession = bi.retrieveBasket(person_id);
             }
             
-            */
-        }
-        catch (Exception ex) {
+             
+        } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             if (rs != null) {
@@ -171,39 +164,35 @@ public class Orders {
                 }
             }
         }
-        
-        
-        return null;
+
+        return newbasketSession;
     }
-    
-    
-    
+
     public JSONObject retrievePaymentIntent(String payment_intent) throws StripeException, ParseException {
-        
-        Stripe.apiKey = CONFIG.STRIPEKEY ;
-        
+
+        Stripe.apiKey = CONFIG.STRIPEKEY;
+
         //JSONObject paymentIntent = new JSONObject(); // PaymentIntent payment_Intent = PaymentIntent.retrieve(payment_intent) ;
-        
         JSONObject paymentIntent = (JSONObject) jsonParser.parse(PaymentIntent.retrieve(payment_intent).toJson());
-        
+
         return paymentIntent;
     }
-    
+
     public JSONObject retrieveCheckoutHistory(String checkoutSession_id) throws StripeException, ParseException {
-        
-        Stripe.apiKey = CONFIG.STRIPEKEY ;
-        
+
+        Stripe.apiKey = CONFIG.STRIPEKEY;
+
         Session session = Session.retrieve(checkoutSession_id);
-        Map<String, Object> params = new HashMap<>();  params.put("limit", 5);
-       //JSONObject CheckoutHistory = new JSONObject();  
+        Map<String, Object> params = new HashMap<>();
+        params.put("limit", 5);
+        //JSONObject CheckoutHistory = new JSONObject();  
         //LineItemCollection lineItems = session.listLineItems(params);   System.out.println("lineItems: " + lineItems);
-        
-        JSONObject checkoutItems = (JSONObject) jsonParser.parse(session.listLineItems(params).toJson()) ;
-        
+
+        JSONObject checkoutItems = (JSONObject) jsonParser.parse(session.listLineItems(params).toJson());
+
         return checkoutItems;
     }
-    
-    
+
 }
 
 /*

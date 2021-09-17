@@ -82,7 +82,7 @@ public class BasketCheckout extends HttpServlet {
                 case CONFIG.UPDATE: {
 
                     // update datatbase then create new basket ID and fetch previous orders date, amount paid number of items orders and receipts
-//                    String checkoutSession = request.getParameter(CONFIG.checkoutSession);
+
                     String basket_id = request.getParameter(CONFIG.basket_id);
                     String checkoutSession_id = request.getParameter(CONFIG.checkoutSession_id);
                     String payment_intent = request.getParameter(CONFIG.payment_intent);
@@ -94,11 +94,11 @@ public class BasketCheckout extends HttpServlet {
                         return;
                     }
                     
-                    
                     Orders orders = new Orders();
-                    orders.updateOrders(person_id, basket_id, checkoutSession_id, payment_intent);
+                    
+                    JSONObject updateOrderResult = orders.updateOrders(person_id, basket_id, checkoutSession_id, payment_intent);
 
-                    printResponse(printWriter, null);
+                    printResponse(printWriter, updateOrderResult);
 
                     break;
                 }

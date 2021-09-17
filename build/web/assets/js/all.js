@@ -67,7 +67,7 @@ async function customerLogin(email, password)
                 if (response.status !== 200 && response.ok !== true)
                 {
                     console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-                    
+
                     $('#overlay1').hide();
                     return;
                 }
@@ -187,7 +187,7 @@ function productDescription()
 async function addtobasket()
 {
     // need to add total items to database
-    
+
     $('#overlay1').show();
 
     if (!localStorage.hasOwnProperty('sessionDetails'))
@@ -253,7 +253,7 @@ async function addtobasket()
 // if we pass basketSession i.e global object to function value will be the one with the change.
 
             $('#overlay1').hide();
-            
+
             updatebasket();
 
             /* 
@@ -365,7 +365,7 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
                 if (response.status !== 200 && response.ok !== true)
                 {
                     console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-                    
+
                     $('#overlay1').hide();
                     return;
                 }
@@ -524,7 +524,7 @@ async function basketCheckout()
                 if (response.status !== 200 && response.ok !== true)
                 {
                     console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-                    
+
                     $('#overlay1').hide();
                     return;
                 }
@@ -546,7 +546,7 @@ async function basketCheckout()
                     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
                     $('#overlay1').hide();
-            console.log("sessionDetails: "+ JSON.stringify(sessionDetails.checkoutSession));
+
                     window.location.href = data.extra.url;
 
 
@@ -560,52 +560,31 @@ async function basketCheckout()
 
 /*************************************  Order Confirmation Functions   *****************************************************/
 
-async function fetchOrderDetails()
+async function updateOrderDetails()
 {
     $('#overlay1').show();
-    
+
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
     var person_id = sessionDetails.personDetails.person_id;
-    
+
     var basket_id = sessionDetails.basketSession.basketId;
     // show swal to say payment confirmation 
-   
-    // if status succeeded i.e payment successfull, else payment pending
-    // save receipt URL for customer to see recipt from website
-    
-
-// fetch PI , CS as object
 
     var payment_intent = sessionDetails.checkoutSession.payment_intent;
-    var checkoutSession_id= sessionDetails.checkoutSession.id;
-    
-    console.log("basket_id: "+ basket_id);
-    
-    console.log("payment_intent: "+ payment_intent);
-    console.log("checkoutSession_id: "+ checkoutSession_id);
-    
-    console.log("checkoutSession: "+ JSON.stringify(sessionDetails.checkoutSession));
-    // customer details from customer id in the JSON
-    
-    
-    // update datatabse with the require column and values
-    
-   // /* 
-//    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&checkoutSession=' + checkoutSession 
-//            + '&payment_intent=' + payment_intent + '&checkoutHistory=' + checkoutHistory)
-//        
+    var checkoutSession_id = sessionDetails.checkoutSession.id;
+
     await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&basket_id=' + basket_id + '&payment_intent=' + payment_intent + '&checkoutSession_id=' + checkoutSession_id, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })        
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
             .then(function (response)
             {
                 if (response.status !== 200 && response.ok !== true)
                 {
                     console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-                    
+
                     $('#overlay1').hide();
                     return;
                 }
@@ -613,33 +592,62 @@ async function fetchOrderDetails()
                 // Examine the text in the response
                 response.json().then(function (data)
                 {
-                    console.log("data", data);
-                    // reset basketSession Object  // update current basket_id in datatabase and fetch a new basket ID from there
-                    // also remove checkoutSession object 
-    //populate previous orders object
-                    
-                /*    delete sessionDetails.checkoutSession;
-                    sessionDetails.basketSession.basketItems = {};
-                    sessionDetails.basketSession.totalItems = 0;
-                    //console.log("sessionDetails", sessionDetails);
+                    //console.log("data", data);
+
+                    delete sessionDetails.checkoutSession;
+                    sessionDetails.basketSession = data.extra.basketSession;
 
                     localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
                     $('#overlay1').hide();
-//            console.log("sessionDetails: "+ JSON.stringify(sessionDetails.checkoutSession));
-                    
-             //   */
-// /*
+
+                    let timerInterval;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Payment Success!',
+                        html: 'Payment receipt will be sent to your email address. <br> \n\
+                                Redirecting to your orders page.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                            const b = Swal.getHtmlContainer().querySelector('b');
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft();
+                            }, 100);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    }).then((result) => {
+                        /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+//                            console.log('I was closed by the timer')
+
+                            window.location.href = 'orders.html';
+                        }
+                    });
+
+//                    Swal.fire({
+//                        icon: 'success',
+//                        title: 'Payment Success!',
+//                        text: 'Payment receipt will be sent to your email address',
+//                        confirmButtonColor: '#00B74A'
+//                    }).then(function () {
+//                        window.location.href = 'orders.html';
+//                    });
+
                 });
             })
             .catch(function (err) {
                 console.log('Fetch Error :-S', err);
                 $('#overlay1').hide();
+
+                alert("Backend update issue");
             });
 
-   // */
 
-    $('#overlay1').hide();
+
 }
 
 /*************************************      Person Profile Functions   *****************************************************/

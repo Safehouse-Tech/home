@@ -61,7 +61,8 @@ public class StripeSession {
         
           
         Map<String, Object> params = new HashMap<>();
-        params.put("success_url","http://localhost:8080/home/orders.html?nav=payment");
+//        params.put("success_url","http://localhost:8080/home/orders.html?nav=payment");
+        params.put("success_url","http://localhost:8080/home/order-confirmation.html");
         params.put("cancel_url","http://localhost:8080/home/order-cancel.html");
         params.put("payment_method_types",paymentMethodTypes);
         

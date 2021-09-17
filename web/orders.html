@@ -47,8 +47,10 @@ and open the template in the editor.
     <!--<script src="assets/js/main.js"></script>-->
     <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/all.js"></script>
-    <script type="text/javascript" src="assets/vendor/sweetalert2.all.js"></script>
+    <!--<script type="text/javascript" src="assets/vendor/sweetalert2.all.js"></script>-->
 
+    <!--<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+    <script type="text/javascript" src="assets/vendor/sweetAlertNew.js"></script>
     
     </head>
     <script>
@@ -59,17 +61,12 @@ and open the template in the editor.
 
             if (currentURL.includes("nav=payment"))
             {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Payment Success!',
-                    text: 'Payment receipt will be sent to your email address',
-            //        footer: '<a href=""></a>'
-                    confirmButtonColor: '#00B74A'
-                });
             }
-                    
-            fetchOrderDetails();
-        });
+                
+           // updateOrderDetails();
+           
+           // load all orders
+          
     </script>
 
     <style>
