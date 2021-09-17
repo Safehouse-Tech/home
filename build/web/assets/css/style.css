@@ -2829,3 +2829,24 @@ a.badge-dark:focus {
  .text-14{
     font-size:15px;
 }
+
+.overlay
+{   position: fixed;
+    left: 0; 
+    top: 0; 
+    right: 0; 
+    bottom: 0; 
+    z-index: 1051;
+    background-color: rgba(255,255,255,0.8);
+}
+.overlay-content {
+    position: absolute;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    top:40%;
+    left:0%;
+    right: 0;
+    text-align: center;
+    color: #555;
+}

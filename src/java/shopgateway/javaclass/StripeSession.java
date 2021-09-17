@@ -35,6 +35,11 @@ public class StripeSession {
         paymentMethodTypes.add("card");
         List<Object> lineItems = new ArrayList<>();
         
+        Map<String, Object> adjustable_quantity = new HashMap<>();
+        adjustable_quantity.put("minimum", 1);
+        adjustable_quantity.put("maximum", 10);
+        adjustable_quantity.put("enabled", true);
+        
         basketItems.keySet().forEach(keyStr ->
         {
             JSONObject keyvalue = (JSONObject) basketItems.get(keyStr);
@@ -42,22 +47,23 @@ public class StripeSession {
             Map<String, Object> lineItem = new HashMap<>();
             lineItem.put("price", keyvalue.get("price_id"));
             lineItem.put("quantity", keyvalue.get("quantity"));
+            lineItem.put("adjustable_quantity", adjustable_quantity);
             
             lineItems.add(lineItem);
         });
         
-        System.out.println("lineItems: " + lineItems);
+       // System.out.println("lineItems: " + lineItems);
         
         
    // /*    
         Map<String, Object> params = new HashMap<>();
         params.put(
                 "success_url",
-                "http://localhost:8080/TEST/success"
+                "http://localhost:8080/home/orders.html?nav=payment"
         );
         params.put(
                 "cancel_url",
-                "https://example.com/cancel"
+                "http://localhost:8080/home/order-cancel.html"
         );
         params.put(
                 "payment_method_types",
@@ -70,18 +76,15 @@ public class StripeSession {
 
         params.put("allow_promotion_codes", true);
 
-//        params.put("payment_intent_data", payment);
-//            System.out.println("params: "+ params);
+//        params.put("payment_intent_data", payment);           //            System.out.println("params: "+ params);
         Session session = Session.create(params);
 
 //            System.out.println("get order id / payment id");
 
         JSONObject sessionResult = (JSONObject) jsonParser.parse(session.toJson());
  // */       
-//        sessionResult =  {"metadata":{},"after_expiration":null,"livemode":false,"amount_total":800,"line_items":null,"subscription":null,"locale":null,"mode":"payment","customer_details":null,"consent_collection":null,"expires_at":1631904326,"allow_promotion_codes":true,"shipping":null,"client_reference_id":null,"currency":"gbp","id":"cs_test_b1cSTe5HVfwoqDhXOrAeyEQv6Xu3ZYgkMVtgW65tMasOL4a1CiwCbThXuo","payment_method_options":{"acss_debit":null,"oxxo":null,"boleto":null},"billing_address_collection":null,"success_url":"http:\/\/localhost:8080\/TEST\/success","setup_intent":null,"shipping_address_collection":null,"payment_method_types":["card"],"total_details":{"amount_tax":0,"amount_discount":0,"breakdown":null,"amount_shipping":500},"payment_status":"unpaid","consent":null,"url":"https:\/\/checkout.stripe.com\/pay\/cs_test_b1cSTe5HVfwoqDhXOrAeyEQv6Xu3ZYgkMVtgW65tMasOL4a1CiwCbThXuo#fidkdWxOYHwnPyd1blpxYHZxWjA0T1V0cVFCdUZ2a19oRHdAMTxjNEJ2ZjZHdXBHZExKV3xAbTRdYUF2TlRvcUdrajV2VkJrVklrdjM0TjNCS1RdR3JxdFxLYkRTbTZRTHx1YXZRSGljMUxANTU8dD1idVFiQScpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPydocGlxbFpscWBoJyknYGtkZ2lgVWlkZmBtamlhYHd2Jz9xd3BgeCUl","recovered_from":null,"submit_type":null,"automatic_tax":{"enabled":false,"status":null},"tax_id_collection":null,"customer_email":null,"payment_intent":"pi_3JaPaMGpCsnZmArE1JZQb6b0","cancel_url":"https:\/\/example.com\/cancel","amount_subtotal":300,"customer":null,"object":"checkout.session"};
         
-
-       // System.out.println("sessionResult: " + sessionResult);
+        System.out.println("sessionResult: " + sessionResult);
 
         return sessionResult;
     }

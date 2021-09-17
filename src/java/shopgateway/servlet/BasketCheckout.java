@@ -19,9 +19,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import shopgateway.config.CONFIG;
-import shopgateway.javaclass.BasketItems;
 import shopgateway.javaclass.StripeSession;
-import shopgateway.javaclass.UserValidation;
 
 /**
  *

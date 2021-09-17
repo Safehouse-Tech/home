@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Order Confirmation | Safehouse Technology</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="assets/img/favicon_1.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+        <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+        <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+        <link href="assets/css/style.css" rel="stylesheet">
+
+        <script src="assets/vendor/aos/aos.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+        <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
+        <script src="assets/vendor/purecounter/purecounter.js"></script>
+        <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+        <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+        <!--<script src="assets/js/main.js"></script>-->
+        <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/js/all.js"></script>
+        <script type="text/javascript" src="assets/vendor/sweetalert2.all.js"></script>
+
+    </head>
+
+    <script>
+
+        $(document).ready(function () {
+
+            fetchOrderDetails();
+        });
+    </script>
+
+    <style>
+
+    </style>
+    <body>
+        <div id="headerdiv"></div>
+
+        <div id="overlay1" style="display:none;" class="overlay">
+            <div class="overlay-content">
+                <label id="overlay_label_text" style="font-size: 25px;"></label><br>
+                <img id="img" style="" src="assets/256x256.gif"/>
+            </div>
+        </div>
+
+        <main id="main">
+
+            <section class="features no-margin-bottom">
+                <div class="container" data-aos="zoom-in">
+
+                    <div class="section-title">
+                        <h2 style="color: #68A4C4;">Your payment is successful</h2>
+                        <p></p>
+                    </div>
+
+                    <div class='d-flex justify-content-between '>
+                        <a id="" type="button" class="btn btn-primary btn-sm" href="index.html">
+                            <i class="fas fa-arrow-left"></i> Back to website
+                        </a>
+
+                        <div>
+
+                            <a id="" type="button" class="btn btn-warning btn-sm" href="https://pay.stripe.com/receipts/acct_1JPqtTGpCsnZmArE/ch_3JaPnIGpCsnZmArE1LZySRAz/rcpt_KEtcqaacsfDACP2K0kvzstW79coawgh">
+                                <i class="fas fa-receipt"></i> View Receipt
+                            </a>
+                            <a id="" type="button" class="btn btn-primary btn-sm" href="orders.html">
+                                <i class="fas fa-arrow-right"></i> Go to orders
+                            </a>
+                        </div>
+
+                    </div>
+
+                    
+                </div>
+            </section>
+
+            <section  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+                <div class="container">
+
+
+                </div>
+            </section>
+
+
+        </main>
+
+
+
+    </body>
+</html>

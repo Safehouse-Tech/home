@@ -47,9 +47,86 @@ and open the template in the editor.
     <!--<script src="assets/js/main.js"></script>-->
     <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/all.js"></script>
+    <script type="text/javascript" src="assets/vendor/sweetalert2.all.js"></script>
+
     
     </head>
+    <script>
+
+        $(document).ready(function () {
+
+            var currentURL = window.location.href;           //console.log("currentURL: "+ currentURL);
+
+            if (currentURL.includes("nav=payment"))
+            {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Payment Success!',
+                    text: 'Payment receipt will be sent to your email address',
+            //        footer: '<a href=""></a>'
+                    confirmButtonColor: '#00B74A'
+                });
+            }
+                    
+            fetchOrderDetails();
+        });
+    </script>
+
+    <style>
+
+    </style>
     <body>
         <div id="headerdiv"></div>
+
+        <div id="overlay1" style="display:none;" class="overlay">
+            <div class="overlay-content">
+                <label id="overlay_label_text" style="font-size: 25px;"></label><br>
+                <img id="img" style="" src="assets/256x256.gif"/>
+            </div>
+        </div>
+
+        <main id="main">
+
+            <section class="features no-margin-bottom">
+                <div class="container" data-aos="zoom-in">
+
+                    <div class="section-title">
+                        <h2 style="color: #68A4C4;">Your Orders</h2>
+                        <p></p>
+                    </div>
+
+                    <div class='d-flex justify-content-between '>
+                        <a id="" type="button" class="btn btn-primary btn-sm" href="index.html">
+                            <i class="fas fa-arrow-left"></i> Back to website
+                        </a>
+
+                        <div>
+
+                            <a id="" type="button" class="btn btn-warning btn-sm" href="https://pay.stripe.com/receipts/acct_1JPqtTGpCsnZmArE/ch_3JaPnIGpCsnZmArE1LZySRAz/rcpt_KEtcqaacsfDACP2K0kvzstW79coawgh">
+                                <i class="fas fa-receipt"></i> View Receipt
+                            </a>
+<!--                            <a id="" type="button" class="btn btn-primary btn-sm" href="orders.html">
+                                <i class="fas fa-arrow-right"></i> Go to orders
+                            </a>-->
+                        </div>
+
+                    </div>
+
+                    
+                </div>
+            </section>
+
+            <section  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+                <div class="container">
+
+
+                </div>
+            </section>
+
+
+        </main>
+
+
+
     </body>
 </html>

@@ -31,7 +31,7 @@ $(document).ready(function () {
 });
 
 $(function () {
-  $('[data-bs-toggle="tooltip"]').tooltip()
+    $('[data-bs-toggle="tooltip"]').tooltip()
 });
 
 function logOut()
@@ -60,12 +60,15 @@ function showPassword(inputID)
 
 async function customerLogin(email, password)
 {
+    $('#overlay1').show();
     await fetch('/home/usercredentials?key=BzJKl8b4UQ76nLw&method=1002&email=' + email + '&password=' + password + ' ')
             .then(function (response)
             {
                 if (response.status !== 200 && response.ok !== true)
                 {
                     console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    
+                    $('#overlay1').hide();
                     return;
                 }
 
@@ -85,29 +88,31 @@ async function customerLogin(email, password)
                         return;
                     }
 
-                    if(localStorage.hasOwnProperty('sessionDetails'))
+                    if (localStorage.hasOwnProperty('sessionDetails'))
                     {
                         sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
                         console.log("sessionDetails12", sessionDetails);
                     }
-                    
+
                     sessionDetails.personDetails = data.extra.personDetails;
                     sessionDetails.previousOrders = data.extra.previousOrders;
                     sessionDetails.basketSession = data.extra.basketSession;
 
                     localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
+                    $('#overlay1').hide();
                     //var lastURL = document.referrer;  // console.log("lastURL", lastURL);
-                    var lastURL = window.location.href ;
+                    var lastURL = window.location.href;
 //                    lastURL.includes("product-description.html") ? window.location.href = 'shop.html' : window.location.href = 'index.html';// history.back();
 
-                    window.location.href = lastURL.includes("product-description.html") ? 
-                      'product-description.html' : 'index.html';// history.back();
+                    window.location.href = lastURL.includes("product-description.html") ?
+                            'product-description.html' : 'index.html';// history.back();
 
                 });
             })
             .catch(function (err) {
                 console.log('Fetch Error :-S', err);
+                $('#overlay1').hide();
             });
 
 }
@@ -183,6 +188,8 @@ async function addtobasket()
 {
     // need to add total items to database
     
+    $('#overlay1').show();
+
     if (!localStorage.hasOwnProperty('sessionDetails'))
     {
         $("#staticBackdrop").modal('show');
@@ -245,6 +252,8 @@ async function addtobasket()
 
 // if we pass basketSession i.e global object to function value will be the one with the change.
 
+            $('#overlay1').hide();
+            
             updatebasket();
 
             /* 
@@ -324,11 +333,12 @@ async function addtobasket()
 
 async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketItems)
 {
+    $('#overlay1').show();
+
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
     var person_id = sessionDetails.personDetails.person_id;
     var basket_id = basketSession.basketId;
-    
 
     if (typeof removeProduct_id !== 'undefined')
     {
@@ -338,68 +348,73 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
 
         // console.log("basketSession", basketSession);
     }
-    
+
     var totalItems = basketSession.totalItems;
     var basketItems = JSON.stringify(basketSession.basketItems);        //console.log("basketItems", basketItems);
 
     var result;
     await fetch('/home/basketsession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&basket_id=' +
             basket_id + '&basketItems=' + basketItems + '&totalItems=' + totalItems, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(function (response)
-    {
-        if (response.status !== 200 && response.ok !== true)
-        {
-            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-            return;
-        }
-
-        response.json().then(function (data)
-        {
-            result = data.extra;        //console.log("result: " + result);
-
-            var notifyText = "Item not added to basket",
-                    notifyStatus = "error",
-                    notifyPosition = "right";
-
-            if (data.extra === "basket items updated")
-            {
-                if (window.location.href.includes("basket.html"))
-                {
-                    notifyText = "Item removed from basket";
-                    notifyStatus = "info";
-                    notifyPosition = "top center";
-                    
-                } else {
-                    notifyText = "Item added to basket";
-                    notifyStatus = "success";
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            }
+            })
+            .then(function (response)
+            {
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    
+                    $('#overlay1').hide();
+                    return;
+                }
 
-            $(".pos-demo").notify(
-                    notifyText,
+                response.json().then(function (data)
+                {
+                    result = data.extra;        //console.log("result: " + result);
+
+                    var notifyText = "Item not added to basket",
+                            notifyStatus = "error",
+                            notifyPosition = "right";
+
+                    if (data.extra === "basket items updated")
                     {
-                        className: notifyStatus,
-                        position: notifyPosition
-                    });
+                        if (window.location.href.includes("basket.html"))
+                        {
+                            notifyText = "Item removed from basket";
+                            notifyStatus = "info";
+                            notifyPosition = "top center";
 
-            $("#basketalert_num").text(basketSession.totalItems);
+                        } else {
+                            notifyText = "Item added to basket";
+                            notifyStatus = "success";
+                        }
+                    }
 
-            sessionDetails.basketSession = basketSession;       console.log("sessionDetails", sessionDetails);
+                    $(".pos-demo").notify(
+                            notifyText,
+                            {
+                                className: notifyStatus,
+                                position: notifyPosition
+                            });
 
-            localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+                    $("#basketalert_num").text(basketSession.totalItems);
 
-        });
-    })
-    .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-    });
+                    sessionDetails.basketSession = basketSession;
+                    console.log("sessionDetails", sessionDetails);
 
-    
+                    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+
+                    $('#overlay1').hide();
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+                $('#overlay1').hide();
+            });
+
+
 
 }
 
@@ -443,10 +458,10 @@ function loadBasketTable()
         "language": {
             "emptyTable": "Basket is empty, please proceed to shop"
         },
-        'columns': [null,{'visible': false},null,null,null,null],
+        'columns': [null, {'visible': false}, null, null, null, null],
         "columnDefs": [
             {"className": "dt-center", "targets": "_all"}
-          ],
+        ],
         "footerCallback": function (row, data, start, end, display)
         {
 //                console.log(data);
@@ -460,23 +475,23 @@ function loadBasketTable()
 
                 var price = data[i][4].split('£ ');
                 totalAmount += parseFloat(price[1]);
-                
+
             }
             $('#total_itemsLeftCard').text(totatItems);
             $('#total_itemsRightCard').text(totatItems);
-            
+
             totalAmount = Number.parseFloat(totalAmount).toFixed(2);
-            
+
             $('#priceamt').text(totalAmount);
-            
-            var shippingCharges = $('#shippingcharges').find(":selected").text().replace( /^\D+/g, '');
-            
+
+            var shippingCharges = $('#shippingcharges').find(":selected").text().replace(/^\D+/g, '');
+
             final_price = Number(shippingCharges) + Number(totalAmount);
-            
+
             final_price = Number.parseFloat(final_price).toFixed(2);
-            
+
             $('#finalpriceamt').text(final_price);
-            
+
         },
         "rowCallback": function (row, data)
         {
@@ -487,41 +502,87 @@ function loadBasketTable()
 
     //sessionDetails.basketSession.totalItems === 0 ? $('#checkoutButton').prop('disabled', true) : $('#checkoutButton').prop('disabled', false);
 
-    sessionDetails.basketSession.totalItems === 0 ? $('#checkoutDiv').hide() : $('#checkoutDiv').show();;
+    sessionDetails.basketSession.totalItems === 0 ? $('#checkoutDiv').hide() : $('#checkoutDiv').show();
+
 }
 
 
 async function basketCheckout()
 {
-    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
-    
-    var shippingChargesCode = $( "#shippingcharges option:selected" ).val();        //console.log("shippingChargesCode", shippingChargesCode);
-    
-    basketItems = JSON.stringify(sessionDetails.basketSession.basketItems);
-    
-    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=1001&basketItems='+ basketItems + '&shippingCode=' + shippingChargesCode)
-    .then(function (response)
-    {
-        if (response.status !== 200 && response.ok !== true)
-        {
-            console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-            return;
-        }
+    $('#overlay1').show();
 
-        // Examine the text in the response
-        response.json().then(function (data)
-        {
-            console.log("data", data);
-            
-            window.location.href = data.extra.url;
-            
-        });
-    })
-    .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-    });
+    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+
+    var shippingChargesCode = $("#shippingcharges option:selected").val();        //console.log("shippingChargesCode", shippingChargesCode);
+
+    basketItems = JSON.stringify(sessionDetails.basketSession.basketItems);
+
+    await fetch('/home/basketcheckout?key=BzJKl8b4UQ76nLw&method=1001&basketItems=' + basketItems + '&shippingCode=' + shippingChargesCode)
+            .then(function (response)
+            {
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+                    
+                    $('#overlay1').hide();
+                    return;
+                }
+
+                // Examine the text in the response
+                response.json().then(function (data)
+                {
+                    console.log("data", data);
+
+                    var checkoutSession = new Object();
+
+                    checkoutSession = data.extra;
+
+                    sessionDetails.checkoutSession = checkoutSession;
+                    //console.log("sessionDetails", sessionDetails);
+
+                    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+
+                    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+
+                    $('#overlay1').hide();
+//            console.log("sessionDetails: "+ JSON.stringify(sessionDetails.checkoutSession));
+                    window.location.href = data.extra.url;
+
+
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+                $('#overlay1').hide();
+            });
 }
 
+/*************************************  Order Confirmation Functions   *****************************************************/
+
+function fetchOrderDetails()
+{
+    $('#overlay1').show();
+    
+    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+    // show swal to say payment confirmation 
+    //fetch PI id, recript URL
+    // if status succeeded i.e payment successfull, else payment pending
+    // save receipt URL for customer to see recipt from website
+
+    // customer details from customer id in the JSON
+    
+    // reset basketSession Object nas test for basket_id
+    // update datatabse with the require column and values
+    sessionDetails.basketSession.basketItems = {};
+    sessionDetails.basketSession.totalItems = 0;
+    //console.log("sessionDetails", sessionDetails);
+
+    localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+
+    
+
+    $('#overlay1').hide();
+}
 
 /*************************************      Person Profile Functions   *****************************************************/
 
