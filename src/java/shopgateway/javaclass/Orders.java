@@ -113,12 +113,22 @@ public class Orders {
             JSONObject dataObject = (JSONObject) chargesData.get(0);
 
             String orderReceipt = (String) dataObject.get("receipt_url");
+            
+            long totalItems = 0;
+            JSONArray checkoutData = (JSONArray) checkoutItems.get("data");
+            for(int i = 0; i < checkoutData.size(); i++)
+            {
+                JSONObject checkoutDataObj = (JSONObject) checkoutData.get(i);
+                totalItems = totalItems + (Long) checkoutDataObj.get("quantity");
+            }
+            
+            
 
             String orderUpdate = "Update SHOP_ORDERS set "
                     + "BASKET_ITEMS= '', "
                     + "BASKET_STATUS= 'ordered', "
-            // total items needs to tbe updated
-
+          
+                    + "TOTAL_ITEMS= '" + totalItems + "', "
                     + "ORDER_TIMESTAMP= '" + createdAt + "', "
                     + "CHECKOUT_SESSION_ID= '" + checkoutSession_id + "', "
                     + "CHECKOUT_ITEMS= '" + checkoutItems + "', "
