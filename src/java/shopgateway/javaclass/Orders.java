@@ -45,12 +45,12 @@ public class Orders {
     JSONParser jsonParser = new JSONParser();
     Connection conn = ODBConnection.getInstance().connection;
 
-    public JSONObject retrieveOrders(String person_id) {
+    public JSONArray retrieveOrders(String person_id) {
 
         PreparedStatement pst = null;
         ResultSet rs = null;
 
-        JSONArray orders = new JSONArray();
+        JSONArray previousOrders = new JSONArray();
 
         try {
 
@@ -60,9 +60,25 @@ public class Orders {
             while (rs.next()) {
 
                 JSONObject result = new JSONObject();
-                result.put("order_time", "");
+                result.put("order_timestamp", rs.getString("ORDER_TIMESTAMP"));
+                result.put("total_items", rs.getString("TOTAL_ITEMS"));
+                result.put("checkout_items", rs.getString("CHECKOUT_ITEMS"));
+                result.put("payment_status", rs.getString("PAYMENT_STATUS"));
+                result.put("order_receipt", rs.getString("ORDER_RECEIPT"));
+                
+                // fetch installation address from installation id 
+                result.put("installation_address", rs.getString("INSTALLATION_ADDRESS_ID"));
+                
+                result.put("shipping_address", rs.getString("SHIPPING_ADDRESS"));
+                result.put("shipping_id", rs.getString("SHIPPING_ID"));
+                result.put("shipping_status", rs.getString("SHIPPING_STATUS"));
+                result.put("order_status", rs.getString("ORDER_STATUS"));
+                result.put("order_amount", rs.getString("ORDER_AMOUNT"));
+                result.put("order_amount_received", rs.getString("ORDER_AMOUNT_RECEIVED"));
 
-                orders.add(result);
+                result.put("payment_currency", rs.getString("PAYMENT_CURRENCY"));
+                
+                previousOrders.add(result);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -84,7 +100,7 @@ public class Orders {
             }
         }
 
-        return null;
+        return previousOrders;
     }
 
     public JSONObject updateOrders(String person_id, String basket_id, String checkoutSession_id, String payment_intent_ID) {
@@ -96,16 +112,14 @@ public class Orders {
 
         try {
 
-            JSONObject paymentIntent = retrievePaymentIntent(payment_intent_ID);
-            JSONObject checkoutItems = retrieveCheckoutHistory(checkoutSession_id);
+            JSONObject paymentIntent = retrievePaymentIntent(payment_intent_ID);    //            System.out.println("paymentIntent: "+ paymentIntent); 
+            JSONObject checkoutItems = retrieveCheckoutHistory(checkoutSession_id); //            System.out.println("orderedItems: "+ orderedItems);
 
-//            System.out.println("paymentIntent: "+ paymentIntent);     //            System.out.println("orderedItems: "+ orderedItems);
-            
-            // already id // created  // status
-
+            long orderAmount = (Long) paymentIntent.get("amount");
+            long orderAmountReceived = (Long) paymentIntent.get("amount_received");
             long createdAt = (Long) paymentIntent.get("created");
             String paymentStatus = (String) paymentIntent.get("status");
-
+            String paymentCurrency = (String) paymentIntent.get("currency");
             JSONObject shippingAddress = (JSONObject) paymentIntent.get("shipping");
 
             JSONObject charges = (JSONObject) paymentIntent.get("charges");
@@ -121,6 +135,7 @@ public class Orders {
                 JSONObject checkoutDataObj = (JSONObject) checkoutData.get(i);
                 totalItems = totalItems + (Long) checkoutDataObj.get("quantity");
             }
+            
             
             
 
@@ -140,7 +155,13 @@ public class Orders {
             // installation id insertion
                     + "SHIPPING_ADDRESS= '" + shippingAddress + "', "
                     + "SHIPPING_STATUS = 'pending', "
-                    + "ORDER_STATUS = 'in progess' "
+                    + "ORDER_STATUS = 'in progess', "
+                    
+                    + "ORDER_AMOUNT = '"+orderAmount+"', "
+                    + "ORDER_AMOUNT_RECEIVED = '"+orderAmountReceived+"', "
+                    
+                    + "PAYMENT_CURRENCY = '"+paymentCurrency+"' "
+                    
                     + "where BASKET_ID = '" + basket_id + "' ";
             
             pst = conn.prepareStatement(orderUpdate);

@@ -38,7 +38,7 @@ public class StripeSession {
         
         Map<String, Object> adjustable_quantity = new HashMap<>();
         adjustable_quantity.put("minimum", 1);
-        adjustable_quantity.put("maximum", 10);
+        adjustable_quantity.put("maximum", 99);
         adjustable_quantity.put("enabled", true);
         
         basketItems.keySet().forEach(keyStr ->

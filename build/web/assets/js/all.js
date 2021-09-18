@@ -9,7 +9,7 @@
 var sessionDetails = new Object();
 
 var sensorDescription = new Object();
-var personDetails = new Object();
+var personDetails = new Array();
 var basketSession = new Object();
 
 var basketItems = new Object();
@@ -596,6 +596,7 @@ async function updateOrderDetails()
 
                     delete sessionDetails.checkoutSession;
                     sessionDetails.basketSession = data.extra.basketSession;
+                    sessionDetails.previousOrders = data.extra.previousOrders;
 
                     localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
@@ -620,22 +621,10 @@ async function updateOrderDetails()
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        /* Read more about handling dismissals below */
                         if (result.dismiss === Swal.DismissReason.timer) {
-//                            console.log('I was closed by the timer')
-
                             window.location.href = 'orders.html';
                         }
                     });
-
-//                    Swal.fire({
-//                        icon: 'success',
-//                        title: 'Payment Success!',
-//                        text: 'Payment receipt will be sent to your email address',
-//                        confirmButtonColor: '#00B74A'
-//                    }).then(function () {
-//                        window.location.href = 'orders.html';
-//                    });
 
                 });
             })
@@ -649,6 +638,46 @@ async function updateOrderDetails()
 
 
 }
+
+/*************************************      Load Previous Orders Functions   *****************************************************/
+
+function retrieveAllOrders()
+{
+    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+
+    previousOrders = sessionDetails.previousOrders;
+//    previousOrders = ['a', 'b', 'c'];
+
+    previousOrders.forEach((parameter) => 
+    {
+        console.log("arrayObject", parameter);
+        
+        
+        $("#allOrders").append(
+                    '<div class="card cardindexpage my-4">\n\
+                    <div class="row g-0">\n\
+                        <div class="col-md-1 d-flex align-items-center justify-content-center">\n\
+                            <i class="fas   fa-4x text-warning"></i>\n\
+                        </div> \n\
+                        <div class="col-md-10 "> \n\
+                            <div class="card-body ">\n\
+                                <h5 class="card-title">Order Id</h5>\n\
+                                <h6 class="text-muted">"Orer details</h6>\n\
+                            </div>\n\
+                        </div>\n\
+                        <div class="col-md-1"> \n\
+                            <button type="button" class="remove btn btn-link btn-sm text-danger float-end">Remove</button>\n\
+                        </div>\n\
+                    </div>\n\
+                </div>');
+        
+    });
+    
+   
+   
+    
+}
+
 
 /*************************************      Person Profile Functions   *****************************************************/
 

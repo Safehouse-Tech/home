@@ -57,16 +57,10 @@ and open the template in the editor.
 
         $(document).ready(function () {
 
-            var currentURL = window.location.href;           //console.log("currentURL: "+ currentURL);
-
-            if (currentURL.includes("nav=payment"))
-            {
-            }
-                
-           // updateOrderDetails();
+            // load all orders
+           retrieveAllOrders();
            
-           // load all orders
-          
+       }); 
     </script>
 
     <style>
@@ -89,41 +83,28 @@ and open the template in the editor.
 
                     <div class="section-title">
                         <h2 style="color: #68A4C4;">Your Orders</h2>
-                        <p></p>
-                    </div>
-
-                    <div class='d-flex justify-content-between '>
-                        <a id="" type="button" class="btn btn-primary btn-sm" href="index.html">
-                            <i class="fas fa-arrow-left"></i> Back to website
-                        </a>
-
-                        <div>
-
-                            <a id="" type="button" class="btn btn-warning btn-sm" href="https://pay.stripe.com/receipts/acct_1JPqtTGpCsnZmArE/ch_3JaPnIGpCsnZmArE1LZySRAz/rcpt_KEtcqaacsfDACP2K0kvzstW79coawgh">
+                        <a id="" type="button" class="btn btn-warning btn-sm" href="https://pay.stripe.com/receipts/acct_1JPqtTGpCsnZmArE/ch_3JaPnIGpCsnZmArE1LZySRAz/rcpt_KEtcqaacsfDACP2K0kvzstW79coawgh">
                                 <i class="fas fa-receipt"></i> View Receipt
                             </a>
-<!--                            <a id="" type="button" class="btn btn-primary btn-sm" href="orders.html">
-                                <i class="fas fa-arrow-right"></i> Go to orders
-                            </a>-->
-                        </div>
-
                     </div>
 
-                    
                 </div>
             </section>
 
             <section  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
                 <div class="container">
 
+                        <div id="allOrders" class="my-5"></div>
 
                 </div>
             </section>
 
-
+            
         </main>
 
 
 
     </body>
 </html>
+
+

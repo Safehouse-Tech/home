@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import shopgateway.config.ODBConnection;
@@ -32,7 +33,6 @@ public class BasketItems {
     Connection conn = ODBConnection.getInstance().connection;
 
     public JSONObject retrieveBasket(String person_id) {
-
         // fetch basket items with reference to person_id
         JSONObject result = new JSONObject();
         PreparedStatement pst = null;
@@ -42,36 +42,32 @@ public class BasketItems {
             JSONObject basketSession = new JSONObject();
             long basketId = 0, totalItems = 0;
             JSONObject basketItems = new JSONObject();
-            JSONObject previousOrders = new JSONObject();
+//            JSONArray previousOrders = new JSONArray();
 
             String check_personBasket = "Select * from SHOP_ORDERS where PERSON_ID = '" + person_id + "' and BASKET_STATUS = 'basket' ";
             pst = conn.prepareStatement(check_personBasket);
             rs = pst.executeQuery();
             if (rs.next()) {
                 basketId = rs.getLong("BASKET_ID");
-                
-                if(rs.getString("BASKET_ITEMS")!= null)
-                {
+
+                if (rs.getString("BASKET_ITEMS") != null) {
                     basketItems = (JSONObject) jsonParser.parse(rs.getString("BASKET_ITEMS"));
                 }
-                
+
                 totalItems = rs.getLong("TOTAL_ITEMS");
             } else {
 
                 basketId = createNewBasket(person_id); // create new basketSession
             }
 
-            /*
-                Orders orders = new Orders();
-                previousOrders = orders.retrieveOrders(person_id);
-                write same sql to get previous orders where status is ordered or deliverd
-             */
-            
-            
+            Orders orders = new Orders();
+            JSONArray previousOrders = orders.retrieveOrders(person_id);
+            //  write same sql to get previous orders where status is ordered or deliverd
+
             basketSession.put("basketId", basketId);
             basketSession.put("basketItems", basketItems);
             basketSession.put("totalItems", totalItems);
-            
+
             result.put("basketSession", basketSession);
             result.put("previousOrders", previousOrders);
 
@@ -97,14 +93,13 @@ public class BasketItems {
 
         return result;
     }
-    
-    public Long createNewBasket(String person_id)
-    {
-        long basketId = 0 ;
+
+    public Long createNewBasket(String person_id) {
+        long basketId = 0;
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            
+
             String sqlIdentifier = "select SHOP_SEQ.NEXTVAL from dual";
             pst = conn.prepareStatement(sqlIdentifier);
             synchronized (this) {
@@ -124,12 +119,10 @@ public class BasketItems {
             pst.setString(3, "basket");
 
             pst.executeUpdate();
-            
-        }
-        catch (Exception ex) {
+
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             if (rs != null) {
                 try {
                     rs.close();
@@ -146,20 +139,18 @@ public class BasketItems {
                 }
             }
         }
-        return basketId ;
+        return basketId;
     }
 
     public String updateBasket(String person_id, String basket_id, JSONObject basketItems, String totalItems) {
 
         // WHEN basket ordered then get order timestamp.
-        
         String result = "basket items not updated";
 
         PreparedStatement pst = null;
         ResultSet rs = null;
 
-        try 
-        {
+        try {
             String basketUpdate = "Update SHOP_ORDERS set "
                     + "BASKET_ITEMS= '" + basketItems + "', "
                     + "TOTAL_ITEMS= '" + totalItems + "'"
@@ -190,23 +181,3 @@ public class BasketItems {
         return result;
     }
 }
-/*
-
-List<Object> lineItems = new ArrayList<>();
-
-        Map<String, Object> lineItem1 = new HashMap<>();
-        lineItem1.put("price", "price_1JX3mgGpCsnZmArEgzvUViL6");
-        lineItem1.put("quantity", 2);
-
-        Map<String, Object> lineItem2 = new HashMap<>();
-        lineItem2.put("price", "price_1JX3jfGpCsnZmArECw0S45GP");
-        lineItem2.put("quantity", 1);
-
-        lineItems.add(lineItem1);
-        lineItems.add(lineItem2);
-
-        return lineItems;
-
-[{quantity=2, price=price_1JX3mgGpCsnZmArEgzvUViL6}, {quantity=1, price=price_1JX3jfGpCsnZmArECw0S45GP}]
-
- */
