@@ -402,7 +402,7 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
                     $("#basketalert_num").text(basketSession.totalItems);
 
                     sessionDetails.basketSession = basketSession;
-                    console.log("sessionDetails", sessionDetails);
+//                    console.log("sessionDetails", sessionDetails);
 
                     localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
@@ -644,37 +644,64 @@ async function updateOrderDetails()
 function retrieveAllOrders()
 {
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
-
     previousOrders = sessionDetails.previousOrders;
-//    previousOrders = ['a', 'b', 'c'];
 
-    previousOrders.forEach((parameter) => 
+
+    var tablerowdata = new Array();
+
+    previousOrders.forEach((order) => 
     {
-        console.log("arrayObject", parameter);
+        var orderPlacedAt = new Date(order.order_timestamp*1000).toString().substring(0, 31);
         
+        var amount = order.order_amount.substring(0,order.order_amount.length-2)+"."+order.order_amount.substring(order.order_amount.length-2);
         
-        $("#allOrders").append(
-                    '<div class="card cardindexpage my-4">\n\
-                    <div class="row g-0">\n\
-                        <div class="col-md-1 d-flex align-items-center justify-content-center">\n\
-                            <i class="fas   fa-4x text-warning"></i>\n\
-                        </div> \n\
-                        <div class="col-md-10 "> \n\
-                            <div class="card-body ">\n\
-                                <h5 class="card-title">Order Id</h5>\n\
-                                <h6 class="text-muted">"Orer details</h6>\n\
-                            </div>\n\
-                        </div>\n\
-                        <div class="col-md-1"> \n\
-                            <button type="button" class="remove btn btn-link btn-sm text-danger float-end">Remove</button>\n\
-                        </div>\n\
-                    </div>\n\
-                </div>');
+        var orderAmount =  amount +" "+ order.payment_currency.toUpperCase();
+        
+        var rowdata = new Array();
+        rowdata.push(orderPlacedAt);
+        rowdata.push(order.order_id);
+        rowdata.push(order.total_items);
+        rowdata.push(orderAmount);
+        
+        rowdata.push("wecew");
+        
+        rowdata.push('<a id="" type="button" class="btn btn-warning btn-sm" href="'+order.order_receipt+'"><i class="fas fa-receipt"></i> View Receipt</a>');
+        rowdata.push(order.order_status);
+        
+        rowdata.push('<button class="btn btn-link btn-sm remove" type="button"><i class="fas fa-times text-danger fa-lg" style="cursor:pointer"></i></button>');
+
+        tablerowdata.push(rowdata);
         
     });
     
-   
-   
+    
+    $('#allOrders').DataTable({
+        data: tablerowdata,
+//        "searching": false,
+//        "paging": false,
+//        "bInfo": false,
+//        "bSort": false,
+        "responsive": true,
+        "language": {
+            "emptyTable": "No Order Placed"
+        },
+//        'columns': [null, {'visible': false}, null, null, null, null],
+        "columnDefs": [
+            {"className": "dt-center", "targets": "_all"}
+        ],
+        "footerCallback": function (row, data, start, end, display)
+        {
+//                console.log(data);
+            
+
+        },
+        "rowCallback": function (row, data)
+        {
+
+
+        }
+    });
+
     
 }
 

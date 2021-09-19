@@ -61,6 +61,7 @@ public class Orders {
 
                 JSONObject result = new JSONObject();
                 result.put("order_timestamp", rs.getString("ORDER_TIMESTAMP"));
+                result.put("order_id", rs.getString("ORDER_ID"));
                 result.put("total_items", rs.getString("TOTAL_ITEMS"));
                 result.put("checkout_items", rs.getString("CHECKOUT_ITEMS"));
                 result.put("payment_status", rs.getString("PAYMENT_STATUS"));
@@ -121,6 +122,8 @@ public class Orders {
             String paymentStatus = (String) paymentIntent.get("status");
             String paymentCurrency = (String) paymentIntent.get("currency");
             JSONObject shippingAddress = (JSONObject) paymentIntent.get("shipping");
+            
+            String orderId = payment_intent_ID.replaceAll("pi_", "SAFE-#");
 
             JSONObject charges = (JSONObject) paymentIntent.get("charges");
             JSONArray chargesData = (JSONArray) charges.get("data");
@@ -135,7 +138,6 @@ public class Orders {
                 JSONObject checkoutDataObj = (JSONObject) checkoutData.get(i);
                 totalItems = totalItems + (Long) checkoutDataObj.get("quantity");
             }
-            
             
             
 
@@ -156,11 +158,10 @@ public class Orders {
                     + "SHIPPING_ADDRESS= '" + shippingAddress + "', "
                     + "SHIPPING_STATUS = 'pending', "
                     + "ORDER_STATUS = 'in progess', "
-                    
                     + "ORDER_AMOUNT = '"+orderAmount+"', "
                     + "ORDER_AMOUNT_RECEIVED = '"+orderAmountReceived+"', "
-                    
-                    + "PAYMENT_CURRENCY = '"+paymentCurrency+"' "
+                    + "PAYMENT_CURRENCY = '"+paymentCurrency+"', "
+                    + "ORDER_ID = '"+orderId+"', "
                     
                     + "where BASKET_ID = '" + basket_id + "' ";
             
