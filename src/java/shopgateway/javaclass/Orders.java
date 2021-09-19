@@ -161,7 +161,7 @@ public class Orders {
                     + "ORDER_AMOUNT = '"+orderAmount+"', "
                     + "ORDER_AMOUNT_RECEIVED = '"+orderAmountReceived+"', "
                     + "PAYMENT_CURRENCY = '"+paymentCurrency+"', "
-                    + "ORDER_ID = '"+orderId+"', "
+                    + "ORDER_ID = '"+orderId+"' "
                     
                     + "where BASKET_ID = '" + basket_id + "' ";
             
@@ -179,6 +179,9 @@ public class Orders {
              
         } catch (Exception ex) {
             ex.printStackTrace();
+            
+            // if order not updated then send alert email with pi_ id and CHECKOUT_ITEMS to gagan
+            
         } finally {
             if (rs != null) {
                 try {

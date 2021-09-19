@@ -652,10 +652,9 @@ function retrieveAllOrders()
     previousOrders.forEach((order) => 
     {
         var orderPlacedAt = new Date(order.order_timestamp*1000).toString().substring(0, 31);
-        
         var amount = order.order_amount.substring(0,order.order_amount.length-2)+"."+order.order_amount.substring(order.order_amount.length-2);
-        
         var orderAmount =  amount +" "+ order.payment_currency.toUpperCase();
+        var dispatchTo = JSON.parse(order.shipping_address).name;
         
         var rowdata = new Array();
         rowdata.push(orderPlacedAt);
@@ -663,12 +662,14 @@ function retrieveAllOrders()
         rowdata.push(order.total_items);
         rowdata.push(orderAmount);
         
-        rowdata.push("wecew");
-        
-        rowdata.push('<a id="" type="button" class="btn btn-warning btn-sm" href="'+order.order_receipt+'"><i class="fas fa-receipt"></i> View Receipt</a>');
+        rowdata.push(dispatchTo);
         rowdata.push(order.order_status);
+        rowdata.push('<a id="" type="button" class="btn btn-warning btn-sm" href="'+order.order_receipt+'">\n\
+                        <i class="fas fa-receipt"></i> Receipt</a>');
         
-        rowdata.push('<button class="btn btn-link btn-sm remove" type="button"><i class="fas fa-times text-danger fa-lg" style="cursor:pointer"></i></button>');
+        
+        rowdata.push('<button class="btn btn-primary btn-sm remove" type="button">\n\
+                        <i class="far fa-folder-open fa-lg" style="cursor:pointer"></i> View details</button>');
 
         tablerowdata.push(rowdata);
         
@@ -680,7 +681,9 @@ function retrieveAllOrders()
 //        "searching": false,
 //        "paging": false,
 //        "bInfo": false,
+
 //        "bSort": false,
+        "order": [[ 0, "desc" ]],
         "responsive": true,
         "language": {
             "emptyTable": "No Order Placed"
@@ -701,8 +704,7 @@ function retrieveAllOrders()
 
         }
     });
-
-    
+ 
 }
 
 
