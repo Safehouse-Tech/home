@@ -62,6 +62,18 @@ and open the template in the editor.
 
             // load all orders
             retrieveAllOrders();
+            
+            $('#allOrders').on('click', '.details', function ()
+            {
+                var table = $('#allOrders').DataTable();
+                
+                var selected_row = table.row($(this).parents('tr')).data();
+                var product_id   = selected_row[1]; console.log("product_id", product_id);
+                
+                
+               
+            });
+            
         });
 
 

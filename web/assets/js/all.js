@@ -668,7 +668,7 @@ function retrieveAllOrders()
                         <i class="fas fa-receipt"></i> Receipt</a>');
         
         
-        rowdata.push('<button class="btn btn-primary btn-sm remove" type="button">\n\
+        rowdata.push('<button class="btn btn-primary btn-sm details" type="button">\n\
                         <i class="far fa-folder-open fa-lg" style="cursor:pointer"></i> View details</button>');
 
         tablerowdata.push(rowdata);
@@ -678,11 +678,6 @@ function retrieveAllOrders()
     
     $('#allOrders').DataTable({
         data: tablerowdata,
-//        "searching": false,
-//        "paging": false,
-//        "bInfo": false,
-
-//        "bSort": false,
         "order": [[ 0, "desc" ]],
         "responsive": true,
         "language": {
