@@ -14,6 +14,8 @@ var basketSession = new Object();
 
 var basketItems = new Object();
 
+var openorderDetails = new Object();
+
 $(document).ready(function () {
 
     $("#headerdiv").load("header.html");
@@ -612,7 +614,6 @@ function retrieveAllOrders()
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
     previousOrders = sessionDetails.previousOrders;
 
-
     var tablerowdata = new Array();
 
     previousOrders.forEach((order) =>
@@ -638,6 +639,16 @@ function retrieveAllOrders()
         rowdata.push('<button class="btn btn-primary btn-sm details" type="button">\n\
                         <i class="far fa-folder-open fa-lg" style="cursor:pointer"></i> View details</button>');
 
+
+        rowdata.push(order.checkout_items);                
+        rowdata.push(order.billing_address); 
+        rowdata.push(order.shipping_address); 
+        rowdata.push(order.order_amount); 
+        rowdata.push(order.order_amount_received); 
+        rowdata.push(order.payment_currency.toUpperCase()); 
+        rowdata.push(order.payment_method_details);
+        
+
         tablerowdata.push(rowdata);
 
     });
@@ -650,7 +661,7 @@ function retrieveAllOrders()
         "language": {
             "emptyTable": "No Order Placed"
         },
-        'columns': [{'visible': false},null, null, null, null, null, null, null, null],
+        'columns': [{'visible': false},null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
         "columnDefs": [
             {"className": "dt-center", "targets": "_all"}
         ],
@@ -668,7 +679,47 @@ function retrieveAllOrders()
     });
 
 }
+/*************************************   Order Summary Functions   *****************************************************/
 
+function loadOrderDetail()
+{
+    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+    
+    openorderDetails = sessionDetails.openorderDetails;
+    
+    var shipping_address= JSON.parse(openorderDetails.shipping_address);
+    var billing_address = JSON.parse(openorderDetails.billing_address);
+    var checkout_items  = JSON.parse(openorderDetails.checkout_items);
+    var payment_method_details = JSON.parse(openorderDetails.payment_method_details);
+    
+   // console.log("shipping_address: "+sessionDetails.openorderDetails.payment_method_details);
+  
+    
+    $("#orderId").text(openorderDetails.order_id);
+    $("#orderOn").text(openorderDetails.order_timestamp);
+    
+    $("#deliveryName").text(shipping_address.name);
+    $("#deliveryLine1").text(shipping_address.address.line1);
+    $("#deliveryLine2").text(shipping_address.address.line2);
+    $("#deliveryCity").text(shipping_address.address.city +", "+ shipping_address.address.postal_code);
+    $("#deliveryCountry").text(shipping_address.address.country);
+    
+    
+    $("#billingName").text(billing_address.name);
+    $("#billingLine1").text(billing_address.address.line1);
+    $("#billingLine2").text(billing_address.address.line2);
+    $("#billingCity").text(billing_address.address.city +", "+ shipping_address.address.postal_code);
+    $("#billingCountry").text(billing_address.address.country);
+    
+    
+    var cardType = payment_method_details.card.brand;
+    var cardIcon = '<i class="fab fa-cc-'+cardType+' fa-lg text-primary"></i>';
+    var last4 = payment_method_details.card.last4;
+    
+    $("#paymentCard").empty();
+    $("#paymentCard").append(cardIcon + " **** "+ last4);
+    
+}
 
 /*************************************      Person Profile Functions   *****************************************************/
 

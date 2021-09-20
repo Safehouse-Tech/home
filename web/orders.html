@@ -67,13 +67,28 @@ and open the template in the editor.
             {
                 var table = $('#allOrders').DataTable();
 
-                var selected_row = table.row($(this).parents('tr')).data();
-                var product_id = selected_row[1];
-                console.log("product_id", product_id);
+                var selectedOrderRow = table.row($(this).parents('tr')).data();
 
-                alert("Complete order details page will be shown here ");
+                sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
-                console.log("modal with full details");
+                var openorderDetails = {
+                    order_timestamp: selectedOrderRow[1],
+                    order_id: selectedOrderRow[2],
+                    total_items: selectedOrderRow[3],
+                    order_status: selectedOrderRow[6],
+                    checkout_items: selectedOrderRow[9],
+                    billing_address: selectedOrderRow[10],
+                    shipping_address: selectedOrderRow[11],
+                    order_amount: selectedOrderRow[12],
+                    order_amount_received: selectedOrderRow[13],
+                    payment_currency: selectedOrderRow[14],
+                    payment_method_details: selectedOrderRow[15] 
+                };
+
+                sessionDetails.openorderDetails = openorderDetails;
+                localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
+
+                window.location.href = "order-summary.html";
             });
 
         });
@@ -110,15 +125,15 @@ and open the template in the editor.
 
         <main id="main">
 
-<!--            <section class="features no-margin-bottom ">
-                <div class="container" data-aos="zoom-in">
-
-                    <div class="section-title">
-                        <h2 style="color: #68A4C4;">Your Orders</h2>
-                    </div>
-
-                </div>
-            </section>-->
+            <!--            <section class="features no-margin-bottom ">
+                            <div class="container" data-aos="zoom-in">
+            
+                                <div class="section-title">
+                                    <h2 style="color: #68A4C4;">Your Orders</h2>
+                                </div>
+            
+                            </div>
+                        </section>-->
 
             <section class=""  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
                 <div class="container-fluid " style="padding: 0 100px;">
@@ -140,6 +155,14 @@ and open the template in the editor.
                                     <th>STATUS</th>
                                     <th>RECEIPT</th>
                                     <th>ORDER DETAILS</th>
+
+                                    <th>CHECKOUT ITEMS</th>
+                                    <th>BILLING ADDRESS</th>
+                                    <th>SHIPPING ADDRESS</th>
+                                    <th>ORDER AMOUNT</th>
+                                    <th>ORDER AMOUNT RECEIVED</th>
+                                    <th>PAYMENT CURRENCY</th>
+                                    <th>PAYMENT METHOD DETAILS</th>
                                     </thead>
                                 </table>
                             </div>

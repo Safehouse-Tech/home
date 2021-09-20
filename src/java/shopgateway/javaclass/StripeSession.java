@@ -55,15 +55,18 @@ public class StripeSession {
         
         List<Object> countryCode = new ArrayList<>();
         countryCode.add("GB");
-        countryCode.add("US");
+//        countryCode.add("US");
         Map<String, Object> shipping_address = new HashMap<>();
         shipping_address.put("allowed_countries", countryCode);
         
           
         Map<String, Object> params = new HashMap<>();
-//        params.put("success_url","http://localhost:8080/home/orders.html?nav=payment");
         params.put("success_url","http://localhost:8080/home/order-confirmation.html");
         params.put("cancel_url","http://localhost:8080/home/order-cancel.html");
+        
+//        params.put("success_url","https://www.csiccservice.co.uk/home/order-confirmation.html");
+//        params.put("cancel_url","https://www.csiccservice.co.uk/home/order-cancel.html");
+        
         params.put("payment_method_types",paymentMethodTypes);
         
         params.put("line_items", lineItems);

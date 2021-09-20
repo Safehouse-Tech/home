@@ -68,8 +68,9 @@ public class Orders {
                 result.put("order_receipt", rs.getString("ORDER_RECEIPT"));
                 
                 // fetch installation address from installation id 
-                result.put("installation_address", rs.getString("INSTALLATION_ADDRESS_ID"));
+//                result.put("installation_address", rs.getString("INSTALLATION_ADDRESS_ID"));
                 
+                result.put("billing_address", rs.getString("BILLING_ADDRESS"));
                 result.put("shipping_address", rs.getString("SHIPPING_ADDRESS"));
                 result.put("shipping_id", rs.getString("SHIPPING_ID"));
                 result.put("shipping_status", rs.getString("SHIPPING_STATUS"));
@@ -78,6 +79,7 @@ public class Orders {
                 result.put("order_amount_received", rs.getString("ORDER_AMOUNT_RECEIVED"));
 
                 result.put("payment_currency", rs.getString("PAYMENT_CURRENCY"));
+                result.put("payment_method_details", rs.getString("PAYMENT_METHOD_DETAILS"));
                 
                 previousOrders.add(result);
             }
@@ -129,6 +131,10 @@ public class Orders {
             JSONArray chargesData = (JSONArray) charges.get("data");
             JSONObject dataObject = (JSONObject) chargesData.get(0);
 
+            JSONObject billingAddress = (JSONObject) dataObject.get("billing_details");
+            JSONObject paymentMethodDetails = (JSONObject) dataObject.get("payment_method_details");
+//            JSONObject cardDetails = (JSONObject) paymentMethodDetails.get("card");
+            
             String orderReceipt = (String) dataObject.get("receipt_url");
             
             long totalItems = 0;
@@ -157,11 +163,13 @@ public class Orders {
             // installation id insertion
                     + "SHIPPING_ADDRESS= '" + shippingAddress + "', "
                     + "SHIPPING_STATUS = 'pending', "
-                    + "ORDER_STATUS = 'in progess', "
+                    + "ORDER_STATUS = 'in progress', "
                     + "ORDER_AMOUNT = '"+orderAmount+"', "
                     + "ORDER_AMOUNT_RECEIVED = '"+orderAmountReceived+"', "
                     + "PAYMENT_CURRENCY = '"+paymentCurrency+"', "
-                    + "ORDER_ID = '"+orderId+"' "
+                    + "ORDER_ID = '"+orderId+"', "
+                    + "BILLING_ADDRESS = '"+billingAddress+"', "
+                    + "PAYMENT_METHOD_DETAILS = '"+paymentMethodDetails+"' "
                     
                     + "where BASKET_ID = '" + basket_id + "' ";
             
