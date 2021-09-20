@@ -27,8 +27,8 @@ and open the template in the editor.
         <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
         <link href="assets/css/style.css" rel="stylesheet">
-<link href="assets/css/table.css" rel="stylesheet">
-       
+        <link href="assets/css/table.css" rel="stylesheet">
+
         <!--<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>-->
         <!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
 
@@ -46,13 +46,13 @@ and open the template in the editor.
         <!--<script src="assets/js/main.js"></script>-->
         <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/all.js"></script>
-<!--
--->        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.css">
+        <!--
+        -->        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.css">
         <script type="text/javascript" src="assets/vendor/dataTables.min.js"></script>
-        
-<!--        <script type="text/javascript" src="assets/vendor/datatable/datatable.min.js"></script>
-        <link href="assets/vendor/datatable/datatable.min.css" rel="stylesheet">-->
-        
+
+        <!--        <script type="text/javascript" src="assets/vendor/datatable/datatable.min.js"></script>
+                <link href="assets/vendor/datatable/datatable.min.css" rel="stylesheet">-->
+
         <script type="text/javascript" src="assets/vendor/sweetAlertNew.js"></script>
 
     </head>
@@ -62,18 +62,20 @@ and open the template in the editor.
 
             // load all orders
             retrieveAllOrders();
-            
+
             $('#allOrders').on('click', '.details', function ()
             {
                 var table = $('#allOrders').DataTable();
-                
+
                 var selected_row = table.row($(this).parents('tr')).data();
-                var product_id   = selected_row[1]; console.log("product_id", product_id);
-                
-                
-               
+                var product_id = selected_row[1];
+                console.log("product_id", product_id);
+
+                alert("Complete order details page will be shown here ");
+
+                console.log("modal with full details");
             });
-            
+
         });
 
 
@@ -93,7 +95,7 @@ and open the template in the editor.
         }
 
         .dataTables_filter {margin-bottom: 30px;}
-        
+
 
     </style>
     <body>
@@ -131,6 +133,7 @@ and open the template in the editor.
                             <div class="table-responsive px-3 py-3">
                                 <table id="allOrders" class="table row-border m-0 p-0 hover" style="cursor:pointer; width:100%" >  <!--table-striped --> 
                                     <thead>
+                                    <th> UNIX TIME</th>   
                                     <th style="max-width: 120px;">ORDER PLACED</th>
                                     <th>ORDER ID</th>
                                     <th>ITEMS</th>

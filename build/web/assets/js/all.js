@@ -256,67 +256,6 @@ async function addtobasket()
 
             updatebasket();
 
-            /* 
-             var person_id = sessionDetails.personDetails.person_id;
-             var basket_id = basketSession.basketId;
-             var basketItems = JSON.stringify(basketSession.basketItems);
-             
-             // updatebasket(person_id, basket_id, basketItems)
-             
-             await fetch('/home/basketSession?key=BzJKl8b4UQ76nLw&method=3002&person_id=' + person_id + '&basket_id=' + basket_id + '&basketItems=' + basketItems, {
-             method: 'POST',
-             headers: {
-             'Content-Type': 'application/json'
-             }
-             })
-             .then(function (response)
-             {
-             if (response.status !== 200 && response.ok !== true)
-             {
-             console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
-             return;
-             }
-             
-             response.json().then(function (data)
-             {
-             console.log("data", data);
-             var notifyText, notifyStatus;
-             
-             
-             if (data.extra === "basket items updated")
-             {
-             notifyText = "Item added to basket";
-             notifyStatus = "success";
-             
-             $("#basketalert_num").text(basketSession.totalItems);
-             
-             sessionDetails.basketSession = basketSession;
-             
-             console.log("sessionDetails", sessionDetails);
-             
-             localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
-             
-             } else {
-             notifyText = "Item not added to basket";
-             notifyStatus = "error";
-             }
-             
-             $(".pos-demo").notify(
-             notifyText,
-             {
-             className: notifyStatus,
-             position: "right"
-             });
-             
-             
-             });
-             })
-             .catch(function (err) {
-             console.log('Fetch Error :-S', err);
-             });
-             */
-
-
         }
     }
 
@@ -347,6 +286,8 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
         delete basketSession.basketItems[removeProduct_id];
 
         // console.log("basketSession", basketSession);
+
+
     }
 
     var totalItems = basketSession.totalItems;
@@ -406,6 +347,8 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
 
                     localStorage.setItem('sessionDetails', JSON.stringify(sessionDetails));
 
+                    checkSafehouseExists();
+
                     $('#overlay1').hide();
                 });
             })
@@ -422,7 +365,27 @@ async function updatebasket(removeProduct_id)   //(person_id, basket_id, basketI
 
 /*************************************  Basket Page Representation Functions   *****************************************************/
 
+function checkSafehouseExists()
+{
+    sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
+    basketSession = sessionDetails.basketSession;   //    basketItems = sessionDetails.basketSession.basketItems;
 
+
+    if ((basketSession.basketItems.hasOwnProperty("prod_KBQdddQBX3l7pR")
+            || basketSession.basketItems.hasOwnProperty("prod_KEzdbBFpOf0psw"))
+            && !basketSession.basketItems.hasOwnProperty("prod_KBQaEX0aSz2n9q"))
+    {
+        $('#safehousehubConfirmationDiv').show();
+
+        $('#safehousehubConfirmation').prop('required',true);
+        
+    } else {
+
+        $('#safehousehubConfirmationDiv').hide();
+        $('#safehousehubConfirmation').prop('required',false);
+    }
+
+}
 
 function loadBasketTable()
 {
@@ -437,7 +400,7 @@ function loadBasketTable()
 //        console.log(key, basketSession.basketItems[key].quantity);
 
         var rowdata = new Array();
-        rowdata.push('<img src="' + basketSession.basketItems[key].product_image + '" class="img-fluid " alt="">');
+        rowdata.push('<img class="tableImage" src="' + basketSession.basketItems[key].product_image + '" class="img-fluid " alt="">');
         rowdata.push(key);
         rowdata.push(basketSession.basketItems[key].product_name);
         rowdata.push(basketSession.basketItems[key].quantity);
@@ -492,6 +455,8 @@ function loadBasketTable()
 
             $('#finalpriceamt').text(final_price);
 
+//            checkSafehouseExists();
+
         },
         "rowCallback": function (row, data)
         {
@@ -504,6 +469,7 @@ function loadBasketTable()
 
     sessionDetails.basketSession.totalItems === 0 ? $('#checkoutDiv').hide() : $('#checkoutDiv').show();
 
+    checkSafehouseExists();
 }
 
 
@@ -649,48 +615,49 @@ function retrieveAllOrders()
 
     var tablerowdata = new Array();
 
-    previousOrders.forEach((order) => 
+    previousOrders.forEach((order) =>
     {
-        var orderPlacedAt = new Date(order.order_timestamp*1000).toString().substring(0, 31);
-        var amount = order.order_amount.substring(0,order.order_amount.length-2)+"."+order.order_amount.substring(order.order_amount.length-2);
-        var orderAmount =  amount +" "+ order.payment_currency.toUpperCase();
+        var orderPlacedAt = new Date(order.order_timestamp * 1000).toString().substring(0, 31);
+        var amount = order.order_amount.substring(0, order.order_amount.length - 2) + "." + order.order_amount.substring(order.order_amount.length - 2);
+        var orderAmount = amount + " " + order.payment_currency.toUpperCase();
         var dispatchTo = JSON.parse(order.shipping_address).name;
-        
+
         var rowdata = new Array();
+        rowdata.push(order.order_timestamp);
         rowdata.push(orderPlacedAt);
         rowdata.push(order.order_id);
         rowdata.push(order.total_items);
         rowdata.push(orderAmount);
-        
+
         rowdata.push(dispatchTo);
         rowdata.push(order.order_status);
-        rowdata.push('<a id="" type="button" class="btn btn-warning btn-sm" href="'+order.order_receipt+'">\n\
+        rowdata.push('<a id="" type="button" class="btn btn-warning btn-sm" href="' + order.order_receipt + '">\n\
                         <i class="fas fa-receipt"></i> Receipt</a>');
-        
-        
+
+
         rowdata.push('<button class="btn btn-primary btn-sm details" type="button">\n\
                         <i class="far fa-folder-open fa-lg" style="cursor:pointer"></i> View details</button>');
 
         tablerowdata.push(rowdata);
-        
+
     });
-    
-    
+
+
     $('#allOrders').DataTable({
         data: tablerowdata,
-        "order": [[ 0, "desc" ]],
+        "order": [[0, "desc"]],
         "responsive": true,
         "language": {
             "emptyTable": "No Order Placed"
         },
-//        'columns': [null, {'visible': false}, null, null, null, null],
+        'columns': [{'visible': false},null, null, null, null, null, null, null, null],
         "columnDefs": [
             {"className": "dt-center", "targets": "_all"}
         ],
         "footerCallback": function (row, data, start, end, display)
         {
 //                console.log(data);
-            
+
 
         },
         "rowCallback": function (row, data)
@@ -699,7 +666,7 @@ function retrieveAllOrders()
 
         }
     });
- 
+
 }
 
 

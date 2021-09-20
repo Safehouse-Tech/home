@@ -44,16 +44,16 @@
         <script type="text/javascript" src="assets/vendor/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="assets/js/all.js"></script>
 
-<!--        <script type="text/javascript" src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.25/api/sum().js"></script> -->
+        <!--        <script type="text/javascript" src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+                <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.25/api/sum().js"></script> -->
 
         <script type="text/javascript" src="assets/vendor/dataTables.min.js"></script>
         <script type="text/javascript" src="assets/vendor/datatable.sum().js"></script>
-        
+
         <script src="assets/vendor/notify.min.js"></script>
 
         <!--<script src="assets/js/basket.js"></script>-->
-        
+
         <!--<script src="https://js.stripe.com/v3/"></script>-->
 
     </head>
@@ -67,37 +67,46 @@
             $('#basketTable').on('click', '.remove', function ()
             {
                 var table = $('#basketTable').DataTable();
-                
+
                 var selected_row = table.row($(this).parents('tr')).data();
-                var product_id   = selected_row[1]; //console.log("product_id", product_id);
-                
+                var product_id = selected_row[1]; //console.log("product_id", product_id);
+
                 updatebasket(product_id);
-                
+
                 table.row($(this).parents('tr')).remove().draw();
-                
+
 //                ( ! table.data().any() ) ? $('#checkoutDiv').hide() : $('#checkoutDiv').show() ;
 
-                ( ! table.data().any() ) ? $("#checkoutDiv *").prop('disabled', true).off('click')  : $("#checkoutDiv *").prop('disabled', false).on('click');
-                
+                (!table.data().any()) ? $("#checkoutDiv *").prop('disabled', true).off('click') : $("#checkoutDiv *").prop('disabled', false).on('click');
+
+
             });
 
             $(window).resize(function ()
             {
                 $(window).width() >= 768 ? $(".cart").css("min-height", "600px") : "";
             }).resize();
-            
-            $('#shippingcharges').on('change', function() 
+
+            $('#shippingcharges').on('change', function ()
             {
                 var final_price = 0;
-                   
-                var shippingCharges = $(this).find("option:selected").text().replace( /^\D+/g, '');
-               
+
+                var shippingCharges = $(this).find("option:selected").text().replace(/^\D+/g, '');
+
                 final_price = Number(shippingCharges) + Number($('#priceamt').text());
-                
+
                 final_price = Number.parseFloat(final_price).toFixed(2);
-                
+
                 $('#finalpriceamt').text(final_price);
             });
+
+            $("#checkoutForm").submit(function ()
+            {
+                //console.log("test");
+                basketCheckout();
+                return false;
+            });
+
 
         });
 
@@ -141,7 +150,7 @@
                 <img id="img" style="" src="assets/256x256.gif"/>
             </div>
         </div>
-        
+
         <main id="main">
 
             <section class="features no-margin-bottom">
@@ -151,7 +160,7 @@
                         <h2 style="color: #68A4C4;">Shopping Basket</h2>
                         <p></p>
                     </div>
- BLE sensors require safehouse hub, kindly check this box if you have safehouse home hub <br>also ask for installation address
+                    <!--BLE sensors require safehouse hub, kindly check this box if you have safehouse home hub <br>also ask for installation address-->
                 </div>
             </section>
 
@@ -176,9 +185,9 @@
                                     <table id="basketTable" class=" row-border m-0 p-0 hover" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th>Product</th>
+                                                <th>Item</th>
                                                 <th>Product id</th>
-                                                <th>Product name</th>
+                                                <th>Name</th>
                                                 <th>Quantity</th>
                                                 <th>Price</th>
                                                 <th>Remove item</th>
@@ -186,6 +195,7 @@
                                         </thead>
                                     </table>
                                 </div>
+
 
                                 <div class="card-footer border-0 p-0 bg-transparent" >
                                     <div class="back-to-shop">
@@ -212,7 +222,7 @@
                                         <!--&pound; <label id="priceamt"></label>-->
                                     </div>
                                 </div>
-                                
+
                                 <div class="row mb-3">
                                     <div class="col" style="padding-left:0;">
                                         PRICE 
@@ -221,42 +231,50 @@
                                         &pound; <label id="priceamt"></label>
                                     </div>
                                 </div>
-                                
+
                                 <div id="checkoutDiv">
-                                    <form>
+                                    <form id="checkoutForm">
                                         <p>SHIPPING 
                                             <i class="fas fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="right" 
                                                title="Standard Delivery: 5-7 Business Days Express Delivery: 1-3 Business Days"></i>
                                         </p> 
-                                        
+
                                         <select class="form-select" id="shippingcharges">
                                             <option class="text-muted" value="shr_1JaKRJGpCsnZmArEKQzOIgRJ">Standard Delivery - &pound;5.00</option>
                                             <option class="text-muted" value="shr_1JaKYsGpCsnZmArESHQb9E6S">Express Delivery - &pound;10.00</option>
                                             <option class="text-muted" value="shr_1JaP0YGpCsnZmArEM9agMun7">Free Delivery - &pound;00.00</option>
-                                        
+
                                         </select>
-                                        
-<!--                                        <p class="text-muted text-sm">Standard Delivery: 5-7 Business Day</p>
-                                        <p class="text-muted text-sm">Express Delivery: 1-3 Business Days</p>-->
-<!--                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" id="promotion_code" placeholder="Promotion code">
-                                            <span class="input-group-text" onclick="alert('checking code')" style="cursor:pointer">Check</span>
-                                        </div>-->
 
-                                        
-                                    </form>
-                                    <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                                        <div class="col">TOTAL PRICE</div>
-                                        <div class="col text-end">
-                                            &pound; <label id="finalpriceamt"></label>
+                                        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                                            <div class="col">TOTAL PRICE</div>
+                                            <div class="col text-end">
+                                                &pound; <label id="finalpriceamt"></label>
+                                            </div>
+                                        </div> 
+
+                                        <div id="safehousehubConfirmationDiv" class="mx-2">
+                                            <p class="text-muted">Note: <br>Items in your basket require Safehouse Hub for communication. 
+                                                Please confirm if you already own a Safehouse Hub.
+                                            </p>
+
+                                            <div class="form-check" >
+                                                <input class="form-check-input" type="checkbox" value="" id="safehousehubConfirmation">
+                                                <label class="form-check-label text-muted" for="safehousehubConfirmation">
+                                                    I already own a Safehouse Hub sensor.
+                                                </label>
+                                            </div>
+
                                         </div>
-                                    </div> 
 
-                                    <div class="d-grid gap-2 mt-4">
-                                        <button id="checkoutButton" class="btn mt-auto checkout" onclick="basketCheckout()" > <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
-                                            Proceed to checkout
-                                        </button>
-                                    </div>
+                                        <div class="d-grid gap-2 mt-4">
+                                            <button id="checkoutButton" class="submit mt-auto checkout"  > <!-- javascript:product('1', 'Safehouse-Hub', '£412.80 inc VAT','assets/img/website-images/safehousehub.png');  -->
+                                                Proceed to checkout
+                                            </button>
+                                        </div>
+
+                                    </form>
+
                                 </div>
 
                             </div>
