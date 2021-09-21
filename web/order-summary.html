@@ -71,6 +71,10 @@ and open the template in the editor.
             font-size:14px;
         }
 
+        .card-body h6{
+            font-size:14px;
+        }
+
     </style>
     <body>
         <div id="headerdiv"></div>
@@ -84,17 +88,30 @@ and open the template in the editor.
 
         <main id="main">
 
-            <section class="features no-margin-bottom ">
-                <div class="container" data-aos="zoom-in">
+            <!--            <section class="features no-margin-bottom ">
+                            <div class="container" data-aos="zoom-in">
+                                <div class="section-title">
+                                    <h2 style="color: #68A4C4;">Order Summary</h2>
+                                </div>
+                            </div>
+                        </section>-->
 
-                    <div class="section-title">
-                        <h2 style="color: #68A4C4;">Order Summary</h2>
+            <section class="breadcrumbs">
+                <div class="container">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!--<h2>Portfolio Details</h2>-->
+                        <ol>
+                            <!--<li><a href="Account.html">Home</a></li>-->
+                            <li><a href="orders.html">Orders</a></li>
+                            <li>Order Summary</li>
+                        </ol>
                     </div>
 
                 </div>
             </section>
 
-            <section class="mt-0 pt-0"  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+            <section class=""  data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
                 <div class="container" style="">
 
                     <div class="card shadow mb-4 ">
@@ -105,14 +122,41 @@ and open the template in the editor.
                         <div class="card-body">
 
                             <div class="row p-3">
-                                <div class="col-4">
+                                <div class=" col-md-4 col-lg-4 mb-4">
                                     <p class="fw-bolder">Items information</p>
+                                    <div id="orderedItemsDiv" class="text-muted"></div>
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-4 mb-4">
+                                    <p class="fw-bolder">Payment Details</p>
+                                    <div class="text-muted text-uppercase">
+                                        <h6 id="paymentCard"></h6>
+                                    </div>
+                                    
+                                    <div class="" id="orderReceiptDiv"></div>
+                                </div>
+
+                                <div class="col-md-4 col-lg-4 text-muted mb-4">
+                                    <p class="fw-bolder text-dark">Charges Summary</p>
+
+                                    <div class="d-flex justify-content-between">
+                                       <h6> Total Items:</h6><h6 id="orderTotalItems"></h6>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                       <h6> Total Subtotal:</h6><h6 id="orderSubtotal"></h6>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                       <h6> Shipping Charges:</h6><h6 id="orderShippingCharges"></h6>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                       <h6> Total Amount Paid:</h6><h6 id="orderTotalAmount"></h6>
+                                    </div>
                                 </div>
 
                             </div>
 
-                            <div class="row p-3">
-                                <div class="col-4">
+                            <div class="row p-3" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                                <div class="col-md-4 col-lg-4 mb-4">
                                     <p class="fw-bolder">Delivery Address</p>
                                     <div class="text-muted text-uppercase font14">
                                         <h6 id="deliveryName"></h6>
@@ -124,7 +168,7 @@ and open the template in the editor.
 
                                 </div>
 
-                                <div class="col-4">
+                                <div class="col-md-4 col-lg-4 mb-4">
                                     <p class="fw-bolder">Billing Address</p>
                                     <div class="text-muted text-uppercase font14">
                                         <h6 id="billingName"></h6>
@@ -132,17 +176,6 @@ and open the template in the editor.
                                         <h6 id="billingLine2"></h6>
                                         <h6 id="billingCity"></h6>
                                         <h6 id="billingCountry"></h6>
-                                    </div>
-                                </div>
-
-                                <div class="col-4">
-                                    <p class="fw-bolder">Payment Details</p>
-                                    <div class="text-muted text-uppercase font14">
-                                        <h6 id="paymentCard"></h6>
-                                        <h6 id=""></h6>
-                                        <h6 id=""></h6>
-                                        <h6 id=""></h6>
-                                        <h6 id=""></h6>
                                     </div>
                                 </div>
 

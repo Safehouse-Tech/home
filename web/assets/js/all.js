@@ -635,10 +635,8 @@ function retrieveAllOrders()
         rowdata.push('<a id="" type="button" class="btn btn-warning btn-sm" href="' + order.order_receipt + '">\n\
                         <i class="fas fa-receipt"></i> Receipt</a>');
 
-
         rowdata.push('<button class="btn btn-primary btn-sm details" type="button">\n\
                         <i class="far fa-folder-open fa-lg" style="cursor:pointer"></i> View details</button>');
-
 
         rowdata.push(order.checkout_items);                
         rowdata.push(order.billing_address); 
@@ -647,7 +645,7 @@ function retrieveAllOrders()
         rowdata.push(order.order_amount_received); 
         rowdata.push(order.payment_currency.toUpperCase()); 
         rowdata.push(order.payment_method_details);
-        
+        rowdata.push(order.checkout_session);
 
         tablerowdata.push(rowdata);
 
@@ -661,7 +659,8 @@ function retrieveAllOrders()
         "language": {
             "emptyTable": "No Order Placed"
         },
-        'columns': [{'visible': false},null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        'columns': [{'visible': false},null, null, null, null, null, null, null, null, 
+            {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}],
         "columnDefs": [
             {"className": "dt-center", "targets": "_all"}
         ],
@@ -687,16 +686,50 @@ function loadOrderDetail()
     
     openorderDetails = sessionDetails.openorderDetails;
     
+//    console.log("openorderDetails: "+ JSON.stringify(sessionDetails.openorderDetails));
+    
     var shipping_address= JSON.parse(openorderDetails.shipping_address);
     var billing_address = JSON.parse(openorderDetails.billing_address);
     var checkout_items  = JSON.parse(openorderDetails.checkout_items);
     var payment_method_details = JSON.parse(openorderDetails.payment_method_details);
     
-   // console.log("shipping_address: "+sessionDetails.openorderDetails.payment_method_details);
-  
+    var checkout_session = JSON.parse(openorderDetails.checkout_session);
+    var subtotal = (checkout_session.amount_subtotal).toString();
+    var subTotal = subtotal.substring(0, subtotal.length - 2) + "." + subtotal.substring(subtotal.length - 2) +" "+ openorderDetails.payment_currency.toUpperCase();
+    
+    var shipping = (checkout_session.total_details.amount_shipping).toString();
+    var shippingCharges = shipping.substring(0, shipping.length - 2) + "." + shipping.substring(shipping.length - 2) +" "+ openorderDetails.payment_currency.toUpperCase();
+    
+    var amounttotal = (checkout_session.amount_total).toString();
+    var amountTotal = amounttotal.substring(0, amounttotal.length - 2) + "." + amounttotal.substring(amounttotal.length - 2) +" "+ openorderDetails.payment_currency.toUpperCase();
+    
     
     $("#orderId").text(openorderDetails.order_id);
     $("#orderOn").text(openorderDetails.order_timestamp);
+    
+    $("#orderSubtotal").text(subTotal);
+    $("#orderShippingCharges").text(shippingCharges);
+    $("#orderTotalAmount").text(amountTotal);
+   
+    $("#orderedItemsDiv").empty(); 
+    
+    var itemsData = new Array();
+    itemsData = checkout_items.data;
+
+    itemsData.forEach((items) =>
+    {
+//        orderTotalItems = orderTotalItems + items.quantity;
+        var text = items.description + " x "+ items.quantity ;
+        $("#orderedItemsDiv").append('<h6>'+text+'</h6>');
+        
+    });
+    
+    
+    $("#orderTotalItems").text(openorderDetails.total_items);
+    $("#orderTotalAmount").text(openorderDetails.total_amount);
+  
+    $("#orderReceiptDiv").empty();
+    $("#orderReceiptDiv").append(openorderDetails.order_receipt);
     
     $("#deliveryName").text(shipping_address.name);
     $("#deliveryLine1").text(shipping_address.address.line1);
@@ -718,6 +751,7 @@ function loadOrderDetail()
     
     $("#paymentCard").empty();
     $("#paymentCard").append(cardIcon + " **** "+ last4);
+    
     
 }
 

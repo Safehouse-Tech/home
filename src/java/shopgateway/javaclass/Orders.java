@@ -80,6 +80,7 @@ public class Orders {
 
                 result.put("payment_currency", rs.getString("PAYMENT_CURRENCY"));
                 result.put("payment_method_details", rs.getString("PAYMENT_METHOD_DETAILS"));
+                result.put("checkout_session", rs.getString("CHECKOUT_SESSION"));
                 
                 previousOrders.add(result);
             }
@@ -115,8 +116,9 @@ public class Orders {
 
         try {
 
-            JSONObject paymentIntent = retrievePaymentIntent(payment_intent_ID);    //            System.out.println("paymentIntent: "+ paymentIntent); 
-            JSONObject checkoutItems = retrieveCheckoutHistory(checkoutSession_id); //            System.out.println("orderedItems: "+ orderedItems);
+            JSONObject paymentIntent    = retrievePaymentIntent(payment_intent_ID);    //            System.out.println("paymentIntent: "+ paymentIntent); 
+            JSONObject CheckoutSession  = retrieveCheckoutSession(checkoutSession_id);
+            JSONObject checkoutItems    = retrieveCheckoutHistory(checkoutSession_id); //            System.out.println("orderedItems: "+ orderedItems);
 
             long orderAmount = (Long) paymentIntent.get("amount");
             long orderAmountReceived = (Long) paymentIntent.get("amount_received");
@@ -169,7 +171,8 @@ public class Orders {
                     + "PAYMENT_CURRENCY = '"+paymentCurrency+"', "
                     + "ORDER_ID = '"+orderId+"', "
                     + "BILLING_ADDRESS = '"+billingAddress+"', "
-                    + "PAYMENT_METHOD_DETAILS = '"+paymentMethodDetails+"' "
+                    + "PAYMENT_METHOD_DETAILS = '"+paymentMethodDetails+"', "
+                    + "CHECKOUT_SESSION = '"+CheckoutSession+"' "
                     
                     + "where BASKET_ID = '" + basket_id + "' ";
             
@@ -219,6 +222,17 @@ public class Orders {
         JSONObject paymentIntent = (JSONObject) jsonParser.parse(PaymentIntent.retrieve(payment_intent).toJson());
 
         return paymentIntent;
+    }
+    
+    public JSONObject retrieveCheckoutSession(String checkoutSession_id) throws StripeException, ParseException {
+
+        Stripe.apiKey = CONFIG.STRIPEKEY;
+
+        Session session = Session.retrieve(checkoutSession_id);
+
+        JSONObject checkoutSession = (JSONObject) jsonParser.parse(session.toJson());
+
+        return checkoutSession;
     }
 
     public JSONObject retrieveCheckoutHistory(String checkoutSession_id) throws StripeException, ParseException {

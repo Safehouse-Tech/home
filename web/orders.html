@@ -75,14 +75,17 @@ and open the template in the editor.
                     order_timestamp: selectedOrderRow[1],
                     order_id: selectedOrderRow[2],
                     total_items: selectedOrderRow[3],
+                    total_amount: selectedOrderRow[4],
                     order_status: selectedOrderRow[6],
+                    order_receipt: selectedOrderRow[7],
                     checkout_items: selectedOrderRow[9],
                     billing_address: selectedOrderRow[10],
                     shipping_address: selectedOrderRow[11],
-                    order_amount: selectedOrderRow[12],
-                    order_amount_received: selectedOrderRow[13],
+//                    order_amount: selectedOrderRow[12],
+//                    order_amount_received: selectedOrderRow[13],
                     payment_currency: selectedOrderRow[14],
-                    payment_method_details: selectedOrderRow[15] 
+                    payment_method_details: selectedOrderRow[15],
+                    checkout_session: selectedOrderRow[16]
                 };
 
                 sessionDetails.openorderDetails = openorderDetails;
@@ -163,6 +166,8 @@ and open the template in the editor.
                                     <th>ORDER AMOUNT RECEIVED</th>
                                     <th>PAYMENT CURRENCY</th>
                                     <th>PAYMENT METHOD DETAILS</th>
+                                    <th>CHECKOUT SESSION</th>
+                                    
                                     </thead>
                                 </table>
                             </div>
