@@ -115,9 +115,15 @@ and open the template in the editor.
                 <div class="container" style="">
 
                     <div class="card shadow mb-4 ">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 fw-bolder text-primary">Order id: <span id="orderId"></span></h6>
-                            <h6 class="m-0 fw-bolder">Ordered on <span id="orderOn"></span></h6>
+                        <div class="card-header py-3">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 mb-1" >
+                                    <h6 class="m-0 fw-bolder">Order id: <span id="orderId"></span></h6>
+                                </div>
+                                <div class="col-md-6 col-lg-6 text-end mb-1">
+                                    <h6 class="m-0 fw-bolder">Ordered on: <span id="orderOn"></span></h6>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
 
@@ -126,13 +132,13 @@ and open the template in the editor.
                                     <p class="fw-bolder">Items information</p>
                                     <div id="orderedItemsDiv" class="text-muted"></div>
                                 </div>
-                                
+
                                 <div class="col-md-4 col-lg-4 mb-4">
                                     <p class="fw-bolder">Payment Details</p>
                                     <div class="text-muted text-uppercase">
                                         <h6 id="paymentCard"></h6>
                                     </div>
-                                    
+
                                     <div class="" id="orderReceiptDiv"></div>
                                 </div>
 
@@ -140,16 +146,16 @@ and open the template in the editor.
                                     <p class="fw-bolder text-dark">Charges Summary</p>
 
                                     <div class="d-flex justify-content-between">
-                                       <h6> Total Items:</h6><h6 id="orderTotalItems"></h6>
+                                        <h6> Total Items:</h6><h6 id="orderTotalItems"></h6>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                       <h6> Total Subtotal:</h6><h6 id="orderSubtotal"></h6>
+                                        <h6> Total Subtotal:</h6><h6 id="orderSubtotal"></h6>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                       <h6> Shipping Charges:</h6><h6 id="orderShippingCharges"></h6>
+                                        <h6> Shipping Charges:</h6><h6 id="orderShippingCharges"></h6>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                       <h6> Total Amount Paid:</h6><h6 id="orderTotalAmount"></h6>
+                                        <h6> Total Amount Paid:</h6><h6 id="orderTotalAmount"></h6>
                                     </div>
                                 </div>
 
