@@ -799,15 +799,20 @@ async function contactUs()
                 // Examine the text in the response
                 response.json().then(function (data)
                 {
-                    console.log("data", data);
+//                    console.log("data", data);
 
                     $("#contactUS_form").find('.loading').slideUp();
 
-                    data.extra === "Email action executed successfully" ?
-                            $("#contactUS_form").find('.sent-message').slideDown() :
-                            $("#contactUS_form").find('.error-message').slideDown();
-
-
+                    if(data.extra === "Email action executed successfully" )
+                    {
+                        $("#contactUS_form").find('.sent-message').slideDown();
+                        
+                        $("#contactUS_form").trigger("reset");
+                    }
+                    else {
+                         $("#contactUS_form").find('.error-message').slideDown();
+                    }       
+                    
                 });
             })
             .catch(function (err) {
