@@ -769,16 +769,6 @@ async function contactUs()
     $("#contactUS_form").find('.loading').slideDown();
     $("#contactUS_form").find('.sent-message') .slideUp();
     $("#contactUS_form").find('.error-message').slideUp();
-    
-//        $("#contactUS_form").find('.sent-message').slideDown();
-//        $("#contactUS_form").find("input:not(input[type=submit]), textarea").val('');
-
-
-//    $("#contactUS_form").find('.sent-message') .slideUp();
-//    $("#contactUS_form").find('.error-message').slideUp();
-//    $("#contactUS_form").find('.loading').slideDown();
-
-//    $("#contactUS_form").find('.error-message').slideDown().html('The form action property is not set!');
 
     await fetch('/home/contactusemail?contactusName=' + contactusName + '&contactusEmail=' + contactusEmail + '&contactusSubject=' + contactusSubject + '&contactusMessage=' + contactusMessage, {
         method: 'POST',
@@ -796,7 +786,6 @@ async function contactUs()
                     return;
                 }
 
-                // Examine the text in the response
                 response.json().then(function (data)
                 {
 //                    console.log("data", data);

@@ -6,6 +6,16 @@
 
 
 
+    
+        $("#contactUS_form").find('.sent-message').slideDown();
+        $("#contactUS_form").find("input:not(input[type=submit]), textarea").val('');
+
+
+    $("#contactUS_form").find('.sent-message') .slideUp();
+    $("#contactUS_form").find('.error-message').slideUp();
+    $("#contactUS_form").find('.loading').slideDown();
+
+    $("#contactUS_form").find('.error-message').slideDown().html('The form action property is not set!');
 
 
 for (var key in obj)
