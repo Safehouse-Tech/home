@@ -379,12 +379,12 @@ function checkSafehouseExists()
     {
         $('#safehousehubConfirmationDiv').show();
 
-        $('#safehousehubConfirmation').prop('required',true);
-        
+        $('#safehousehubConfirmation').prop('required', true);
+
     } else {
 
         $('#safehousehubConfirmationDiv').hide();
-        $('#safehousehubConfirmation').prop('required',false);
+        $('#safehousehubConfirmation').prop('required', false);
     }
 
 }
@@ -638,12 +638,12 @@ function retrieveAllOrders()
         rowdata.push('<button class="btn btn-primary btn-sm details" type="button">\n\
                         <i class="far fa-folder-open fa-lg" style="cursor:pointer"></i> View details</button>');
 
-        rowdata.push(order.checkout_items);                
-        rowdata.push(order.billing_address); 
-        rowdata.push(order.shipping_address); 
-        rowdata.push(order.order_amount); 
-        rowdata.push(order.order_amount_received); 
-        rowdata.push(order.payment_currency.toUpperCase()); 
+        rowdata.push(order.checkout_items);
+        rowdata.push(order.billing_address);
+        rowdata.push(order.shipping_address);
+        rowdata.push(order.order_amount);
+        rowdata.push(order.order_amount_received);
+        rowdata.push(order.payment_currency.toUpperCase());
         rowdata.push(order.payment_method_details);
         rowdata.push(order.checkout_session);
 
@@ -659,7 +659,7 @@ function retrieveAllOrders()
         "language": {
             "emptyTable": "No Order Placed"
         },
-        'columns': [{'visible': false},null, null, null, null, null, null, null, null, 
+        'columns': [{'visible': false}, null, null, null, null, null, null, null, null,
             {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}, {'visible': false}],
         "columnDefs": [
             {"className": "dt-center", "targets": "_all"}
@@ -683,76 +683,142 @@ function retrieveAllOrders()
 function loadOrderDetail()
 {
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
-    
+
     openorderDetails = sessionDetails.openorderDetails;
-    
+
 //    console.log("openorderDetails: "+ JSON.stringify(sessionDetails.openorderDetails));
-    
-    var shipping_address= JSON.parse(openorderDetails.shipping_address);
+
+    var shipping_address = JSON.parse(openorderDetails.shipping_address);
     var billing_address = JSON.parse(openorderDetails.billing_address);
-    var checkout_items  = JSON.parse(openorderDetails.checkout_items);
+    var checkout_items = JSON.parse(openorderDetails.checkout_items);
     var payment_method_details = JSON.parse(openorderDetails.payment_method_details);
-    
+
     var checkout_session = JSON.parse(openorderDetails.checkout_session);
     var subtotal = (checkout_session.amount_subtotal).toString();
-    var subTotal = subtotal.substring(0, subtotal.length - 2) + "." + subtotal.substring(subtotal.length - 2) +" "+ openorderDetails.payment_currency.toUpperCase();
-    
+    var subTotal = subtotal.substring(0, subtotal.length - 2) + "." + subtotal.substring(subtotal.length - 2) + " " + openorderDetails.payment_currency.toUpperCase();
+
     var shipping = (checkout_session.total_details.amount_shipping).toString();
-    var shippingCharges = shipping.substring(0, shipping.length - 2) + "." + shipping.substring(shipping.length - 2) +" "+ openorderDetails.payment_currency.toUpperCase();
-    
+    var shippingCharges = shipping.substring(0, shipping.length - 2) + "." + shipping.substring(shipping.length - 2) + " " + openorderDetails.payment_currency.toUpperCase();
+
     var amounttotal = (checkout_session.amount_total).toString();
-    var amountTotal = amounttotal.substring(0, amounttotal.length - 2) + "." + amounttotal.substring(amounttotal.length - 2) +" "+ openorderDetails.payment_currency.toUpperCase();
-    
-    
+    var amountTotal = amounttotal.substring(0, amounttotal.length - 2) + "." + amounttotal.substring(amounttotal.length - 2) + " " + openorderDetails.payment_currency.toUpperCase();
+
+
     $("#orderId").text(openorderDetails.order_id);
     $("#orderOn").text(openorderDetails.order_timestamp);
-    
+
     $("#orderSubtotal").text(subTotal);
     $("#orderShippingCharges").text(shippingCharges);
     $("#orderTotalAmount").text(amountTotal);
-   
-    $("#orderedItemsDiv").empty(); 
-    
+
+    $("#orderedItemsDiv").empty();
+
     var itemsData = new Array();
     itemsData = checkout_items.data;
 
     itemsData.forEach((items) =>
     {
 //        orderTotalItems = orderTotalItems + items.quantity;
-        var text = items.description + " x "+ items.quantity ;
-        $("#orderedItemsDiv").append('<h6>'+text+'</h6>');
-        
+        var text = items.description + " x " + items.quantity;
+        $("#orderedItemsDiv").append('<h6>' + text + '</h6>');
+
     });
-    
-    
+
+
     $("#orderTotalItems").text(openorderDetails.total_items);
     $("#orderTotalAmount").text(openorderDetails.total_amount);
-  
+
     $("#orderReceiptDiv").empty();
     $("#orderReceiptDiv").append(openorderDetails.order_receipt);
-    
+
     $("#deliveryName").text(shipping_address.name);
     $("#deliveryLine1").text(shipping_address.address.line1);
     $("#deliveryLine2").text(shipping_address.address.line2);
-    $("#deliveryCity").text(shipping_address.address.city +", "+ shipping_address.address.postal_code);
+    $("#deliveryCity").text(shipping_address.address.city + ", " + shipping_address.address.postal_code);
     $("#deliveryCountry").text(shipping_address.address.country);
-    
-    
+
+
     $("#billingName").text(billing_address.name);
     $("#billingLine1").text(billing_address.address.line1);
     $("#billingLine2").text(billing_address.address.line2);
-    $("#billingCity").text(billing_address.address.city +", "+ shipping_address.address.postal_code);
+    $("#billingCity").text(billing_address.address.city + ", " + shipping_address.address.postal_code);
     $("#billingCountry").text(billing_address.address.country);
-    
-    
+
+
     var cardType = payment_method_details.card.brand;
-    var cardIcon = '<i class="fab fa-cc-'+cardType+' fa-lg text-primary"></i>';
+    var cardIcon = '<i class="fab fa-cc-' + cardType + ' fa-lg text-primary"></i>';
     var last4 = payment_method_details.card.last4;
-    
+
     $("#paymentCard").empty();
-    $("#paymentCard").append(cardIcon + " **** "+ last4);
+    $("#paymentCard").append(cardIcon + " **** " + last4);
+
+
+}
+
+
+/*************************************      Contact Us Functions   *****************************************************/
+
+async function contactUs()
+{
+
+    var contactusName = $("#contactusName").val();
+    var contactusEmail = $("#contactusEmail").val();
+    var contactusSubject = $("#contactusSubject").val();
+    var contactusMessage = $("#contactusMessage").val();
+
+    $("#contactUS_form").find('.loading').slideDown();
+    $("#contactUS_form").find('.sent-message') .slideUp();
+    $("#contactUS_form").find('.error-message').slideUp();
     
-    
+//        $("#contactUS_form").find('.sent-message').slideDown();
+//        $("#contactUS_form").find("input:not(input[type=submit]), textarea").val('');
+
+
+//    $("#contactUS_form").find('.sent-message') .slideUp();
+//    $("#contactUS_form").find('.error-message').slideUp();
+//    $("#contactUS_form").find('.loading').slideDown();
+
+//    $("#contactUS_form").find('.error-message').slideDown().html('The form action property is not set!');
+
+    await fetch('/home/contactusemail?contactusName=' + contactusName + '&contactusEmail=' + contactusEmail + '&contactusSubject=' + contactusSubject + '&contactusMessage=' + contactusMessage, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+            .then(function (response)
+            {
+                if (response.status !== 200 && response.ok !== true)
+                {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
+
+                    $('#overlay1').hide();
+                    return;
+                }
+
+                // Examine the text in the response
+                response.json().then(function (data)
+                {
+                    console.log("data", data);
+
+                    $("#contactUS_form").find('.loading').slideUp();
+
+                    data.extra === "Email action executed successfully" ?
+                            $("#contactUS_form").find('.sent-message').slideDown() :
+                            $("#contactUS_form").find('.error-message').slideDown();
+
+
+                });
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+
+                $("#contactUS_form").find('.loading').slideUp();
+
+                $("#contactUS_form").find('.error-message').slideDown();
+
+            });
+
 }
 
 /*************************************      Person Profile Functions   *****************************************************/

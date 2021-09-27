@@ -72,7 +72,7 @@ public class StripeSession {
         params.put("line_items", lineItems);
         params.put("mode", "payment");
 
-        params.put("shipping_rates[]", "shr_1JaKRJGpCsnZmArEKQzOIgRJ");
+        params.put("shipping_rates[]", shippingCode);
 
         params.put("allow_promotion_codes", true);
         

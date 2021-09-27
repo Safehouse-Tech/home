@@ -51,6 +51,11 @@ public class CONFIG
     public static final String load_type = "load_type";
     
     public static final String datetime = "datetime";
+    
+    public static final String contactusName = "contactusName";
+    public static final String contactusEmail = "contactusEmail";
+    public static final String contactusSubject = "contactusSubject";
+    public static final String contactusMessage = "contactusMessage";
 
     
     public static final int CREATION = 1001;
