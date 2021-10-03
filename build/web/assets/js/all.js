@@ -149,8 +149,6 @@ function productDescription()
 {
     sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
-    console.log("sessionDetails123", sessionDetails);
-
     sensorDescription = sessionDetails.sensorDescription;
 
     $("#product_id").text(sensorDescription.product_id);
@@ -204,9 +202,14 @@ async function addtobasket()
         {
             $("#staticBackdrop").modal('show');
             $("#staticBackdrop_body").load("login.html?nav=shop");
-        } else
-        {
-            console.log("adding product to cart session");
+            
+            $('#overlay1').hide();
+            
+            return;
+        } 
+//        else
+//        {
+//            console.log("adding product to cart session");
 
             var product_id = $("#product_id").text();
             var product_name = $("#product_name").text();
@@ -258,7 +261,7 @@ async function addtobasket()
 
             updatebasket();
 
-        }
+//        }
     }
 
 }
@@ -770,7 +773,7 @@ async function contactUs()
     $("#contactUS_form").find('.sent-message') .slideUp();
     $("#contactUS_form").find('.error-message').slideUp();
 
-    await fetch('/home/contactusemail?contactusName=' + contactusName + '&contactusEmail=' + contactusEmail + '&contactusSubject=' + contactusSubject + '&contactusMessage=' + contactusMessage, {
+    await fetch('contactusemail?contactusName=' + contactusName + '&contactusEmail=' + contactusEmail + '&contactusSubject=' + contactusSubject + '&contactusMessage=' + contactusMessage, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -782,6 +785,8 @@ async function contactUs()
                 {
                     console.log('Looks like there was a problem. Status Code: ' + response.status, response.ok);
 
+                    $("#contactUS_form").find('.error-message').slideDown();
+                    
                     $('#overlay1').hide();
                     return;
                 }

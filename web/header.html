@@ -13,10 +13,17 @@
         
         $(document).ready( function() 
         {
-//            console.log(new Date(1631882088* 1000));
             var currentURL = window.location.href;          // console.log("currentURL: "+ currentURL);
             
-            var pagehref = currentURL.split("home/");      
+        // if contains product-description.html
+        
+            if(currentURL.includes("product-description.html") || currentURL.includes("shop.html"))
+            {
+                window.location.href = "comingsoon.html";
+                return;
+            }
+            
+            var pagehref = currentURL.includes("home/") ? currentURL.split("home/") : currentURL.split("technology/"); 
             
             if(pagehref[1].includes("index") || pagehref[1]==="" ) 
             {
@@ -40,7 +47,7 @@
             {
                 var sessionDetails = JSON.parse(localStorage.getItem('sessionDetails'));
 
-                console.log("sessionDetails", sessionDetails);
+//                console.log("sessionDetails", sessionDetails);
 
                 if(!sessionDetails.hasOwnProperty("personDetails"))
                 {
@@ -119,7 +126,7 @@
                         </li>
                         <li><a href="news-and-updates.html">News & Updates</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="shop.html">Shop<i class="fas fa-shopping-bag fa-2x"></i></a></li>
+<!--                        <li><a href="shop.html">Shop<i class="fas fa-shopping-bag fa-2x"></i></a></li>
                         <li id="basketHeader">
                             <a href="basket.html">Basket
                                 <i class="fas fa-shopping-cart fa-2x"></i>
@@ -139,7 +146,7 @@
                                 <li><a href="orders.html">Orders</a></li>
                                 <li><a href="javascript: logOut(); ">Logout</a></li>
                             </ul>
-                        </li>
+                        </li>-->
                         
                     </ul>
                     <i class="bi bi-list mobile-nav-toggle"></i>

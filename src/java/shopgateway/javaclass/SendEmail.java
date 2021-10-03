@@ -95,7 +95,7 @@ public class SendEmail {
      
     private MimeMessage sendMessage(ServletContext context, Session session, String contactusName, String contactusEmail, String contactusSubject, String contactusMessage) throws MessagingException, IOException
     {
-        String defautSendTo = "support@safehouse.technology";
+        String defautSendTo = "gaganpreet.singh@safehouse.technology";
         String defautSubject = "Message from Safehouse Website";
     	// Create a default MimeMessage object.
         MimeMessage message = new MimeMessage(session);
